@@ -5,14 +5,16 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
+import Header from "../../views/Header";
 
 const FormContainer = styled.div`
   margin-top: 2em;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  margin-left: auto;
   min-height: 300px;
   justify-content: center;
+  
 `;
 
 const Form = styled.div`
@@ -54,6 +56,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  
 `;
 
 /**
@@ -90,7 +93,7 @@ class Login extends React.Component {
         username: this.state.username,
         name: this.state.name
       });
-      const response = await api.post('/users', requestBody);
+      const response = await api.post('/users/create', requestBody);
 
       // Get the returned user and update a new object.
       const user = new User(response.data);
@@ -127,7 +130,9 @@ class Login extends React.Component {
 
   render() {
     return (
+
       <BaseContainer>
+        <Header height={"100"} />
         <FormContainer>
           <Form>
             <Label>Username</Label>
@@ -144,7 +149,7 @@ class Login extends React.Component {
                 this.handleInputChange('name', e.target.value);
               }}
             />
-            <ButtonContainer>
+              <ButtonContainer>
               <Button
                 disabled={!this.state.username || !this.state.name}
                 width="50%"
@@ -154,7 +159,14 @@ class Login extends React.Component {
               >
                 Login
               </Button>
-            </ButtonContainer>
+
+            <Button width = '50%' onClick={ () => {
+              this.props.history.push('/register')
+            }}
+            >
+            Register
+            </Button>
+              </ButtonContainer>
           </Form>
         </FormContainer>
       </BaseContainer>
