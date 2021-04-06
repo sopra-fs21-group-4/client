@@ -6,6 +6,7 @@ import Player from '../../views/Player';
 import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
+import User from "../shared/models/User";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -25,16 +26,71 @@ const PlayerContainer = styled.li`
 `;
 
 class Testsite extends React.Component {
-  constructor() {
-    super();
-    // this.state = {
-    //   users: null
-    // };
-  }
 
-  createuser(){
-    console.log("testlog");
-  }
+    constructor() {
+        super();
+        this.state = {
+            token: null
+        };
+    }
+
+
+    async createuser(){
+        console.log("creating user");
+
+        const requestBody = JSON.stringify({
+            username: "testuser",
+            password: "testpassword"
+        });
+
+        const response = await api.post('/users/create', requestBody);
+
+        const user = new User(response.data);
+
+        localStorage.setItem('token', user.token);
+        localStorage.setItem('userId', response.data.userId);
+    }
+
+
+    async login(){
+        console.log("login");
+
+        const requestBody = JSON.stringify({
+            username: "testuser",
+            password: "testpassword"
+        });
+
+        const response = await api.post('/users/login', requestBody);
+
+        const user = new User(response.data);
+
+        localStorage.setItem('token', user.token);
+        localStorage.setItem('userId', response.data.userId);
+
+    }
+
+    async createlobby(){
+        console.log("creating lobby");
+
+        const requestBody = null;
+
+        const response = await api.post('/lobbies/create', requestBody, {headers:{userId:localStorage.getItem("userId"), token:localStorage.getItem("token")}});
+
+    }
+
+    async joinlobby(){
+
+    }
+
+    async startlobby(){
+        console.log("starting game");
+
+        const requestBody = null;
+
+        const response = await api.put('/lobbies/2/start', requestBody, {headers:{userId:localStorage.getItem("userId"), token:localStorage.getItem("token")}});
+
+    }
+
 
   // logout() {
   //   localStorage.removeItem('token');
@@ -77,8 +133,40 @@ class Testsite extends React.Component {
               this.createuser();
             }}
         >
-          Logout
+          createuser
         </Button>
+          <Button
+              width="100%"
+              onClick={() => {
+                  this.login();
+              }}
+          >
+              login
+          </Button>
+          <Button
+              width="100%"
+              onClick={() => {
+                  this.createlobby();
+              }}
+          >
+              create lobby
+          </Button>
+          <Button
+              width="100%"
+              onClick={() => {
+                  this.joinlobby();
+              }}
+          >
+              join lobby
+          </Button>
+          <Button
+              width="100%"
+              onClick={() => {
+                  this.startlobby();
+              }}
+          >
+              start lobby
+          </Button>
       </Container>
     );
   }
