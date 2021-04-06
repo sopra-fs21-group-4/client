@@ -78,7 +78,7 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: null,
+      password: null,
       username: null
     };
   }
@@ -91,9 +91,9 @@ class Login extends React.Component {
     try {
       const requestBody = JSON.stringify({
         username: this.state.username,
-        name: this.state.name
+        password: this.state.password
       });
-      const response = await api.post('/users/create', requestBody);
+      const response = await api.post('/users/login', requestBody);
 
       // Get the returned user and update a new object.
       const user = new User(response.data);

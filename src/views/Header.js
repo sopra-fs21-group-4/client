@@ -18,7 +18,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   font-weight: bold;
-  color: white;
+  color: black;
   text-align: center;
 `;
 /**
