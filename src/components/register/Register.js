@@ -32,6 +32,23 @@ const Form = styled.div`
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
+
+const Header2 = styled.div`
+
+  position: absolute;
+  left: 10.97%;
+  right: 43.73%;
+  top: 16.97%;
+  bottom: 76.92%;
+  fontFamily: Roboto;
+  fontStyle: normal;
+  fontWeight: 400;
+  fontSize: 56px;
+  lineHeight: 56px;
+  color: #212121;
+
+`;
+
 const InputField = styled.input`
   &::placeholder {
     color: rgba(255, 255, 255, 1.0);
@@ -89,8 +106,8 @@ class Register extends React.Component {
         try {
             const requestBody = JSON.stringify({
                 username: this.state.username,
-                password1: this.state.password1,
-                email: this.state.email
+                password: this.state.password1,
+                email: this.state.email,
             });
             const response = await api.post('/users/create', requestBody);
 
@@ -131,7 +148,9 @@ class Register extends React.Component {
         return (
 
             <BaseContainer>
-                <Header height={"100"} />
+                <Header2 >
+                    <h1> Do you even meme? </h1>
+                </Header2>
                 <FormContainer>
                     <Form>
                         <Label>Username</Label>

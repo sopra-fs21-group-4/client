@@ -16,6 +16,8 @@ const Container = styled.div`
   align-items: center;
 `;
 
+
+
 const Title = styled.h1`
   font-weight: bold;
   color: black;
