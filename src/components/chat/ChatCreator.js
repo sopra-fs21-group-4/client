@@ -6,7 +6,7 @@ import Player from '../../views/Player';
 import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
-import MessageView from "../../views/MessageView";
+import Message from "../../views/Message";
 
 class ChatCreator extends React.Component {
 

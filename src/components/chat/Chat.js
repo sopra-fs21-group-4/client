@@ -6,7 +6,7 @@ import Player from '../../views/Player';
 import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
-import MessageView from "../../views/MessageView";
+import Message from "../../views/Message";
 
 const Container = styled(BaseContainer)`
   width: 600px;
@@ -36,20 +36,22 @@ class Chat extends React.Component {
   constructor() {
     super();
     this.state = {
-      messages: null
+      chatId: null,
+      messages: null,
+      updating: false,
+      active: true,
     };
   }
 
   async postMessage() {
     try {
-      const { chatId } = this.props.match.params
 
       const requestBody = JSON.stringify({
         senderId: localStorage.getItem('userId'),
         text: this.state.input,
       });
 
-      const response = await api.post(`/chat/${chatId}`, requestBody);
+      const response = await api.post(`/chat/${this.state.chatId}`, requestBody);
 
       // See here to get more data.
       console.log(response);
@@ -58,21 +60,45 @@ class Chat extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    try {
+  async updateLoop() {
+    // if the loop is called by multiple threads, only the first should execute it
+    if (this.state.updating) return;
+    else this.setState({updating: true});
 
-      const { chatId } = this.props.match.params
+    // loop runs as long as this component is active
+    while (this.state.active) {
+      try {
 
-      const response = await api.get(`/chat/${chatId}`);
+        const response = await api.get(`/chat/${this.state.chatId}`);
 
-      // Get the returned users and update the state.
-      this.setState({ messages: response.data });
+        // Get the returned users and update the state.
+        this.setState({ messages: response.data });
 
-      // See here to get more data.
-      console.log(response);
-    } catch (error) {
-      alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
+        // See here to get more data.
+        console.log(response);
+
+        //wait for 100ms
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+      } catch (error) {
+        alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
+      }
     }
+  }
+
+  componentDidMount() {
+    // TODO must be able to set chatId from constructor
+    if (this.props.chatId)
+      this.setState({chatId: this.props.chatId});
+    else
+      this.setState({chatId: this.props.match.params.chatId});
+
+    // run update loop
+    this.updateLoop();
+  }
+
+  componentWillUnmount() {
+    this.setState({ active: false })
   }
 
   /**
@@ -95,7 +121,7 @@ class Chat extends React.Component {
           <div>
                 {this.state.messages.map(message => {
                   return (
-                      <MessageView message={message} />
+                      <Message message={message} />
                   );
                 })}
             <ButtonContainer>

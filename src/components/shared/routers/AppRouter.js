@@ -7,7 +7,7 @@ import Login from "../../login/Login";
 import Testsite from "../../temporary/Testsite";
 import Register from "../../register/Register";
 import Chat from "../../chat/Chat";
-import CreateChat from "../../chat/ChatCreator";
+import ChatCreator from "../../chat/ChatCreator";
 
 /**
  * Main router of your application.
@@ -42,7 +42,7 @@ class AppRouter extends React.Component {
                 exact
                 path={"/chat"}
                 render={() => (
-                    <CreateChat />
+                    <ChatCreator />
                 )}
             />
             <Route

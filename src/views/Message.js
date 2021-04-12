@@ -34,7 +34,7 @@ const Text = styled.div`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const MessageView = ({ message }) => {
+const Message = ({ message }) => {
   return (
     <Container>
         <Timestamp>{new Date (message.timestamp).toLocaleString()}</Timestamp>
@@ -44,4 +44,4 @@ const MessageView = ({ message }) => {
   );
 };
 
-export default MessageView;
+export default Message;
