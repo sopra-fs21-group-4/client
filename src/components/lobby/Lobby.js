@@ -1,35 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
-import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import Player from '../../views/Player';
 import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
-
-const Container = styled(BaseContainer)`
-  color: white;
-  text-align: left;
-`;
-
-const Title = styled.div`
-position: absolute;
-width: 612px;
-height: 56px;
-left: 68px;
-top: 58px;
-
-font-family: Roboto;
-font-style: normal;
-font-weight: 500;
-font-size: 56px;
-line-height: 56px;
-
-/* identical to box height, or 100% */
-
-color: #000000;
-
-mix-blend-mode: darken;
+import styles from './Lobby.module.css';
+import styled from 'styled-components';
+//---------------------------------------------------
+const InputField = styled.input`
+  height: 35px;
+  padding-left: 15px;
+  margin-left: -4px;
+  border: none;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  rgba(0, 0, 0, 0.6);
+  /* Surface overlay */
+background: rgba(33, 33, 33, 0.08);
+border-radius: 4px 4px 0px 0px;
 `;
 
 class Lobby extends React.Component {
@@ -39,44 +28,107 @@ class Lobby extends React.Component {
         };
     }
 
-    logout() {
-        localStorage.removeItem('token');
-        this.props.history.push('/login');
-    }
-
-    async componentDidMount() {
-        try {
-            const response = await api.get('/lobby');
-            // delays continuous execution of an async operation for 1 second..
-            // This is just a fake async call, so that the spinner can be displayed
-            // feel free to remove it :)
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            // Get the returned users and update the state.
-            this.setState({ users: response.data });
-
-            // This is just some data for you to see what is available.
-            // Feel free to remove it.
-            console.log('request to:', response.request.responseURL);
-            console.log('status code:', response.status);
-            console.log('status text:', response.statusText);
-            console.log('requested data:', response.data);
-
-            // See here to get more data.
-            console.log(response);
-        } catch (error) {
-            alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
-        }
-    }
-
     render() {
         return (
-            <Container>
-                <Title>Creating a new Game</Title>
-
-            </Container>
+            <div className={styles.Base}>
+                <div className={styles.TitleContainer}>
+                    <div className={styles.Title}>Creating a new Game</div>
+                    <div className={styles.Title}>
+                        <div className={styles.RightTitle}>Do you even Meme?</div>
+                    </div>
+                </div>
+                <div className={styles.SubTitle}> SoPra Group 04 </div>
+                <div className={styles.Content}>
+                    <div className={styles.ContentBox}>
+                        <div className={styles.ContentTitle}>Lobby-Settings</div>
+                        <div className={styles.Form}>
+                            <table>
+                                <tr>
+                                    <th><div className={styles.Settings}>Lobby Name:</div></th>
+                                    <td>
+                                        <InputField
+                                            placeholder="Enter here.."
+                                            onChange={e => {
+                                                this.handleInputChange('username', e.target.value);
+                                            }} />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><div className={styles.Settings}>Subreddit:</div></th>
+                                    <td>
+                                        <InputField
+                                            placeholder="Enter here.."
+                                            onChange={e => {
+                                                this.handleInputChange('username', e.target.value);
+                                            }} />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><div className={styles.Settings}>Max. Players:</div></th>
+                                    <td>
+                                        <InputField
+                                            placeholder="Enter here.."
+                                            onChange={e => {
+                                                this.handleInputChange('username', e.target.value);
+                                            }} />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><div className={styles.Settings}>Lobby Key:</div></th>
+                                    <td>
+                                        <InputField
+                                            placeholder="Enter here.."
+                                            onChange={e => {
+                                                this.handleInputChange('username', e.target.value);
+                                            }} />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><div className={styles.Settings}>Round Timer:</div></th>
+                                    <td>
+                                        <InputField
+                                            placeholder="Enter here.."
+                                            onChange={e => {
+                                                this.handleInputChange('username', e.target.value);
+                                            }} />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><div className={styles.Settings}>Number of Rounds:</div></th>
+                                    <td>
+                                        <InputField
+                                            placeholder="Enter here.."
+                                            onChange={e => {
+                                                this.handleInputChange('username', e.target.value);
+                                            }} />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div className={styles.Content}>
+                        <div className={styles.ContentBox}>
+                            <div className={styles.ContentTitle}>Players in Lobby</div>
+                            <div className={styles.PlayersList}>
+                                <table responsive>
+                                    <tr>
+                                        <th>Player Name<hr class="solid"></hr></th>
+                                        
+                                        <th>Player Karma<hr class="solid"></hr></th>
+                                        
+                                    </tr>
+                                        {Array.from({ length: 2 }).map((_, index) => (
+                                            <tr><td key={index}>Table cell {index}<hr class="solid"></hr></td></tr>
+                                        ))}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         );
     }
+
 }
 
 export default withRouter(Lobby);
