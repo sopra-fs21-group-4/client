@@ -7,7 +7,7 @@ import Login from "../../login/Login";
 import Testsite from "../../temporary/Testsite";
 import Register from "../../register/Register";
 import Chat from "../../chat/Chat";
-import CreateChat from "../../chat/CreateChat";
+import CreateChat from "../../chat/ChatCreator";
 
 /**
  * Main router of your application.

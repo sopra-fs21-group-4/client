@@ -33,7 +33,7 @@ const InputField = styled.input`
 `;
 
 class Chat extends React.Component {
-  constructor(chatId) {
+  constructor() {
     super();
     this.state = {
       messages: null

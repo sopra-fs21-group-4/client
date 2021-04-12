@@ -8,15 +8,12 @@ import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
 import MessageView from "../../views/MessageView";
 
-class CreateChat extends React.Component {
+class ChatCreator extends React.Component {
 
-  async componentDidMount() {
+  async createChat() {
     try {
-
       const response = await api.post(`/chat/create`);
-
       console.log(response);
-
       this.props.history.push(`/chat/${response.data.chatId}`);
     } catch (error) {
       alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
@@ -24,8 +21,13 @@ class CreateChat extends React.Component {
   }
 
   render() {
-    return <Spinner />;
+    return <Button  onClick={ () => {
+      this.createChat();
+    }}
+    >
+      create new chat
+    </Button>;
   }
 }
 
-export default withRouter(CreateChat);
+export default withRouter(ChatCreator);
