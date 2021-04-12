@@ -1,0 +1,67 @@
+.title {position: static;
+
+    left: 10.97%;
+    right: 43.73%;
+    top: 16.97%;
+    bottom: 76.92%;
+
+    padding-top: 35px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 56px;
+    line-height: 56px;}
+
+.create {
+
+    position: static;
+    width: 391px;
+    height: 49px;
+    left: 168px;
+    top: 350px
+}
+
+
+.username{
+    position: absolute;
+    height: 24px;
+    left: 16px;
+    right: 12.03px;
+    top: 16px;
+
+    /* Subtitle 1 */
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    /* identical to box height, or 150% */
+
+    letter-spacing: 0.15px;
+
+    /* 00. On Surface / Medium Emphasis */
+
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.sopragroupname{
+    position: static;
+    width: 423px;
+    height: 63px;
+    left: 170px;
+    top: 265px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 56px;
+    padding-bottom: 50px;
+
+
+    color: #000000;
+
+
+}
+

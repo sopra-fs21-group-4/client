@@ -5,7 +5,7 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
-import Header from "../../views/Header";
+import title from '../../views/design/title.module.css'
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -17,50 +17,86 @@ const FormContainer = styled.div`
   
 `;
 
+
+const ButtonBack = styled.div`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 10px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  font-family: Roboto;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-right: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
+`;
+
+const ButtonRegister = styled.div`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 10px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  font-family: Roboto;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-left: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
+`;
+
+
+
 const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 60%;
+  width: 32%;
   height: 375px;
   font-size: 16px;
   font-weight: 300;
+  
   padding-left: 37px;
   padding-right: 37px;
   border-radius: 5px;
-  background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
+  background: white;
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
 
-const Header2 = styled.div`
-
-  position: absolute;
-  left: 10.97%;
-  right: 43.73%;
-  top: 16.97%;
-  bottom: 76.92%;
-  fontFamily: Roboto;
-  fontStyle: normal;
-  fontWeight: 400;
-  fontSize: 56px;
-  lineHeight: 56px;
-  color: #212121;
-
-`;
 
 const InputField = styled.input`
   &::placeholder {
-    color: rgba(255, 255, 255, 1.0);
+    color: rgba(105,105,105, 1.0);
+    font-size: 14px
   }
   height: 35px;
   padding-left: 15px;
   margin-left: -4px;
   border: none;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  background: rgba(211, 211, 211, 0.5);
+  color: black;
 `;
 
 const Label = styled.label`
@@ -73,6 +109,8 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  
+  
   
 `;
 
@@ -148,42 +186,44 @@ class Register extends React.Component {
         return (
 
             <BaseContainer>
-                <Header2 >
-                    <h1> Do you even meme? </h1>
-                </Header2>
-                <FormContainer>
+
+                    <div className={title.title}> Do you even meme? </div>
+
+                    <div className={title.sopragroupname}> SoPra Group-04</div>
+
+
                     <Form>
-                        <Label>Username</Label>
+                        <div className={title.create}> Create your own account:</div>
                         <InputField
-                            placeholder="Enter here.."
+                            placeholder="Username"
                             onChange={e => {
                                 this.handleInputChange('username', e.target.value);
                             }}
                         />
 
-                        <Label>Email</Label>
+
                         <InputField
-                            placeholder="Enter here.."
+                            placeholder="Email"
                             onChange={e => {
                                 this.handleInputChange('email', e.target.value);
                             }}
                         />
-                        <Label>password</Label>
+
                         <InputField
-                            placeholder="Enter here.."
+                            placeholder="Password"
                             onChange={e => {
                                 this.handleInputChange('password1', e.target.value);
                             }}
                         />
-                        <Label>reenter password</Label>
+
                         <InputField
-                            placeholder="Enter here.."
+                            placeholder="Reenter password"
                             onChange={e => {
                                 this.handleInputChange('password2', e.target.value);
                             }}
                         />
                         <ButtonContainer>
-                            <Button
+                            <ButtonBack
 
                                 width="50%"
                                 onClick={() => {
@@ -191,9 +231,9 @@ class Register extends React.Component {
                                 }}
                             >
                                 Back to login
-                            </Button>
+                            </ButtonBack>
 
-                            <Button
+                            <ButtonRegister
                                 width = '50%' disabled={!this.state.username || !this.state.password1 || !this.state.password2 || !this.state.email || (this.state.password1 != this.state.password2)}
                                 onClick={ () => {
 
@@ -201,11 +241,11 @@ class Register extends React.Component {
                                 this.register();
                             }}
                             >
-                                Register
-                            </Button>
+                                Create account
+                            </ButtonRegister>
                         </ButtonContainer>
                     </Form>
-                </FormContainer>
+
             </BaseContainer>
         );
     }

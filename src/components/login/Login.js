@@ -6,6 +6,7 @@ import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import Header from "../../views/Header";
+import title from '../../views/design/title.module.css'
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -21,29 +22,32 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 60%;
+  width: 32%;
   height: 375px;
   font-size: 16px;
   font-weight: 300;
+  
   padding-left: 37px;
   padding-right: 37px;
   border-radius: 5px;
-  background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
+  background: white;
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
+
 const InputField = styled.input`
   &::placeholder {
-    color: rgba(255, 255, 255, 1.0);
+    color: rgba(105,105,105, 1.0);
+    font-size: 14px
   }
   height: 35px;
   padding-left: 15px;
   margin-left: -4px;
   border: none;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  background: rgba(211, 211, 211, 0.5);
+  color: black;
 `;
 
 const Label = styled.label`
@@ -132,19 +136,19 @@ class Login extends React.Component {
     return (
 
       <BaseContainer>
-        <Header height={"100"} />
-        <FormContainer>
+        <div className={title.title}> Do you even meme? </div>
+        <div className={title.sopragroupname}> SoPra Group-04</div>
           <Form>
-            <Label>Username</Label>
+            <div className={title.create}> Login to your account:</div>
             <InputField
-              placeholder="Enter here.."
+              placeholder="Username"
               onChange={e => {
                 this.handleInputChange('username', e.target.value);
               }}
             />
-            <Label>password</Label>
+
             <InputField
-              placeholder="Enter here.."
+              placeholder="Password"
               onChange={e => {
                 this.handleInputChange('password', e.target.value);
               }}
@@ -168,7 +172,7 @@ class Login extends React.Component {
             </Button>
               </ButtonContainer>
           </Form>
-        </FormContainer>
+
       </BaseContainer>
     );
   }
