@@ -2,21 +2,32 @@ import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  margin: 4px 0;
-  border-radius: 6px;
   display: flex;
   align-items: center;
+`;
+
+const TextBox = styled.div`
+    width: 100%;
+  margin: 4px 0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  text-align: left;
   border: 1px solid #06c4ff;
+  flex-shrink: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const UserName = styled.div`
+  margin-left: 15px;
   margin-right: 15px;
   font-weight: bold;
-  color: #06c4ff;
+  color: #bf62ff;
 `;
 
 const Timestamp = styled.div`
-  width: 40px;
+  width: 45px;
   margin-left: 5px;
   margin-right: 15px;
   color: #06c4ff;
@@ -36,12 +47,30 @@ const Text = styled.div`
  */
 const Message = ({ message }) => {
   return (
-    <Container>
-        <Timestamp>{new Date (message.timestamp).toLocaleString()}</Timestamp>
-        <UserName>{message.senderName}</UserName>
-        <Text>{message.text}</Text>
-    </Container>
+      <Container>
+          <TextBox>
+              <UserName>{ message.username }</UserName>
+              <Timestamp>{timeString(new Date (message.timestamp))}</Timestamp>
+              <Text style={{flex: 1, flexWrap: 'wrap'}}>{message.text}</Text>
+          </TextBox>
+
+      </Container>
   );
 };
+
+const timeString = (date) => {
+    if (!isToday(date)) return date.toDateString();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    if (minutes < 10) minutes = '0' + minutes;
+    return `Today at ${hours}:${minutes}`;
+}
+
+const isToday = (someDate) => {
+    const today = new Date()
+    return someDate.getDay() == today.getDay() &&
+        someDate.getMonth() == today.getMonth() &&
+        someDate.getFullYear() == today.getFullYear()
+}
 
 export default Message;

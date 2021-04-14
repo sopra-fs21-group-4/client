@@ -7,6 +7,8 @@ import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
 import Message from "../../views/Message";
+import Emoji from "../../helpers/Emoji";
+import parseEmoji from "../../helpers/Emoji";
 
 const Container = styled(BaseContainer)`
   width: 600px;
@@ -43,18 +45,36 @@ class Chat extends React.Component {
     };
   }
 
+  /**
+   * this method posts a message.
+   * It takes the current value of the input field and the userId from the local storage
+   * to send a message-post-request to the server.
+   * The input field's content is cleared afterwards.
+   * If the input field is empty beforehand, the operation is canceled.
+   */
   async postMessage() {
     try {
+      let inputField = document.getElementById("inputField");
 
-      const requestBody = JSON.stringify({
-        senderId: localStorage.getItem('userId'),
-        text: this.state.input,
-      });
+      // if there's nothing to send, we cancel the operation
+      if (!inputField.value) return;
 
-      const response = await api.post(`/chat/${this.state.chatId}`, requestBody);
+      // request setup
+      const url = `/chat/${this.state.chatId}`;
+      const requestBody = JSON.stringify({text: inputField.value});
+      const config = {
+        headers: {
+          'userId': localStorage.getItem('userId'),
+          'token': localStorage.getItem('token')
+        }
+      };
 
-      // See here to get more data.
-      console.log(response);
+      // send request
+      const response = await api.post(url, requestBody, config);
+
+      console.log(response);    // log response
+      inputField.value = "";    // reset input field
+
     } catch (error) {
       alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
     }
@@ -69,16 +89,18 @@ class Chat extends React.Component {
     while (this.state.active) {
       try {
 
-        const response = await api.get(`/chat/${this.state.chatId}`);
+        //wait for 100ms
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        if (!this.state.chatId) continue;
+
+        const response = await api.get(`/chat/${this.state.chatId}?latest=10`);
 
         // Get the returned users and update the state.
         this.setState({ messages: response.data });
 
         // See here to get more data.
         console.log(response);
-
-        //wait for 100ms
-        await new Promise(resolve => setTimeout(resolve, 100));
 
       } catch (error) {
         alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
@@ -87,7 +109,8 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-    // TODO must be able to set chatId from constructor
+    // init chatId (required to send any request)
+    // if no chatId was assigned to this component, assume to find the chatId in the url
     if (this.props.chatId)
       this.setState({chatId: this.props.chatId});
     else
@@ -99,17 +122,6 @@ class Chat extends React.Component {
 
   componentWillUnmount() {
     this.setState({ active: false })
-  }
-
-  /**
-   *  Every time the user enters something in the input field, the state gets updated.
-   * @param key (the key of the state for identifying the field that needs to be updated)
-   * @param value (the value that gets assigned to the identified state key)
-   */
-  handleInputChange(key, value) {
-    // Example: if the key is username, this statement is the equivalent to the following one:
-    // this.setState({'username': value});
-    this.setState({ [key]: value });
   }
 
   render() {
@@ -125,13 +137,20 @@ class Chat extends React.Component {
                   );
                 })}
             <ButtonContainer>
-              <InputField
-                  placeholder="..."
+              <InputField             // this is the component where the user can write text messages
+                  id="inputField"
+                  type="text"
+                  autoComplete="off"
+                  placeholder=" ... "
+                  maxLength="255"     // max length for database (+ 1 for EOS \0)
                   onChange={e => {
-                    this.handleInputChange('input', e.target.value);
+                    document.getElementById("inputField").value = parseEmoji(e.target.value);
+                  }}
+                  onKeyPress={e => {
+                    if (e.key == 'Enter') this.postMessage();
                   }}
               />
-              <Button
+              <Button                 // with this button the text message will be sent off
                   width="80px"
                   onClick={() => {
                     this.postMessage();
@@ -146,5 +165,7 @@ class Chat extends React.Component {
     );
   }
 }
+
+
 
 export default withRouter(Chat);
