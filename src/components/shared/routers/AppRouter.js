@@ -1,13 +1,14 @@
 import React from "react";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import { GameGuard } from "../routeProtectors/GameGuard";
+import { UserGuard } from "../routeProtectors/UserGuard";
 import GameRouter from "./GameRouter";
-import { LoginGuard } from "../routeProtectors/LoginGuard";
+import { GuestGuard } from "../routeProtectors/GuestGuard";
 import Login from "../../login/Login";
 import Register from "../../login/Register";
 import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
-import Header from "../../../views/Header";
+import Header from "../../../views/header/Header";
+import UserProfile from "../../user/UserProfile";
 
 /**
  * Main router of your application.
@@ -28,36 +29,45 @@ class AppRouter extends React.Component {
             <Route
                 path="/game"
                 render={() => (
-                    <GameGuard>
+                    <UserGuard>
                         <GameRouter base={"/game"} />
-                    </GameGuard>
+                    </UserGuard>
                 )}
             />
             <Route
                 exact
                 path={"/chat"}
                 render={() => (
-                    <GameGuard>
+                    <UserGuard>
                         <ChatCreator />
-                    </GameGuard>
+                    </UserGuard>
                 )}
             />
             <Route
                 exact
                 path={"/chat/:chatId"}
                 render={() => (
-                    <GameGuard>
+                    <UserGuard>
                         <Chat />
-                    </GameGuard>
+                    </UserGuard>
+                )}
+            />
+            <Route  // TODO add profile editor
+                exact
+                path={"/users/:username"}
+                render={() => (
+                    <UserGuard>
+                        <UserProfile />
+                    </UserGuard>
                 )}
             />
             <Route
                 exact
                 path="/login"
                 render={() => (
-                    <LoginGuard>
+                    <GuestGuard>
                         <Login />
-                    </LoginGuard>
+                    </GuestGuard>
                 )}
             />
 
@@ -65,9 +75,9 @@ class AppRouter extends React.Component {
                 exact
                 path="/register"
                 render={() => (
-                    <LoginGuard>
+                    <GuestGuard>
                         <Register />
-                    </LoginGuard>
+                    </GuestGuard>
                 )}
             />
 

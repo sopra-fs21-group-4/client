@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import UserInfo from "./UserInfo";
-import {InvisibleButton} from "./design/InvisibleButton";
+import {InvisibleButton} from "../design/InvisibleButton";
 import {withRouter} from "react-router-dom";
 
 

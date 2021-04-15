@@ -5,7 +5,7 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
-import Header from "../../views/Header";
+import Header from "../../views/header/Header";
 import title from '../../views/design/title.module.css'
 
 const FormContainer = styled.div`

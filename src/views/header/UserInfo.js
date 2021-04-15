@@ -53,7 +53,7 @@ class UserInfo extends React.Component {
                 <HeaderButton
                     onClick={() => {
                         // TODO show user info
-                        this.props.history.push(`/chat`);
+                        this.props.history.push(`/users/${localStorage.getItem('username')}`);
                     }}
                 >
                     {localStorage.getItem('username')}
