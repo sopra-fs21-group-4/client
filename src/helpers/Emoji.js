@@ -33,6 +33,7 @@ const ALL = [
     new Emoji( ':n:', '❌' ),
     new Emoji( ':idk:', '🤷‍♂️' ),
     new Emoji( ':pizza:', '🍕' ),
+    new Emoji( ':shit:', '💩' ),
 ];
 
 export default parseEmoji;
