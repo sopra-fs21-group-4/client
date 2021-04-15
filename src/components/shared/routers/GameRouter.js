@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Redirect, Route } from "react-router-dom";
 import Lobby from "../../lobby/Lobby";
 import Dashboard from "../../lobby/Dashboard";
+import LobbySetup from "../../lobby/LobbySetup";
 
 const Container = styled.div`
   display: flex;
@@ -18,9 +19,14 @@ class GameRouter extends React.Component {
       <Container>
         <Route
           exact
-          path={`${this.props.base}/lobby/:lobbyId`}
-          render={() => <Lobby />}
+          path={`${this.props.base}/create-lobby`}
+          render={() => <LobbySetup />}
         />
+          <Route
+              exact
+              path={`${this.props.base}/lobby/:lobbyId`}
+              render={() => <Lobby />}
+          />
           <Route
               exact
               path={`${this.props.base}/dashboard`}

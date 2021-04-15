@@ -83,32 +83,6 @@ class Dashboard extends React.Component {
     }
   }
 
-  async createLobby() {
-    try {
-      // request setup
-      const url = `/lobbies/create`;
-      const requestBody = JSON.stringify({ });
-      const config = {
-        headers: {
-          'userId': localStorage.getItem('userId'),
-          'token': localStorage.getItem('token')
-        }
-      };
-
-      // send request
-      const response = await api.post(url, requestBody, config);
-
-      const lobby = new Lobby(response.data);
-
-      // reroute to new lobby
-      this.props.history.push(`/game/lobby/${lobby.lobbyId}`);
-
-      console.log(response);
-    } catch (error) {
-      alert(`Something went wrong creating the lobby: \n${handleError(error)}`);
-    }
-  }
-
   async enterLobby(lobby) {
     // TODO send request
 
@@ -128,7 +102,7 @@ class Dashboard extends React.Component {
               width: "400px",
             }}
             onClick={ () => {
-              this.createLobby();
+              this.props.history.push('/game/create-lobby');
             }}
         >
           Create lobby
