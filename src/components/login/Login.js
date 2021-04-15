@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import Header from "../../views/header/Header";
 import title from '../../views/design/title.module.css'
-import doge from "../../views/design/doge.jpg"
+import doge from "../../views/design/Memes/doge.jpg"
 import Modal from "../login/Modal"
 
 const FormContainer = styled.div`
@@ -171,10 +171,11 @@ class Login extends React.Component {
         this.showModal();
       }
 
+      if (y.includes("Username")) {
+        alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+        window.location = "/login";
+      }
 
-      //alert(`Something went wrong during the login: \n${handleError(error)}`);
-
-      //window.location = `/login`;
 
     }
   }

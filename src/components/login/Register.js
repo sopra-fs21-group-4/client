@@ -6,6 +6,9 @@ import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import title from '../../views/design/title.module.css'
+import fuu from '../../../src/views/design/Memes/fuu.jpg'
+import doge from "../../views/design/Memes/doge.jpg";
+import Modal from "./Modal";
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -136,9 +139,21 @@ class Register extends React.Component {
             password1: null,
             password2: null,
             username: null,
-            email: null
+            email: null,
+            showImage: false
         };
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
     }
+
+    showModal = () => {
+        this.setState({ showImage: true });
+    };
+
+    hideModal = () => {
+        this.setState({ showImage: false });
+        window.location = `/register`;
+    };
 
     async register() {
         try {
@@ -158,8 +173,12 @@ class Register extends React.Component {
             // Login successfully worked --> navigate to the route /game in the GameRouter
             window.location.reload();
         } catch (error) {
-            alert(`Something went wrong during the login: \n${handleError(error)}`);
-            window.location = `/register`;
+            var y = handleError(error).toString();
+
+            if (y.includes("unique")) {
+                this.showModal();
+            }
+
         }
     }
 
@@ -246,7 +265,14 @@ class Register extends React.Component {
                             </ButtonRegister>
                         </ButtonContainer>
                     </Form>
+                <Modal show={this.state.showImage} handleClose={this.hideModal}>
 
+
+                    <div style={{display: this.state.showImage ? "block" : "none"}}>
+                        <img className={title.bestmemes} src={fuu} alt={"such meme"} />
+
+                    </div>
+                </Modal>
             </BaseContainer>
         );
     }
