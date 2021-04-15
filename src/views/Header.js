@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import AppRouter from "../components/shared/routers/AppRouter";
-import {Button} from "./design/Button";
 import UserInfo from "./UserInfo";
+import {InvisibleButton} from "./design/InvisibleButton";
+import {withRouter} from "react-router-dom";
 
 
 /**
@@ -31,7 +31,6 @@ const UserInfoContainer = styled.div`
 
 const Title = styled.h1`
   font-size: 20px;
-  margin-left: 50px;
   color: #666666;
   text-align: left;
 `;
@@ -49,7 +48,12 @@ class Header extends React.Component {
         return (
             <Container>
                 <TitleContainer>
-                    <Title> Do you even meme? </Title>
+                    <InvisibleButton
+                        style={{marginLeft: "50px"}}
+                        onClick={() => {this.props.history.push('/');}}
+                    >
+                        <Title> Do you even meme? </Title>
+                    </InvisibleButton>
                 </TitleContainer>
                 <UserInfoContainer>
                     <UserInfo />
@@ -62,4 +66,4 @@ class Header extends React.Component {
 /**
  * Don't forget to export your component!
  */
-export default Header;
+export default withRouter(Header);
