@@ -1,10 +1,9 @@
 import React from "react";
-import {BrowserRouter, Redirect, Route, Switch, useParams} from "react-router-dom";
+import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import { GameGuard } from "../routeProtectors/GameGuard";
 import GameRouter from "./GameRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
-import Testsite from "../../temporary/Testsite";
 import Register from "../../login/Register";
 import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
@@ -26,19 +25,13 @@ class AppRouter extends React.Component {
       <BrowserRouter>
           <Header />
         <Switch>
-              <Route
-                  path="/test"
-                  render={() => (
-                          <Testsite />
-                  )}
-              />
             <Route
-              path="/game"
-              render={() => (
-                <GameGuard>
-                  <GameRouter base={"/game"} />
-                </GameGuard>
-              )}
+                path="/game"
+                render={() => (
+                    <GameGuard>
+                        <GameRouter base={"/game"} />
+                    </GameGuard>
+                )}
             />
             <Route
                 exact
@@ -59,16 +52,17 @@ class AppRouter extends React.Component {
                 )}
             />
             <Route
-              path="/login"
-              exact
-              render={() => (
-                <LoginGuard>
-                  <Login />
-                </LoginGuard>
-              )}
+                exact
+                path="/login"
+                render={() => (
+                    <LoginGuard>
+                        <Login />
+                    </LoginGuard>
+                )}
             />
 
             <Route
+                exact
                 path="/register"
                 render={() => (
                     <LoginGuard>
@@ -76,7 +70,6 @@ class AppRouter extends React.Component {
                     </LoginGuard>
                 )}
             />
-
 
             <Route path="/" exact render={() => <Redirect to={"/game"} />} />
         </Switch>
