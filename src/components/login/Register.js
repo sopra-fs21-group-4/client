@@ -159,6 +159,7 @@ class Register extends React.Component {
             window.location.reload();
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
+            window.location = `/register`;
         }
     }
 

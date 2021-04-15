@@ -7,6 +7,8 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import Header from "../../views/header/Header";
 import title from '../../views/design/title.module.css'
+import doge from "../../views/design/doge.jpg"
+import Modal from "../login/Modal"
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -34,6 +36,28 @@ const Form = styled.div`
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
+const ButtonRegister = styled.div`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 10px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  font-family: Roboto;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-left: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
+`;
 
 const InputField = styled.input`
   &::placeholder {
@@ -50,11 +74,30 @@ const InputField = styled.input`
   color: black;
 `;
 
-const Label = styled.label`
-  color: white;
-  margin-bottom: 10px;
-  text-transform: uppercase;
+const ButtonLogin = styled.div`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 10px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  font-family: Roboto;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-right: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
 `;
+
+
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -83,21 +126,34 @@ class Login extends React.Component {
     super();
     this.state = {
       password: null,
-      username: null
+      username: null,
+      showImage: false
     };
+    this.showModal = this.showModal.bind(this);
+    this.hideModal = this.hideModal.bind(this);
   }
   /**
    * HTTP POST request is sent to the backend.
    * If the request is successful, a new user is returned to the front-end
    * and its token is stored in the localStorage.
    */
+  showModal = () => {
+    this.setState({ showImage: true });
+  };
+
+  hideModal = () => {
+    this.setState({ showImage: false });
+    window.location = "/login"
+  };
+
   async login() {
     try {
       const requestBody = JSON.stringify({
         username: this.state.username,
         password: this.state.password
       });
-      const response = await api.post('/users/login', requestBody);
+
+      const response = await api.patch('/users/login', requestBody);
 
       // Get the returned user and update a new object.
       const user = new User(response.data);
@@ -108,7 +164,18 @@ class Login extends React.Component {
       // Login successfully worked --> navigate to the route /game in the GameRouter
       window.location.reload();
     } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+
+      var y = handleError(error).toString();
+
+      if (y.includes("password")) {
+        this.showModal();
+      }
+
+
+      //alert(`Something went wrong during the login: \n${handleError(error)}`);
+
+      //window.location = `/login`;
+
     }
   }
 
@@ -154,7 +221,7 @@ class Login extends React.Component {
               }}
             />
               <ButtonContainer>
-              <Button
+              <ButtonLogin
                 disabled={!this.state.username || !this.state.password}
                 width="50%"
                 onClick={() => {
@@ -162,18 +229,27 @@ class Login extends React.Component {
                 }}
               >
                 Login
-              </Button>
+              </ButtonLogin>
 
-            <Button width = '50%' onClick={ () => {
+            <ButtonRegister width = '50%' onClick={ () => {
               this.props.history.push('/register')
             }}
             >
             Register
-            </Button>
+            </ButtonRegister>
               </ButtonContainer>
           </Form>
 
+        <Modal show={this.state.showImage} handleClose={this.hideModal}>
+
+
+          <div style={{display: this.state.showImage ? "block" : "none"}}>
+        <img className={title.bestmemes} src={doge} alt={"such meme"} />
+
+      </div>
+      </Modal>
       </BaseContainer>
+
     );
   }
 }
