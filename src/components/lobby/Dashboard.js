@@ -2,12 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
-import Player from '../../views/Player';
 import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
 import LobbyItem from "./LobbyItem";
-import Lobby from "../shared/models/Lobby";
 
 const Container = styled(BaseContainer)`
   width: 700px;
@@ -102,7 +100,7 @@ class Dashboard extends React.Component {
               width: "400px",
             }}
             onClick={ () => {
-              this.props.history.push('/game/create-lobby');
+              this.props.history.push('/create-lobby');
             }}
         >
           Create lobby
