@@ -26,7 +26,7 @@ class Lobby extends React.Component {
             const lobby = new Lobby(response.data);
 
             // reroute to new lobby
-            this.props.history.push(`/game/lobby/${lobby.lobbyId}`);
+            this.props.history.push(`/lobby/${lobby.lobbyId}`);
 
             console.log(response);
         } catch (error) {
@@ -109,7 +109,7 @@ class Lobby extends React.Component {
                             <Button
                                 width="50%"
                                 onClick={() => {
-                                    this.props.history.push('/game/dashboard');
+                                    this.props.history.push('/');
                                 }}
                             >
                                 Cancel

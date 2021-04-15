@@ -1,7 +1,6 @@
 import React from "react";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import { UserGuard } from "../routeProtectors/UserGuard";
-import GameRouter from "./GameRouter";
 import { GuestGuard } from "../routeProtectors/GuestGuard";
 import Login from "../../login/Login";
 import Register from "../../login/Register";
@@ -9,6 +8,10 @@ import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
 import Header from "../../../views/header/Header";
 import UserProfile from "../../user/UserProfile";
+import Dashboard from "../../lobby/Dashboard";
+import Lobby from "../../lobby/Lobby";
+import LobbySetup from "../../lobby/LobbySetup";
+import Game from "../../game/Game";
 
 /**
  * Main router of your application.
@@ -27,12 +30,40 @@ class AppRouter extends React.Component {
           <Header />
         <Switch>
             <Route
-                path="/game"
-                render={() => (
+                exact
+                path={"/dashboard"}
+                render={() =>
                     <UserGuard>
-                        <GameRouter base={"/game"} />
+                        <Dashboard />
                     </UserGuard>
-                )}
+                }
+            />
+            <Route
+                exact
+                path={"/create-lobby"}
+                render={() =>
+                    <UserGuard>
+                        <LobbySetup />
+                    </UserGuard>
+                }
+            />
+            <Route
+                exact
+                path={"/lobby/:lobbyId"}
+                render={() =>
+                    <UserGuard>
+                        <Lobby />
+                    </UserGuard>
+                }
+            />
+            <Route
+                exact
+                path={"/game/:gameId"}
+                render={() =>
+                    <UserGuard>
+                        <Game />
+                    </UserGuard>
+                }
             />
             <Route
                 exact
@@ -81,7 +112,7 @@ class AppRouter extends React.Component {
                 )}
             />
 
-            <Route path="/" exact render={() => <Redirect to={"/game"} />} />
+            <Route path="/" exact render={() => <Redirect to={"/dashboard"} />} />
         </Switch>
       </BrowserRouter>
     );

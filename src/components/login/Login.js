@@ -97,7 +97,7 @@ class Login extends React.Component {
         username: this.state.username,
         password: this.state.password
       });
-      const response = await api.post('/users/login', requestBody);
+      const response = await api.patch('/users/login', requestBody);
 
       // Get the returned user and update a new object.
       const user = new User(response.data);
@@ -105,8 +105,8 @@ class Login extends React.Component {
       // Store user information into the local storage.
       user.putToLocalStorage();
 
-      // Login successfully worked --> navigate to the route /game in the GameRouter
-      window.location.reload();
+      // Login successfully worked --> navigate to default route
+      this.props.history.push('/');
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }

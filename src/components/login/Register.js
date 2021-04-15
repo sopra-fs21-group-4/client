@@ -155,10 +155,10 @@ class Register extends React.Component {
             // Store user information into the local storage.
             user.putToLocalStorage();
 
-            // Login successfully worked --> navigate to the route /game in the GameRouter
-            window.location.reload();
+            // Registration successfully worked --> navigate to default route
+            this.props.history.push('/');
         } catch (error) {
-            alert(`Something went wrong during the login: \n${handleError(error)}`);
+            alert(`Something went wrong during the registration: \n${handleError(error)}`);
         }
     }
 
