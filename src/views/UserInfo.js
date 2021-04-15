@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import AppRouter from "../components/shared/routers/AppRouter";
-import {Button} from "./design/Button";
 import { withRouter } from 'react-router-dom';
 
 const Container = styled.div`
@@ -37,28 +35,17 @@ const HeaderButton = styled.button`
 `;
 
 class UserInfo extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            username: null
-        };
-    }
 
     logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
         this.props.history.push(`/login`);
-    }
-
-    componentDidMount() {
-        this.setState({
-            username: localStorage.getItem('username'),
-        });
+        this.setState({username: null});
     }
 
     render() {
-        return this.state.username? (
+        return localStorage.getItem('username')? (
             <Container>
                 <Label>
                     Logged in as:
@@ -69,7 +56,7 @@ class UserInfo extends React.Component {
                         this.props.history.push(`/chat`);
                     }}
                 >
-                    {this.state.username}
+                    {localStorage.getItem('username')}
                 </HeaderButton>
 
                 <HeaderButton
