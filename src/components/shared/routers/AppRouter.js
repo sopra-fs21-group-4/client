@@ -5,9 +5,10 @@ import GameRouter from "./GameRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
 import Testsite from "../../temporary/Testsite";
-import Register from "../../register/Register";
+import Register from "../../login/Register";
 import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
+import Header from "../../../views/Header";
 
 /**
  * Main router of your application.
@@ -23,6 +24,7 @@ class AppRouter extends React.Component {
 
     return (
       <BrowserRouter>
+          <Header />
         <Switch>
               <Route
                   path="/test"
@@ -42,14 +44,18 @@ class AppRouter extends React.Component {
                 exact
                 path={"/chat"}
                 render={() => (
-                    <ChatCreator />
+                    <GameGuard>
+                        <ChatCreator />
+                    </GameGuard>
                 )}
             />
             <Route
                 exact
                 path={"/chat/:chatId"}
                 render={() => (
-                    <Chat />
+                    <GameGuard>
+                        <Chat />
+                    </GameGuard>
                 )}
             />
             <Route
@@ -65,7 +71,9 @@ class AppRouter extends React.Component {
             <Route
                 path="/register"
                 render={() => (
-                    <Register />
+                    <LoginGuard>
+                        <Register />
+                    </LoginGuard>
                 )}
             />
 

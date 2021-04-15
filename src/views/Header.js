@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import AppRouter from "../components/shared/routers/AppRouter";
+import {Button} from "./design/Button";
+import UserInfo from "./UserInfo";
 
 
 /**
@@ -9,19 +12,28 @@ import styled from "styled-components";
  * https://www.styled-components.com/
  */
 const Container = styled.div`
-  height: ${props => props.height}px;
-  background: ${props => props.background};
+  height: 50px;
+  width: 100%;
+  background: rgba(6, 196, 255, 0.2);
   display: flex;
-  justify-content: center;
   align-items: center;
 `;
 
+const TitleContainer = styled.div`
+  width: 100%;
+  align-items: right;
+`;
 
+const UserInfoContainer = styled.div`
+  width: 500px;
+  align-items: right;
+`;
 
 const Title = styled.h1`
-  font-weight: bold;
-  color: black;
-  text-align: center;
+  font-size: 20px;
+  margin-left: 50px;
+  color: #666666;
+  text-align: left;
 `;
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -31,14 +43,21 @@ const Title = styled.h1`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const Header = props => {
-  return (
-    <Container height={props.height}>
-      <Title>Do you even meme?</Title>
+class Header extends React.Component {
 
-    </Container>
-  );
-};
+    render() {
+        return (
+            <Container>
+                <TitleContainer>
+                    <Title> Do you even meme? </Title>
+                </TitleContainer>
+                <UserInfoContainer>
+                    <UserInfo />
+                </UserInfoContainer>
+            </Container>
+        );
+    }
+}
 
 /**
  * Don't forget to export your component!
