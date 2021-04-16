@@ -45,7 +45,7 @@ class Chat extends React.Component {
   }
 
   /**
-   * this method posts a message.
+   * this method posts a message. 
    * It takes the current value of the input field and the userId from the local storage
    * to send a message-post-request to the server.
    * The input field's content is cleared afterwards.
