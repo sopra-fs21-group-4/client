@@ -100,10 +100,10 @@ class Dashboard extends React.Component {
               width: "400px",
             }}
             onClick={ () => {
-              this.props.history.push('/create-lobby');
+              this.props.history.push('/create-game');
             }}
         >
-          Create lobby
+          Create game
         </Button>
         <Label> Open Lobbies: </Label>
         {!this.state.lobbies ? (

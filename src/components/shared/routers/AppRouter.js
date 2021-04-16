@@ -10,8 +10,8 @@ import Header from "../../../views/header/Header";
 import UserProfile from "../../user/UserProfile";
 import Dashboard from "../../lobby/Dashboard";
 import Lobby from "../../lobby/Lobby";
-import LobbySetup from "../../lobby/LobbySetup";
 import Game from "../../game/Game";
+import GameSetup from "../../lobby/GameSetup";
 
 /**
  * Main router of your application.
@@ -27,23 +27,23 @@ class AppRouter extends React.Component {
 
     return (
       <BrowserRouter>
-          <Header />
+          <Header updateLoop={this.props.updateLoop} />
         <Switch>
             <Route
                 exact
                 path={"/dashboard"}
                 render={() =>
                     <UserGuard>
-                        <Dashboard />
+                        <Dashboard updateLoop={this.props.updateLoop} />
                     </UserGuard>
                 }
             />
             <Route
                 exact
-                path={"/create-lobby"}
+                path={"/create-game"}
                 render={() =>
                     <UserGuard>
-                        <LobbySetup />
+                        <GameSetup updateLoop={this.props.updateLoop} />
                     </UserGuard>
                 }
             />
@@ -52,7 +52,7 @@ class AppRouter extends React.Component {
                 path={"/lobby/:lobbyId"}
                 render={() =>
                     <UserGuard>
-                        <Lobby />
+                        <Lobby updateLoop={this.props.updateLoop} />
                     </UserGuard>
                 }
             />
@@ -61,7 +61,7 @@ class AppRouter extends React.Component {
                 path={"/game/:gameId"}
                 render={() =>
                     <UserGuard>
-                        <Game />
+                        <Game updateLoop={this.props.updateLoop} />
                     </UserGuard>
                 }
             />
@@ -70,7 +70,7 @@ class AppRouter extends React.Component {
                 path={"/chat"}
                 render={() => (
                     <UserGuard>
-                        <ChatCreator />
+                        <ChatCreator updateLoop={this.props.updateLoop} />
                     </UserGuard>
                 )}
             />
@@ -79,7 +79,7 @@ class AppRouter extends React.Component {
                 path={"/chat/:chatId"}
                 render={() => (
                     <UserGuard>
-                        <Chat />
+                        <Chat updateLoop={this.props.updateLoop} />
                     </UserGuard>
                 )}
             />
@@ -88,7 +88,7 @@ class AppRouter extends React.Component {
                 path={"/users/:username"}
                 render={() => (
                     <UserGuard>
-                        <UserProfile />
+                        <UserProfile updateLoop={this.props.updateLoop} />
                     </UserGuard>
                 )}
             />
@@ -97,7 +97,7 @@ class AppRouter extends React.Component {
                 path="/login"
                 render={() => (
                     <GuestGuard>
-                        <Login />
+                        <Login updateLoop={this.props.updateLoop} />
                     </GuestGuard>
                 )}
             />
@@ -107,7 +107,7 @@ class AppRouter extends React.Component {
                 path="/register"
                 render={() => (
                     <GuestGuard>
-                        <Register />
+                        <Register updateLoop={this.props.updateLoop} />
                     </GuestGuard>
                 )}
             />

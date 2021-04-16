@@ -1,98 +1,71 @@
 import React from 'react';
-import styled from 'styled-components';
-import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
-import Player from '../../views/Player';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
-
-const Container = styled(BaseContainer)`
-  color: white;
-  text-align: center;
-`;
-
-const Users = styled.ul`
-  list-style: none;
-  padding-left: 0;
-`;
-
-const PlayerContainer = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
+import Lobby from "../lobby/Lobby";
+import Chat from "../chat/Chat";
+import {HorizontalBox} from "../../views/design/Containers";
 
 class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      users: null
+      chatId: null,
+      game: null,
+      updating: false,
+      active: true,
     };
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    this.props.history.push('/login');
+
+
+  async update() {
+
+    try {
+      const response = await api.get(`/game/${this.props.match.params.gameId}`);
+      console.log(response);
+      this.setState({
+        game: response.data,
+        chatId: response.data.chatId,
+      });
+    } catch (error) {
+      alert(`Something went wrong while fetching game info: \n${handleError(error)}`);
+    }
   }
 
   async componentDidMount() {
-    try {
-      const response = await api.get('/users');
-      // delays continuous execution of an async operation for 1 second..
-      // This is just a fake async call, so that the spinner can be displayed
-      // feel free to remove it :)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+    this.props.updateLoop.addClient(this);
+  }
 
-      // Get the returned users and update the state.
-      this.setState({ users: response.data });
-
-      // This is just some data for you to see what is available.
-      // Feel free to remove it.
-      console.log('request to:', response.request.responseURL);
-      console.log('status code:', response.status);
-      console.log('status text:', response.statusText);
-      console.log('requested data:', response.data);
-
-      // See here to get more data.
-      console.log(response);
-    } catch (error) {
-      alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
-    }
+  async componentWillUnmount() {
+    this.props.updateLoop.removeClient(this);
   }
 
   render() {
     return (
-      <Container>
-        <h2>Happy Coding! </h2>
-        <p>Get all users from secure end point:</p>
-        {!this.state.users ? (
-          <Spinner />
-        ) : (
-          <div>
-            <Users>
-              {this.state.users.map(user => {
-                return (
-                  <PlayerContainer key={user.id}>
-                    <Player user={user} />
-                  </PlayerContainer>
-                );
-              })}
-            </Users>
-            <Button
-              width="100%"
-              onClick={() => {
-                this.logout();
-              }}
-            >
-              Logout
-            </Button>
-          </div>
-        )}
-      </Container>
+      <HorizontalBox>
+        {this.currentGameStateUI()}
+        <Chat
+            updateLoop={this.props.updateLoop}
+            chatId={this.state.chatId}
+        />
+      </HorizontalBox>
     );
   }
+
+  currentGameStateUI() {
+    // TODO return right game UI dependent on game state
+    if (!this.state.game) return (<Spinner/>);
+    switch (this.state.game.state) {
+      case 'LOBBY':  return (<Lobby updateLoop={this.props.updateLoop} />);
+      case 'TITLE':  return (<Lobby updateLoop={this.props.updateLoop} />);
+      case 'VOTE':   return (<Lobby updateLoop={this.props.updateLoop} />);
+      case 'POINTS': return (<Lobby updateLoop={this.props.updateLoop} />);
+      case 'FINISH': return (<Lobby updateLoop={this.props.updateLoop} />);
+      default: //throw "unknown game state!";
+    }
+  }
+
 }
 
 export default withRouter(Game);

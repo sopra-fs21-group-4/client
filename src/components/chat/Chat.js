@@ -12,8 +12,8 @@ import parseEmoji from "../../helpers/Emoji";
 
 const Container = styled(BaseContainer)`
   width: 600px;
-  color: white;
   text-align: center;
+  background: #f0f0ff;
 `;
 
 const ButtonContainer = styled.div`
@@ -38,7 +38,6 @@ class Chat extends React.Component {
   constructor() {
     super();
     this.state = {
-      chatId: null,
       messages: null,
       updating: false,
       active: true,
@@ -60,7 +59,7 @@ class Chat extends React.Component {
       if (!inputField.value) return;
 
       // request setup
-      const url = `/chat/${this.state.chatId}`;
+      const url = `/chat/${this.props.chatId}`;
       const requestBody = JSON.stringify({text: inputField.value});
       const config = {
         headers: {
@@ -80,48 +79,24 @@ class Chat extends React.Component {
     }
   }
 
-  async updateLoop() {
-    // if the loop is called by multiple threads, only the first should execute it
-    if (this.state.updating) return;
-    else this.setState({updating: true});
-
-    // loop runs as long as this component is active
-    while (this.state.active) {
-      try {
-
-        //wait for 100ms
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        if (!this.state.chatId) continue;
-
-        const response = await api.get(`/chat/${this.state.chatId}?latest=10`);
-
-        // Get the returned users and update the state.
-        this.setState({ messages: response.data });
-
-        // See here to get more data.
-        console.log(response);
-
-      } catch (error) {
-        alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
-      }
+  async update() {
+    if (!this.props.chatId) return;
+    try {
+      // TODO ?latest=10 for debugging purposes
+      const response = await api.get(`/chat/${this.props.chatId}?latest=10`);
+      console.log(response);
+      this.setState({ messages: response.data });
+    } catch (error) {
+      alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
     }
   }
 
   componentDidMount() {
-    // init chatId (required to send any request)
-    // if no chatId was assigned to this component, assume to find the chatId in the url
-    if (this.props.chatId)
-      this.setState({chatId: this.props.chatId});
-    else
-      this.setState({chatId: this.props.match.params.chatId});
-
-    // run update loop
-    this.updateLoop();
+    this.props.updateLoop.addClient(this);
   }
 
   componentWillUnmount() {
-    this.setState({ active: false })
+    this.props.updateLoop.removeClient(this);
   }
 
   render() {
@@ -165,7 +140,5 @@ class Chat extends React.Component {
     );
   }
 }
-
-
 
 export default withRouter(Chat);
