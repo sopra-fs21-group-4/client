@@ -165,16 +165,8 @@ class Login extends React.Component {
       this.props.history.push('/');
     } catch (error) {
 
-      var y = handleError(error).toString();
-
-      if (y.includes("password")) {
         this.showModal();
-      }
 
-      if (y.includes("Username")) {
-        alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
-        window.location = "/login";
-      }
 
 
     }
