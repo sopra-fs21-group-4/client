@@ -29,6 +29,9 @@ class Game extends React.Component {
         chatId: response.data.chatId,
       });
     } catch (error) {
+      if (error.response && error.response.status) {
+        alert(`Something went wrong while fetching game info: \n${error.response.status}`);
+      }
       alert(`Something went wrong while fetching game info: \n${handleError(error)}`);
     }
   }
@@ -62,7 +65,7 @@ class Game extends React.Component {
       case 'VOTE':   return (<Lobby updateLoop={this.props.updateLoop} />);
       case 'POINTS': return (<Lobby updateLoop={this.props.updateLoop} />);
       case 'FINISH': return (<Lobby updateLoop={this.props.updateLoop} />);
-      default: //throw "unknown game state!";
+      default: //throw "unknown game state!"; TODO implement
     }
   }
 

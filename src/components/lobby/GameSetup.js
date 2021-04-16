@@ -11,7 +11,7 @@ class Lobby extends React.Component {
     async createGame() {
         try {
             // request setup
-            const url = `/game/create`;
+            const url = `/lobbies/create`;
             const requestBody = JSON.stringify({
                 name: document.getElementById('name').value,
                 subreddit: document.getElementById('subreddit').value,
@@ -30,7 +30,7 @@ class Lobby extends React.Component {
             // send request
             const response = await api.post(url, requestBody, config);
             console.log(response);
-            return response.data;
+            this.props.history.push(`/game/${response.data.lobbyId}`);
 
         } catch (error) {
             alert(`Something went wrong creating the game: \n${handleError(error)}`);
@@ -45,7 +45,6 @@ class Lobby extends React.Component {
                     <div className={styles.Form}>
                         <table>
                             {this.inputRow('Name', 'name')}
-                            {this.inputRow('Test', 'test')}
                             {this.inputRow('Subreddit', 'subreddit')}
                             {this.inputRow('Password', 'password')}
                             {this.sliderRow('Max. Players', 'maxPlayers', 3, 10, 6)}
@@ -66,8 +65,7 @@ class Lobby extends React.Component {
                         <Button
                             width="50%"
                             onClick={() => {
-                                let game = this.createGame();
-                                this.props.history.push(`/game/${game.gameId}`);
+                                this.createGame();
                             }}
                         >
                             Create

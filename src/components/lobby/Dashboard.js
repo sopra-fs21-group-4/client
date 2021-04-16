@@ -105,11 +105,13 @@ class Dashboard extends React.Component {
         >
           Create game
         </Button>
-        <Label> Open Lobbies: </Label>
         {!this.state.lobbies ? (
           <Spinner />
         ) : (
           <div>
+            <Label>
+              {this.state.lobbies.length? 'Join a Game:' : 'No open games'}
+            </Label>
             <LobbyList>
               {this.state.lobbies.map(lobby => {
                 return (

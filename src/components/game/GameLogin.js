@@ -36,55 +36,8 @@ class GameLogin extends React.Component {
 
   render() {
     return (
-
       <BaseContainer>
-        <div className={title.title}> Do you even meme? </div>
-        <div className={title.sopragroupname}> SoPra Group-04</div>
-          <Form>
-            <div className={title.create}> Login to your account:</div>
-            <InputField
-              placeholder="Username"
-              onChange={e => {
-                this.handleInputChange('username', e.target.value);
-              }}
-            />
-
-            <InputField
-              placeholder="Password"
-              onChange={e => {
-                this.handleInputChange('password', e.target.value);
-              }}
-            />
-              <ButtonContainer>
-              <ButtonLogin
-                disabled={!this.state.username || !this.state.password}
-                width="50%"
-                onClick={() => {
-                  this.login();
-                }}
-              >
-                Login
-              </ButtonLogin>
-
-            <ButtonRegister width = '50%' onClick={ () => {
-              this.props.history.push('/register')
-            }}
-            >
-            Register
-            </ButtonRegister>
-              </ButtonContainer>
-          </Form>
-
-        <Modal show={this.state.showImage} handleClose={this.hideModal}>
-
-
-          <div style={{display: this.state.showImage ? "block" : "none"}}>
-        <img className={title.bestmemes} src={doge} alt={"such meme"} />
-
-      </div>
-      </Modal>
       </BaseContainer>
-
     );
   }
 }

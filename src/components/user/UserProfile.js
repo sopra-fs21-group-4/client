@@ -64,7 +64,7 @@ class UserProfile extends React.Component {
                                 (localStorage.getItem("username") == this.props.match.params.username)? (
                                     <Button
                                         width="120px"
-                                        onClick={() => {this.props.history.push(`/users/${this.props.match.params.username}/edit`);}}
+                                        onClick={() => {this.props.history.push(`/user-editor`);}}
                                     >
                                         Edit
                                     </Button>
