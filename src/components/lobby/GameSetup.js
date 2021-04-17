@@ -5,6 +5,8 @@ import { withRouter } from 'react-router-dom';
 import styles from './Lobby.module.css';
 import {InputField} from "../../views/design/InputField";
 import {Slider} from "../../views/design/Slider";
+import {Label, Title} from "../../views/design/Text";
+import {ConservativeBox, HorizontalBox, MediumForm} from "../../views/design/Containers";
 
 class Lobby extends React.Component {
 
@@ -39,52 +41,52 @@ class Lobby extends React.Component {
 
     render() {
         return (
-            <div className={styles.Content}>
-                <div className={styles.ContentBox}>
-                    <div className={styles.ContentTitle}>Game Setup</div>
-                    <div className={styles.Form}>
-                        <table>
-                            {this.inputRow('Name', 'name')}
-                            {this.inputRow('Subreddit', 'subreddit')}
-                            {this.inputRow('Password', 'password')}
-                            {this.sliderRow('Max. Players', 'maxPlayers', 3, 10, 6)}
-                            {this.sliderRow('Round Timer', 'roundTimer', 20, 180, 30)}
-                            {this.sliderRow('Number of Rounds', 'noRounds', 1, 30, 10)}
-                        </table>
-                    </div>
+            <HorizontalBox>
 
-                    <div className={styles.ContentBox}>
-                        <Button
-                            width="50%"
-                            onClick={() => {
-                                this.props.history.push('/');
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            width="50%"
-                            onClick={() => {
-                                this.createGame();
-                            }}
-                        >
-                            Create
-                        </Button>
-                    </div>
-                </div>
-            </div>
+                <MediumForm>
+                    <Title>Game Setup</Title>
+                    <table cellPadding="10px">
+                        {this.inputRow('Name', 'name')}
+                        {this.inputRow('Subreddit', 'subreddit')}
+                        {this.inputRow('Password', 'password')}
+                        {this.sliderRow('Max. Players', 'maxPlayers', 3, 10, 6)}
+                        {this.sliderRow('Round Timer', 'roundTimer', 20, 180, 30)}
+                        {this.sliderRow('Number of Rounds', 'noRounds', 1, 30, 10)}
+                        <tr>
+                            <td>
+                                <Button
+                                    width="100%"
+                                    onClick={() => {
+                                        this.props.history.push('/');
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                            </td>
+                            <td>
+
+                                <Button
+                                    width="100%"
+                                    onClick={() => {
+                                        this.createGame();
+                                    }}
+                                >
+                                    Create
+                                </Button>
+                            </td>
+                        </tr>
+                    </table>
+                </MediumForm>
+            </HorizontalBox>
         );
     }
 
     inputRow(label, attribute) {
         return (
             <tr>
-                <th><div className={styles.Settings}>{label}</div></th>
+                <th><Label>{label}</Label></th>
                 <td>
-                    <InputField
-                        id={attribute}
-                        placeholder="Enter here.."
-                        />
+                    <InputField id={attribute}/>
                 </td>
             </tr>
         );
@@ -93,7 +95,7 @@ class Lobby extends React.Component {
     sliderRow(label, attribute, min, max, def) {
         return (
             <tr>
-                <th><div className={styles.Settings}>{label}</div></th>
+                <th><Label>{label}</Label></th>
                 <td>
                     <Slider
                         id={attribute}

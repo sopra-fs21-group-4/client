@@ -6,23 +6,8 @@ import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Button';
 import { withRouter } from 'react-router-dom';
 import LobbyItem from "./LobbyItem";
-
-const Container = styled(BaseContainer)`
-  width: 700px;
-  color: white;
-  text-align: center;
-`;
-
-const Label = styled.h1`
-  font-size: 14px;
-  color: #666666;
-  text-align: left;
-`;
-
-const LobbyList = styled.ul`
-  list-style: none;
-  padding-left: 0;
-`;
+import {Info, Label, Title} from "../../views/design/Text";
+import {HorizontalBox, MediumForm, VerticalBox} from "../../views/design/Containers";
 
 const LobbyButton = styled.button`
   &:hover {
@@ -55,77 +40,80 @@ class Dashboard extends React.Component {
     };
   }
 
-  async updateLoop() {
-    // if the loop is called by multiple threads, only the first should execute it
-    if (this.state.updating) return;
-    else this.setState({updating: true});
+  async update() {
+    try {
 
-    // loop runs as long as this component is active
-    while (this.state.active) {
-      try {
+      const response = await api.get(`/lobbies`);
+      console.log(response);
+      this.setState({ lobbies: response.data });
 
-        //wait for 100ms
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        const response = await api.get(`/lobbies`);
-
-        // Get the returned users and update the state.
-        this.setState({ lobbies: response.data });
-
-        // See here to get more data.
-        console.log(response);
-
-      } catch (error) {
-        alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
-      }
+    } catch (error) {
+      alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
     }
   }
 
   async enterLobby(lobby) {
-    // TODO send request
-
-    this.props.history.push(`lobby/${lobby.lobbyId}`);  // TODO why is /game not required here?
+    this.props.history.push(`game/${lobby.lobbyId}`);
   }
 
   async componentDidMount() {
-    this.updateLoop();
+    this.props.updateLoop.addClient(this);
+  }
+
+  async componentWillUnmount() {
+    this.props.updateLoop.removeClient(this);
   }
 
   render() {
     return (
-      <Container>
-        <Button
-            style={{
-              marginTop: "45px",
-              width: "400px",
-            }}
-            onClick={ () => {
-              this.props.history.push('/create-game');
-            }}
-        >
-          Create game
-        </Button>
-        {!this.state.lobbies ? (
-          <Spinner />
-        ) : (
-          <div>
-            <Label>
-              {this.state.lobbies.length? 'Join a Game:' : 'No open games'}
-            </Label>
-            <LobbyList>
-              {this.state.lobbies.map(lobby => {
-                return (
-                    <LobbyButton onClick={() => {
-                      this.enterLobby(lobby);
-                    }}>
-                      <LobbyItem lobby={lobby} />
-                    </LobbyButton>
-                );
-              })}
-            </LobbyList>
-          </div>
-        )}
-      </Container>
+        <HorizontalBox>
+          <MediumForm style={{paddingTop: "30px"}}>
+            <Title> Do you even meme? </Title>
+            <table>
+              <tr>
+                <td><Label> Start your own game: </Label></td>
+                <td/>
+                <td/>
+                <td>
+                  <Button style={{width: "35px"}} onClick={ () => {this.props.history.push('/create-game');}}>
+                    +
+                  </Button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Label>
+                    {this.state.lobbies? (this.state.lobbies.length? 'Join a Game:' : 'No open games 😥') : ('loading..')}
+                  </Label>
+                </td>
+              </tr>
+              {!this.state.lobbies ? (
+                  <Spinner />
+              ) : (
+                  this.state.lobbies.map(lobby => {
+                      return (
+                          <tr>
+                            <td>
+                              <Info>{lobby.name}</Info>
+                            </td>
+                            <td>
+                              <Info>{lobby.subreddit}</Info>
+                            </td>
+                            <td>
+                              <Info>{lobby.maxPlayers}</Info>
+                            </td>
+                            <td>
+                              <Button style={{width: "35px"}} onClick={ () => {this.enterLobby(lobby);}}>
+                                ▷
+                              </Button>
+                            </td>
+                          </tr>
+                      );
+                    })
+              )}
+            </table>
+          </MediumForm>
+        </HorizontalBox>
     );
   }
 }

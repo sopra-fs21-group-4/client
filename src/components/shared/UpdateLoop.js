@@ -16,7 +16,7 @@ class UpdateLoop {
         this.state.running = true;
         while (this.state.running) {  // TODO do we need to tell the compiler that running is volatile?
             this.runUpdate();
-            await new Promise(resolve => setTimeout(resolve, this.interval));
+            await new Promise(resolve => setTimeout(resolve, this.state.interval));
         }
     }
 

@@ -4,8 +4,9 @@ export const Slider = styled.input`
     -webkit-appearance: none;
     height: 35px;
     width: 100%;
+    padding-bottom: 10px;
     border: none;
-    background: rgba(0,0,0,0);
+    background: #00000000;
     border-radius: 4px 4px 0px 0px;
     &::-webkit-slider-runnable-track {
         height: .35em;

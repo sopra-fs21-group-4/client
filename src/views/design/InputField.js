@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {Slider} from "./Slider";
 
 export const InputField = styled.input`
     height: 35px;
@@ -12,3 +13,7 @@ export const InputField = styled.input`
     background: rgba(33, 33, 33, 0.08);
     border-radius: 4px 4px 0px 0px;
 `;
+
+InputField.defaultProps = {
+    placeholder: "Enter here..",
+}

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Header from "./views/header/Header";
 import AppRouter from "./components/shared/routers/AppRouter";
 import UpdateLoop from "./components/shared/UpdateLoop";
 
@@ -21,9 +20,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <AppRouter updateLoop={this.state.updateLoop} />
-      </div>
+      <AppRouter updateLoop={this.state.updateLoop} />
     );
   }
 }

@@ -1,41 +1,38 @@
 import React from "react";
 import styled from "styled-components";
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
-const TextBox = styled.div`
-    width: 100%;
-  margin: 4px 0;
+const Container = styled.div`
+  width: 100%;
+  margin-top: 15px;
   border-radius: 12px;
-  display: flex;
   align-items: center;
   text-align: left;
+  padding-left: 15px;
+  padding-right: 15px;
   border: 1px solid #06c4ff;
-  flex-shrink: 1;
-  flex-direction: row;
-  flex-wrap: wrap;
 `;
 
-const UserName = styled.div`
-  margin-left: 15px;
-  margin-right: 15px;
+const Username = styled.h4`
+  display: inline;
   font-weight: bold;
   color: #bf62ff;
+  margin: 0;
 `;
 
 const Timestamp = styled.div`
-  width: 45px;
-  margin-left: 5px;
-  margin-right: 15px;
+  position: relative;
+  top: -12px;
+  margin-bottom: -12px;
   color: #06c4ff;
   font-size: 8px;
 `;
 
-const Text = styled.div`
+const Text = styled.p`
+  display: inline;
   color: #000000;
+  margin: 0;
+  word-wrap: break-word;
 `;
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -48,12 +45,9 @@ const Text = styled.div`
 const Message = ({ message }) => {
   return (
       <Container>
-          <TextBox>
-              <UserName>{ message.username }</UserName>
-              <Timestamp>{timeString(new Date (message.timestamp))}</Timestamp>
-              <Text style={{flex: 1, flexWrap: 'wrap'}}>{message.text}</Text>
-          </TextBox>
-
+          <Timestamp> { timeString(new Date (message.timestamp)) } </Timestamp>
+          <Username> { message.username +':' } </Username>
+          <Text> { message.text } </Text>
       </Container>
   );
 };
