@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import UserInfo from "./UserInfo";
-import {InvisibleButton} from "../design/Button";
+import {InvisibleButton} from "../design/Input";
 import {withRouter} from "react-router-dom";
 
 
@@ -42,7 +42,7 @@ const Title = styled.h1`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-class Header extends React.Component {
+class PageBar extends React.Component {
 
     render() {
         return (
@@ -66,4 +66,4 @@ class Header extends React.Component {
 /**
  * Don't forget to export your component!
  */
-export default withRouter(Header);
+export default withRouter(PageBar);

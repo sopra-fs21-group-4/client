@@ -5,7 +5,7 @@ import Lobby from "../lobby/Lobby";
 import Chat from "../chat/Chat";
 import { ConservativeBox } from "../../views/design/Containers";
 import { Label } from "../../views/design/Text";
-import { InputField } from "../../views/design/InputField";
+import { InputField } from "../../views/design/Input";
 import User from "../shared/models/User";
 
 class Game extends React.Component {

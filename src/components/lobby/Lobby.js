@@ -2,7 +2,7 @@ import React from 'react';
 import { api, handleError } from '../../helpers/api';
 import Player from '../../views/Player';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Button';
+import { Button } from '../../views/design/Input';
 import { withRouter } from 'react-router-dom';
 import styles from './Lobby.module.css';
 import styled from 'styled-components';

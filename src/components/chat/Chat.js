@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { api, handleError } from '../../helpers/api';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Button';
+import { Button } from '../../views/design/Input';
 import { withRouter } from 'react-router-dom';
 import Message from "../../views/Message";
 import parseEmoji from "../../helpers/Emoji";

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Button';
+import { Button } from '../../views/design/Input';
 import { withRouter } from 'react-router-dom';
 import LobbyItem from "./LobbyItem";
 import {Info, Label, Title} from "../../views/design/Text";

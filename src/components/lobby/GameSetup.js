@@ -1,10 +1,8 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
-import { Button } from '../../views/design/Button';
+import { Button } from '../../views/design/Input';
 import { withRouter } from 'react-router-dom';
-import styles from './Lobby.module.css';
-import {InputField} from "../../views/design/InputField";
-import {Slider} from "../../views/design/Slider";
+import {InputField, Slider} from "../../views/design/Input";
 import {Label, Title} from "../../views/design/Text";
 import {ConservativeBox, HorizontalBox, MediumForm} from "../../views/design/Containers";
 import User from "../shared/models/User";
