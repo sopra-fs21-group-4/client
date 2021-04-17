@@ -21,7 +21,7 @@ const FormContainer = styled.div`
 `;
 
 
-const ButtonBack = styled.div`
+const ButtonBack = styled.button`
  &:hover {
     transform: translateY(-2px);
   }
@@ -44,7 +44,7 @@ const ButtonBack = styled.div`
   
 `;
 
-const ButtonRegister = styled.div`
+const ButtonRegister = styled.button`
  &:hover {
     transform: translateY(-2px);
   }
@@ -173,11 +173,12 @@ class Register extends React.Component {
             // Registration successfully worked --> navigate to default route
             this.props.history.push('/');
         } catch (error) {
-            var y = handleError(error).toString();
-
-            if (y.includes("unique")) {
-                this.showModal();
-            }
+            // var y = handleError(error).toString();
+            //
+            // if (y.includes("unique")) {
+            //     this.showModal();
+            // }
+            this.showModal();
         }
     }
 
@@ -255,7 +256,6 @@ class Register extends React.Component {
                             <ButtonRegister
                                 width = '50%' disabled={!this.state.username || !this.state.password1 || !this.state.password2 || !this.state.email || (this.state.password1 != this.state.password2)}
                                 onClick={ () => {
-
 
                                 this.register();
                             }}

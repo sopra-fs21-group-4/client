@@ -13,6 +13,7 @@ import Lobby from "../../lobby/Lobby";
 import Game from "../../game/Game";
 import GameSetup from "../../lobby/GameSetup";
 
+
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -83,6 +84,9 @@ class AppRouter extends React.Component {
                     </UserGuard>
                 )}
             />
+
+
+
             <Route  // TODO add profile editor
                 exact
                 path={"/users/:username"}

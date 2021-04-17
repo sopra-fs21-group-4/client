@@ -36,7 +36,7 @@ const Form = styled.div`
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
-const ButtonRegister = styled.div`
+const ButtonRegister = styled.button`
  &:hover {
     transform: translateY(-2px);
   }
@@ -74,7 +74,7 @@ const InputField = styled.input`
   color: black;
 `;
 
-const ButtonLogin = styled.div`
+const ButtonLogin = styled.button`
  &:hover {
     transform: translateY(-2px);
   }
@@ -167,8 +167,6 @@ class Login extends React.Component {
 
         this.showModal();
 
-
-
     }
   }
 
@@ -215,6 +213,7 @@ class Login extends React.Component {
             />
               <ButtonContainer>
               <ButtonLogin
+                  role="button"
                 disabled={!this.state.username || !this.state.password}
                 width="50%"
                 onClick={() => {
