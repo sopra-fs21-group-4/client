@@ -1,72 +1,40 @@
 import React from "react";
-import styled from "styled-components";
 import { withRouter } from 'react-router-dom';
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: right;
-`;
-
-const Label = styled.h1`
-  font-size: 14px;
-  color: #666666;
-  text-align: left;
-`;
-
-const HeaderButton = styled.button`
-  &:hover {
-    transform: scale(1.1, 1);
-  }
-  padding: 6px;
-  margin-left: 15px;
-  margin-right: 15px;
-  font-weight: 700;
-  font-size: 13px;
-  text-align: center;
-  color: #8888ff;
-  height: 30px;
-  border: none;
-  border-radius: 4px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgba(255,255,255,0.8);
-  transition: all 0.3s ease;
-`;
+import User from "../../components/shared/models/User";
+import {DiscreetButton} from "../design/Button";
+import {Label} from "../design/Text";
+import {FlexBox} from "../design/Containers";
 
 class UserInfo extends React.Component {
 
     logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('username');
-        this.props.history.push(`/login`);
+        User.removeFromSessionStorage();
         this.setState({username: null});
+        this.props.history.push(`/`);
     }
 
     render() {
-        return localStorage.getItem('username')? (
-            <Container>
+        return User.getAttribute('username')? (
+            <FlexBox>
                 <Label>
                     Logged in as:
                 </Label>
-                <HeaderButton
+                <DiscreetButton
                     onClick={() => {
-                        // TODO show user info
-                        this.props.history.push(`/users/${localStorage.getItem('username')}`);
+                        this.props.history.push(`/users/${User.getAttribute('username')}`);
                     }}
                 >
-                    {localStorage.getItem('username')}
-                </HeaderButton>
+                    {User.getAttribute('username')}
+                </DiscreetButton>
 
-                <HeaderButton
+                <DiscreetButton
                     onClick={ () => {
                         this.logout();
                     }}
                 >
                     Log out
-                </HeaderButton>
-            </Container>
+                </DiscreetButton>
+            </FlexBox>
         ) : (
             <Label>
                 Logged out

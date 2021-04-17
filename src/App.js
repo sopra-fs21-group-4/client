@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import AppRouter from "./components/shared/routers/AppRouter";
 import UpdateLoop from "./components/shared/UpdateLoop";
+import User from "./components/shared/models/User";
 
 /**
  * Happy coding!

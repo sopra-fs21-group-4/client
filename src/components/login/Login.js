@@ -154,19 +154,17 @@ class Login extends React.Component {
       });
 
       const response = await api.patch('/users/login', requestBody);
-
-      // Get the returned user and update a new object.
-      const user = new User(response.data);
-
-      // Store user information into the local storage.
-      user.putToLocalStorage();
+      console.log(response);
+      User.putToSessionStorage(response.data);
 
       // Login successfully worked --> navigate to default route
       this.props.history.push('/');
     } catch (error) {
-
+      if (error.response.status == 401) { // 401: UNAUTHORIZED
         this.showModal();
-
+      } else {
+        alert(`Something went wrong during the login: \n${handleError(error)}`);
+      }
     }
   }
 

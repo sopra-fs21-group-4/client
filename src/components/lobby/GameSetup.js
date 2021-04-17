@@ -7,6 +7,7 @@ import {InputField} from "../../views/design/InputField";
 import {Slider} from "../../views/design/Slider";
 import {Label, Title} from "../../views/design/Text";
 import {ConservativeBox, HorizontalBox, MediumForm} from "../../views/design/Containers";
+import User from "../shared/models/User";
 
 class Lobby extends React.Component {
 
@@ -22,12 +23,7 @@ class Lobby extends React.Component {
                 roundTimer: document.getElementById('roundTimer').value,
                 noRounds: document.getElementById('noRounds').value,
             });
-            const config = {
-                headers: {
-                    'userId': localStorage.getItem('userId'),
-                    'token': localStorage.getItem('token')
-                }
-            };
+            const config = {headers: User.getUserAuthentication()};
 
             // send request
             const response = await api.post(url, requestBody, config);

@@ -22,3 +22,10 @@ export const MediumForm = styled.div`
     justify-content: center;
     display: grid;
 `;
+
+export const FlexBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: right;
+`;
+

@@ -163,22 +163,17 @@ class Register extends React.Component {
                 email: this.state.email,
             });
             const response = await api.post('/users/create', requestBody);
-
-            // Get the returned user and update a new object.
-            const user = new User(response.data);
-
-            // Store user information into the local storage.
-            user.putToLocalStorage();
+            console.log(response);
+            User.putToSessionStorage(response.data);
 
             // Registration successfully worked --> navigate to default route
             this.props.history.push('/');
         } catch (error) {
-            // var y = handleError(error).toString();
-            //
-            // if (y.includes("unique")) {
-            //     this.showModal();
-            // }
-            this.showModal();
+            if (error.response.status == 409) { // 409: CONFLICT
+                this.showModal();
+            } else {
+                alert(`Something went wrong while registering: \n${handleError(error)}`);
+            }
         }
     }
 

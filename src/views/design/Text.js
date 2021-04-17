@@ -9,7 +9,6 @@ export const Label = styled.h2`
     color: #666666;
     display: table-cell;
     text-align: left;
-    padding-bottom: 15px;
 `;
 
 export const Info = styled.p`

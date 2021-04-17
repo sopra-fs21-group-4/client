@@ -11,10 +11,36 @@ class User {
     Object.assign(this, data);
   }
 
-  putToLocalStorage () {
-    localStorage.setItem('token', this.token);
-    localStorage.setItem('userId', this.userId);
-    localStorage.setItem('username', this.username);
+  putToSessionStorage () {
+    sessionStorage.setItem('token', this.token);
+    sessionStorage.setItem('userId', this.userId);
+    sessionStorage.setItem('username', this.username);
   }
+
+  static putToSessionStorage(user) {
+    user.putToSessionStorage();
+  }
+
+  static removeFromSessionStorage () {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('username');
+  }
+
+  static isPresentInSessionStorage() {
+    return sessionStorage.getItem('token') != null;
+  }
+
+  static getUserAuthentication() {
+    return {
+      userId: sessionStorage.getItem('userId'),
+      token: sessionStorage.getItem('token'),
+    };
+  }
+
+  static getAttribute(attribute) {
+    return sessionStorage.getItem(attribute);
+  }
+
 }
 export default User;

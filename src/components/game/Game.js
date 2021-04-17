@@ -6,15 +6,15 @@ import Chat from "../chat/Chat";
 import { ConservativeBox } from "../../views/design/Containers";
 import { Label } from "../../views/design/Text";
 import { InputField } from "../../views/design/InputField";
+import User from "../shared/models/User";
 
 class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      chatId: null,
       game: null,
       password: null,
-      issue: 'password',
+      status: null,
     };
   }
 
@@ -24,8 +24,7 @@ class Game extends React.Component {
       const url = `/lobbies/${this.props.match.params.gameId}/join`;
       const config = {
         headers: {
-          userId: localStorage.getItem('userId'),
-          token: localStorage.getItem('token'),
+          ...User.getUserAuthentication(),
           password: this.state.password,
         }
       };
@@ -34,17 +33,11 @@ class Game extends React.Component {
 
       this.setState({
         game: response.data,
-        chatId: response.data.chatId,
-        issue: null,
+        status: response.status,
       });
     } catch (error) {
-      // since we try joining with every input change of lobbyPassword, there's no use in error spamming
-      switch(error.response.status) {
-        case 401:   this.setState({issue: 'password'}); break;
-        case 403:   this.setState({issue: 'full'}); break;
-        case 404:   this.setState({issue: 'not-found'}); break;
-      }
-
+      // the component will react accordingly when we update the status
+      this.setState({status: error.response.status});
     }
   }
 
@@ -53,28 +46,29 @@ class Game extends React.Component {
     try {
       // request setup
       const url = `/lobbies/${this.props.match.params.gameId}`;
-      const config = {
-        headers: {
-          userId: localStorage.getItem('userId'),
-          token: localStorage.getItem('token'),
-        }
-      };
+      const config = { headers: User.getUserAuthentication() };
 
       const response = await api.get(url, config);
       console.log(response);
       this.setState({
         game: response.data,
+        status: response.status,
       });
     } catch (error) {
-      alert(`Something went wrong while fetching game info: \n${handleError(error)}`);
+      // the component will react accordingly when we update the status
+      this.setState({status: error.response.status});
     }
   }
 
 
 
   async update() {
-    switch(this.state.issue) {
-      case null: this.fetchGameData(); break;
+    switch(this.state.status) {
+      case null:  // if we don't know, why not just try
+      case 200: // 200: OK
+      case 201: // 201: CREATED
+        this.fetchGameData();
+        break;
       default: this.tryJoin();
     }
   }
@@ -88,8 +82,8 @@ class Game extends React.Component {
   }
 
   render() {
-    switch(this.state.issue) {
-      case null:
+    switch(this.state.status) {
+      case 200: // 200: OK
         return (
             <ConservativeBox>
               <ConservativeBox>
@@ -97,11 +91,11 @@ class Game extends React.Component {
               </ConservativeBox>
               <Chat
                   updateLoop={this.props.updateLoop}
-                  chatId={this.state.chatId}
+                  chatId={this.state.game.chatId}
               />
             </ConservativeBox>
         );
-      case 'password':
+      case 401: // 401: UNAUTHORIZED
         return (
           <div>
             <Label>
@@ -112,18 +106,32 @@ class Game extends React.Component {
             }} />
           </div>
         );
-      case 'full':
+      case 403: // 404: FORBIDDEN
         return (
             <Label>
-              This lobby seems to be full.
+              You have been banned from this game.
             </Label>
         );
-      case 'full':
+      case 404: // 404: NOT_FOUND
         return (
             <Label>
-              This lobby doesn't seem to exist.
+              This game doesn't seem to exist.
             </Label>
         );
+      case 410: // 410: GONE
+        return (
+            <Label>
+              This game is over. What are you still doing here?
+            </Label>
+        );
+      case 423: // 423: LOCKED
+        return (
+            <Label>
+              This game is either full or already running.
+            </Label>
+        );
+
+      default: return null;
     }
   }
 
