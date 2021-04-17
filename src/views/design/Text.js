@@ -9,6 +9,7 @@ export const Label = styled.h2`
     color: #666666;
     display: table-cell;
     text-align: left;
+    vertical-align: middle;
 `;
 
 export const Info = styled.p`
@@ -16,5 +17,5 @@ export const Info = styled.p`
     color: #444444;
     display: table-cell;
     text-align: left;
-    padding-bottom: 15px;
+    vertical-align: middle;
 `;

@@ -1,11 +1,9 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
-import { Button } from '../../views/design/Input';
 import { withRouter } from 'react-router-dom';
-import {InputField, Slider} from "../../views/design/Input";
-import {Label, Title} from "../../views/design/Text";
-import {ConservativeBox, HorizontalBox, MediumForm} from "../../views/design/Containers";
+import {ConservativeBox } from "../../views/design/Containers";
 import User from "../shared/models/User";
+import * as FormFactory from "../../views/design/FormFactory";
 
 class Lobby extends React.Component {
 
@@ -35,69 +33,27 @@ class Lobby extends React.Component {
 
     render() {
         return (
-            <HorizontalBox>
-
-                <MediumForm>
-                    <Title>Game Setup</Title>
-                    <table cellPadding="10px">
-                        {this.inputRow('Name', 'name')}
-                        {this.inputRow('Subreddit', 'subreddit')}
-                        {this.inputRow('Password', 'password')}
-                        {this.sliderRow('Max. Players', 'maxPlayers', 3, 10, 6)}
-                        {this.sliderRow('Round Timer', 'roundTimer', 20, 180, 30)}
-                        {this.sliderRow('Number of Rounds', 'noRounds', 1, 30, 10)}
-                        <tr>
-                            <td>
-                                <Button
-                                    width="100%"
-                                    onClick={() => {
-                                        this.props.history.push('/');
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
-                            </td>
-                            <td>
-
-                                <Button
-                                    width="100%"
-                                    onClick={() => {
-                                        this.createGame();
-                                    }}
-                                >
-                                    Create
-                                </Button>
-                            </td>
-                        </tr>
-                    </table>
-                </MediumForm>
-            </HorizontalBox>
-        );
-    }
-
-    inputRow(label, attribute) {
-        return (
-            <tr>
-                <th><Label>{label}</Label></th>
-                <td>
-                    <InputField id={attribute}/>
-                </td>
-            </tr>
-        );
-    }
-
-    sliderRow(label, attribute, min, max, def) {
-        return (
-            <tr>
-                <th><Label>{label}</Label></th>
-                <td>
-                    <Slider
-                        id={attribute}
-                        min={min}
-                        max={max}
-                    />
-                </td>
-            </tr>
+            <ConservativeBox>
+                { FormFactory.generateForm(
+                    'Game Setup',
+                    [
+                        { label: 'Name', id: 'name', type: 'Input',
+                            props:{} },
+                        { label: 'Subreddit', id: 'subreddit', type: 'Input',
+                            props:{} },
+                        { label: 'Password', id: 'password', type: 'Input',
+                            props:{ autoComplete: 'off' } },
+                        { label: 'Max. Players', id: 'maxPlayers', type: 'Range',
+                            props:{ min:3, max:10, defaultValue:6 } },
+                        { label: 'Round Timer', id: 'roundTimer', type: 'Range',
+                            props:{ min:20, max:180, defaultValue:30 } },
+                        { label: 'Number of Rounds', id: 'noRounds', type: 'Range',
+                            props:{ min:1, max:30, defaultValue:10 } },
+                    ],
+                    () => { this.props.history.push('/'); },
+                    () => { this.createGame(); }
+                ) }
+            </ConservativeBox>
         );
     }
 
