@@ -153,7 +153,7 @@ class UserProfile extends React.Component {
 
 
        if(this.state.newUsername != null && everyThingsFine){
-           localStorage.setItem('username', this.state.newUsername)
+           sessionStorage.setItem('username', this.state.newUsername)
        }
        this.props.history.push('/');
 
@@ -188,7 +188,7 @@ class UserProfile extends React.Component {
 
                             <Title>{this.props.match.params.username}'s profile</Title>
                             {
-                                (localStorage.getItem("userId") === this.state.userId)? (
+                                (sessionStorage.getItem("userId") === this.state.userId)? (
 
                                     <Button
                                         width="120px"
