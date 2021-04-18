@@ -155,12 +155,12 @@ class Login extends React.Component {
 
       const response = await api.patch('/users/login', requestBody);
       console.log(response);
-      User.putToSessionStorage(response.data);
+      new User (response.data).putToSessionStorage();
 
       // Login successfully worked --> navigate to default route
       this.props.history.push('/');
     } catch (error) {
-      if (error.response.status == 401) { // 401: UNAUTHORIZED
+      if (error.response && error.response.status == 401) { // 401: UNAUTHORIZED
         this.showModal();
       } else {
         alert(`Something went wrong during the login: \n${handleError(error)}`);

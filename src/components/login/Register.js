@@ -164,12 +164,12 @@ class Register extends React.Component {
             });
             const response = await api.post('/users/create', requestBody);
             console.log(response);
-            User.putToSessionStorage(response.data);
+            new User(response.data).putToSessionStorage();
 
             // Registration successfully worked --> navigate to default route
             this.props.history.push('/');
         } catch (error) {
-            if (error.response.status == 409) { // 409: CONFLICT
+            if (error.response && error.response.status == 409) { // 409: CONFLICT
                 this.showModal();
             } else {
                 alert(`Something went wrong while registering: \n${handleError(error)}`);
