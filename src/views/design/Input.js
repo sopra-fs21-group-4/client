@@ -42,7 +42,7 @@ export const DiscreetButton = styled.button`
 
 export const LinkButton = styled.button`
   &:hover {
-    color: #bf3eff;
+    color: #55ee00;
   }
   font-weight: 700;
   font-size: 13px;
@@ -51,7 +51,7 @@ export const LinkButton = styled.button`
   border: none;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
-  transition: all 0.3s ease;
+  transition: all 0.15s ease;
 `;
 
 export const InvisibleButton = styled.button`
@@ -84,11 +84,13 @@ export const Slider = styled.input`
     &::-webkit-slider-runnable-track {height: .35em; background: #21212114; border: none; border-radius: 3px;}
     &::-moz-range-track {height: .35em; background: #21212114; border: none; border-radius: 3px;}
     
-    &::-webkit-slider-thumb {appearance: none; height: 15px; width: 15px; border-radius: 50%; margin-top: -5px; background: #bf3eff;}
-    &::-moz-range-thumb {appearance: none; border: none; height: 15px; width: 15px; border-radius: 50%; margin-top: -5px; background: #bf3eff;}
+    &::-webkit-slider-thumb {appearance: none; height: 15px; width: 15px; border-radius: 50%; margin-top: -5px; 
+    background: ${props => (props.disabled ? '#888' : '#bf3eff')};}
+    &::-moz-range-thumb {appearance: none; border: none; height: 15px; width: 15px; border-radius: 50%; margin-top: -5px; 
+    background: ${props => (props.disabled ? '#888' : '#bf3eff')};}
     
-    &:active::-webkit-slider-thumb {background: #bf3eff7f; }
-    &:active::-moz-range-thumb {background: #bf3eff7f;}
+    &:active::-webkit-slider-thumb {background: ${props => (props.disabled ? '#888' : '#bf3eff7f')}; }
+    &:active::-moz-range-thumb {background: ${props => (props.disabled ? '#888' : '#bf3eff7f')};}
     
 `;
 Slider.defaultProps = {

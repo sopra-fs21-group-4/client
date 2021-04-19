@@ -55,15 +55,15 @@ function formRow(attribute, listener) {
 
     switch(attribute.type) {
         case 'Group':
-            let collapsed = listener.state[attribute.id + 'Collapsed'];
+            let collapsed = listener.state[attribute.key + 'Collapsed'];
             return (
                 <Row>
-                    <Cell><Label id={`${attribute.id}Label`}> { attribute.label } </Label></Cell>
+                    <Cell><Label id={`${attribute.key}Label`}> { attribute.label } </Label></Cell>
                     <Cell>
                         <LinkButton
                             onClick={ e => {
                                 collapsed = !collapsed;
-                                listener.setState({[`${attribute.id}Collapsed`]: collapsed,});
+                                listener.setState({[`${attribute.key}Collapsed`]: collapsed,});
                             }}>
                             {collapsed? 'expand' : 'collapse'}
                         </LinkButton>
@@ -73,7 +73,7 @@ function formRow(attribute, listener) {
         default:
             return (
                 <Row>
-                    <Cell><Label id={`${attribute.id}Label`}> { attribute.label } </Label></Cell>
+                    <Cell><Label id={`${attribute.key}Label`}> { attribute.label } </Label></Cell>
                     <Cell>{ inputComponent(attribute, listener) }</Cell>
                 </Row>
         );

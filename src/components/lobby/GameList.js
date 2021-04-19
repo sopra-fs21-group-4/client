@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { api, handleError } from '../../helpers/api';
 import { Spinner } from '../../views/design/Spinner';
-import {Button, InvisibleButton} from '../../views/design/Input';
+import { Button } from '../../views/design/Input';
 import { withRouter } from 'react-router-dom';
-import LobbyOverview from "./LobbyOverview";
+import GameInfoItem from "./GameInfoItem";
 import {Label, Title} from "../../views/design/Text";
-import {ConservativeBox, HorizontalBox, MediumForm, VerticalBox} from "../../views/design/Containers";
+import {HorizontalBox, MediumForm, VerticalBox} from "../../views/design/Containers";
 
 const LobbyButton = styled.button`
   &:hover {
@@ -84,8 +84,8 @@ class GameList extends React.Component {
         {!this.state.lobbies ? (
             <Spinner />
         ) : (
-            this.state.lobbies.map(lobby => {
-              return <LobbyOverview lobby={lobby}/>;
+            this.state.lobbies.map(game => {
+              return <GameInfoItem game={game}/>;
             })
         )}
       </VerticalBox>

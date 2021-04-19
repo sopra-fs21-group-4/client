@@ -8,13 +8,19 @@ export const ConservativeBox = styled.div`
 
 export const HorizontalBox = styled.div`
     width: inherit;
-    display: table-row;
+    display: flex;
     margin: 0 auto;
     justify-content: center;
 `;
 
 export const VerticalBox = styled.div`
 
+`;
+
+export const VerticalScroller = styled.div`
+  width: inherit;
+  height: 100%;
+  overflow:auto;   
 `;
 
 export const MediumForm = styled.div`

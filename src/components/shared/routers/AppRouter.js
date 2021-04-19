@@ -8,8 +8,8 @@ import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
 import Header from "../../../views/pagebar/PageBar";
 import UserProfile from "../../user/UserProfile";
-import Lobby from "../../lobby/Lobby";
-import Game from "../../game/Game";
+import Lobby from "../../lobby/LobbyOld";
+import Game from "../../lobby/Game";
 import GameSetup from "../../lobby/GameSetup";
 import GameList from "../../lobby/GameList";
 
