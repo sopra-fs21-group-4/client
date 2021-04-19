@@ -15,7 +15,7 @@ class Lobby extends React.Component {
             memeType: 'HOT',
             password: null,
             maxPlayers: 6,
-            noRounds: 10,
+            totalRounds: 10,
             timersCollapsed: true,
             namingTime: 25,
             votingTime: 20,
@@ -30,10 +30,13 @@ class Lobby extends React.Component {
             const requestBody = JSON.stringify({
                 name: this.state.name,
                 subreddit: this.state.subreddit,
+                memeType: this.state.memeType,
                 password: this.state.password,
                 maxPlayers: this.state.maxPlayers,
-                noRounds: this.state.noRounds,
-                roundTimer: this.state.roundTimer,
+                totalRounds: this.state.totalRounds,
+                namingTime: this.state.namingTime,
+                votingTime: this.state.votingTime,
+                resultsTime: this.state.resultsTime,
             });
             const config = {headers: User.getUserAuthentication()};
 
@@ -68,8 +71,8 @@ class Lobby extends React.Component {
                             props:{ autoComplete: 'off' } },
                         { label: 'Max. Players', id: 'maxPlayers', type: 'Range',
                             props:{ min:3, max:10, defaultValue: this.state.maxPlayers } },
-                        { label: 'Number of Rounds', id: 'noRounds', type: 'Range',
-                            props:{ min:1, max:30, defaultValue: this.state.noRounds } },
+                        { label: 'Number of Rounds', id: 'totalRounds', type: 'Range',
+                            props:{ min:1, max:30, defaultValue: this.state.totalRounds } },
                         { label: 'Timers', id: 'timers', type: 'Group' },
                         { label: 'Naming Time', id: 'namingTime', type: 'Range', group: 'timers',
                             props:{ min:10, max:180, defaultValue: this.state.namingTime } },

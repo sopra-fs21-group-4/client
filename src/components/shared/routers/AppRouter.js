@@ -8,10 +8,10 @@ import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
 import Header from "../../../views/pagebar/PageBar";
 import UserProfile from "../../user/UserProfile";
-import Dashboard from "../../lobby/Dashboard";
 import Lobby from "../../lobby/Lobby";
 import Game from "../../game/Game";
 import GameSetup from "../../lobby/GameSetup";
+import GameList from "../../lobby/GameList";
 
 
 /**
@@ -35,7 +35,7 @@ class AppRouter extends React.Component {
                 path={"/dashboard"}
                 render={() =>
                     <UserGuard>
-                        <Dashboard updateLoop={this.props.updateLoop} />
+                        <GameList updateLoop={this.props.updateLoop} />
                     </UserGuard>
                 }
             />

@@ -40,6 +40,20 @@ export const DiscreetButton = styled.button`
   transition: all 0.3s ease;
 `;
 
+export const LinkButton = styled.button`
+  &:hover {
+    color: #bf3eff;
+  }
+  font-weight: 700;
+  font-size: 13px;
+  color: #8888ff;
+  background: #ffffffff;
+  border: none;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  transition: all 0.3s ease;
+`;
+
 export const InvisibleButton = styled.button`
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};

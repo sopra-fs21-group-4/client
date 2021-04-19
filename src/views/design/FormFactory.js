@@ -1,7 +1,7 @@
 import {MediumForm} from "./Containers";
 import {Label, Title} from "./Text";
 import React from "react";
-import {Button, DiscreetButton, InputField, Option, Select, Slider} from "./Input";
+import {Button, InputField, LinkButton, Option, Select, Slider} from "./Input";
 import styled from "styled-components";
 
 const Row = styled.tr`
@@ -60,13 +60,13 @@ function formRow(attribute, listener) {
                 <Row>
                     <Cell><Label id={`${attribute.id}Label`}> { attribute.label } </Label></Cell>
                     <Cell>
-                        <DiscreetButton
+                        <LinkButton
                             onClick={ e => {
                                 collapsed = !collapsed;
                                 listener.setState({[`${attribute.id}Collapsed`]: collapsed,});
                             }}>
                             {collapsed? 'expand' : 'collapse'}
-                        </DiscreetButton>
+                        </LinkButton>
                     </Cell>
                 </Row>
             );
