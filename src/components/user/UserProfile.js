@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import styled from "styled-components";
 import Modal from "../login/Modal";
 
+
 const Container = styled.div`
     width: 500px;
     align-items: center;
@@ -50,34 +51,43 @@ const SaveButton = styled.button`
   width: ${props => props.width || null};
   height: 35px;
   border: none;
-  border-radius: 20px;
+  border-radius: 2px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(16, 89, 255);
+  background: rgb(191,62,255);
   transition: all 0.3s ease;
 `;
 
 const InputField = styled.input`
   &::placeholder {
-    color: rgba(255, 255, 255, 1.0);
+    color: rgb(105,105,105, 1.0);
   }
   margin: 20px;
   height: 35px;
   padding-left: 15px;
-  margin-left: 4px;
+  margin-left: 5px;
   border: none;
-  border-radius: 20px;
+  border-radius: 2px;
   margin-bottom: 20px;
-  background: rgba(27, 124, 186, 2);
+  background:  rgba(211, 211, 211, 0.5);;
   color: black;
 `;
 
 
-
-const UserName = styled.div`
-  font-weight: lighter;
-  margin-left: 3px;
-  color: black;
+const Form = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 32%;
+  height: 375px;
+  font-size: 16px;
+  font-weight: 300;
+  margin: auto;
+  padding-left: 37px;
+  padding-right: 37px;
+  border-radius: 5px;
+  background: white;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
 const HeaderContainer = styled.div`
@@ -102,6 +112,7 @@ class UserProfile extends React.Component {
             user: null,
             newPassword: null,
             newUsername: null,
+            newEmail: null,
             userId: null
 
         };
@@ -110,6 +121,7 @@ class UserProfile extends React.Component {
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
 
     }
 
@@ -135,12 +147,19 @@ class UserProfile extends React.Component {
             this.setState({ [key]: value });
         }
 
+    handleEmailChange(key, value) {
+        // Example: if the key is username, this statement is the equivalent to the following one:
+        // this.setState({'username': value});
+        this.setState({ [key]: value });
+    }
 
-    async updatePassword() {
+
+    async updateProfile() {
             var everyThingsFine = true;
         const requestBody = JSON.stringify({
             username: this.state.newUsername,
-            password: this.state.newPassword
+            password: this.state.newPassword,
+            email: this.state.newEmail
         });
         
         this.state.userId = Number(this.state.userId)
@@ -153,7 +172,7 @@ class UserProfile extends React.Component {
 
 
        if(this.state.newUsername != null && everyThingsFine){
-           localStorage.setItem('username', this.state.newUsername)
+           sessionStorage.setItem('username', this.state.newUsername)
        }
        this.props.history.push('/');
 
@@ -188,7 +207,7 @@ class UserProfile extends React.Component {
 
                             <Title>{this.props.match.params.username}'s profile</Title>
                             {
-                                (localStorage.getItem("userId") === this.state.userId)? (
+                                (sessionStorage.getItem("userId") === this.state.userId)? (
 
                                     <Button
                                         width="120px"
@@ -215,6 +234,10 @@ class UserProfile extends React.Component {
                                         <td>{this.state.user.username}</td>
                                     </tr>
                                     <tr>
+                                        <th>Email: </th>
+                                        <td>{this.state.user.email}</td>
+                                    </tr>
+                                    <tr>
                                         <th>Status: </th>
                                         <td>{this.state.user.status}</td>
                                     </tr>
@@ -227,7 +250,7 @@ class UserProfile extends React.Component {
                         </div>
                     </div>
                     <Modal show={this.state.show} handleClose={this.hideModal}>
-                        <p>
+                        <Form>
 
 
                             <label>
@@ -242,8 +265,19 @@ class UserProfile extends React.Component {
 
 
                             </label>
-                        </p>
-                        <p>
+
+                        <label>
+                            Change Email:
+
+                            <InputField
+                                placeholder="Enter here.."
+                                onChange={e => {
+                                    this.handleEmailChange('newEmail', e.target.value);
+                                }}
+                            />
+
+
+                        </label>
                             <label>
                                 Change Password:
 
@@ -255,14 +289,15 @@ class UserProfile extends React.Component {
                                 />
                             </label>
 
+
                             <SaveButton
-                                disabled={!this.state.newUsername && !this.state.newPassword}
+                                disabled={!this.state.newUsername && !this.state.newPassword && !this.state.newEmail}
                                 width={'10%'}
                                 onClick={() => {
-                                    this.updatePassword();
+                                    this.updateProfile();
                                 }}> Save </SaveButton>
 
-                        </p>
+                        </Form>
                     </Modal>
                 </Container>
 
