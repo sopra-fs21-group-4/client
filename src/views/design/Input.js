@@ -90,3 +90,26 @@ export const Slider = styled.input`
 Slider.defaultProps = {
     type: "range",
 }
+
+// TODO image copyrights?
+export const Select = styled.select`
+    width: 100%;
+    height: 35px;
+    border: none;
+    background: #21212114;
+    border-radius: 4px;
+    padding-left: 15px;
+    appearance: none;
+    background-image: url('https://www.skillstep.pt/i/apex_ui/img/ui/select-arrow.svg');    // TODO copyrights?
+    background-repeat: no-repeat;
+    background-position: 100% center;
+    background-size: 35px;
+    &.custom-select select {
+        display: none; /*hide original SELECT element:*/
+    }
+
+`;
+
+export const Option = styled.option`
+    
+`;

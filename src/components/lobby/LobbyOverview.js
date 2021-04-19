@@ -15,7 +15,7 @@ const Container = styled.div`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const LobbyItem = ({ lobby }) => {
+const LobbyOverview = ({ lobby }) => {
   return (
     <Container>
       {lobby.name} : (here goes more info)
@@ -23,4 +23,4 @@ const LobbyItem = ({ lobby }) => {
   );
 };
 
-export default LobbyItem;
+export default LobbyOverview;

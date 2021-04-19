@@ -5,7 +5,7 @@ import { api, handleError } from '../../helpers/api';
 import { Spinner } from '../../views/design/Spinner';
 import { Button } from '../../views/design/Input';
 import { withRouter } from 'react-router-dom';
-import LobbyItem from "./LobbyItem";
+import LobbyOverview from "./LobbyOverview";
 import {Info, Label, Title} from "../../views/design/Text";
 import {HorizontalBox, MediumForm, VerticalBox} from "../../views/design/Containers";
 

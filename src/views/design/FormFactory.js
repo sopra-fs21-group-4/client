@@ -1,7 +1,7 @@
 import {MediumForm} from "./Containers";
 import {Label, Title} from "./Text";
 import React from "react";
-import {Button, InputField, Slider} from "./Input";
+import {Button, DiscreetButton, InputField, Option, Select, Slider} from "./Input";
 import styled from "styled-components";
 
 const Row = styled.tr`
@@ -17,33 +17,28 @@ const Cell = styled.td`
     padding-bottom: 5px;
 `;
 
-export function generateForm(title, attributes, onSubmit, onCancel) {
+export function generateForm(title, attributes, listener, submitButtonProps, cancelButtonProps) {
     return (
         <MediumForm>
             <Title> { title } </Title>
             <table>
 
                 {attributes.map(attribute => {
-                    return (
-                        <Row>
-                            <Cell><Label> { attribute.label } </Label></Cell>
-                            <Cell>{ inputComponent(attribute) }</Cell>
-                        </Row>
-                    );
+                    return formRow(attribute, listener);
                 })}
 
                 <Row>
                     <Cell>
-                        {onCancel? <Button
-                            onClick={onCancel}
+                        {cancelButtonProps? <Button
+                            { ...cancelButtonProps }
                             width='100%'
                         >
                             Cancel
                         </Button> : <div/>}
                     </Cell>
                     <Cell>
-                        {onSubmit? <Button
-                            onClick={onSubmit}
+                        {submitButtonProps? <Button
+                            { ...submitButtonProps }
                             width='100%'
                         >
                             Submit
@@ -55,13 +50,64 @@ export function generateForm(title, attributes, onSubmit, onCancel) {
     );
 }
 
-function inputComponent(attribute) {
+function formRow(attribute, listener) {
+    if(listener.state[`${attribute.group}Collapsed`]) return null;
+
+    switch(attribute.type) {
+        case 'Group':
+            let collapsed = listener.state[attribute.id + 'Collapsed'];
+            return (
+                <Row>
+                    <Cell><Label id={`${attribute.id}Label`}> { attribute.label } </Label></Cell>
+                    <Cell>
+                        <DiscreetButton
+                            onClick={ e => {
+                                collapsed = !collapsed;
+                                listener.setState({[`${attribute.id}Collapsed`]: collapsed,});
+                            }}>
+                            {collapsed? 'expand' : 'collapse'}
+                        </DiscreetButton>
+                    </Cell>
+                </Row>
+            );
+        default:
+            return (
+                <Row>
+                    <Cell><Label id={`${attribute.id}Label`}> { attribute.label } </Label></Cell>
+                    <Cell>{ inputComponent(attribute, listener) }</Cell>
+                </Row>
+        );
+    }
+
+
+}
+
+
+function inputComponent(attribute, listener) {
     switch(attribute.type) {
         case 'Input':
-            return <InputField id={ attribute.id } { ...attribute.props } />;
+            return <InputField
+                id={ attribute.id }
+                onChange={e => {listener.setState({[attribute.id]: e.target.value})}}
+                { ...attribute.props }
+            />;
 
         case 'Range':
-            return <Slider id={ attribute.id } { ...attribute.props } />;
+            return <Slider
+                id={ attribute.id }
+                onChange={e => {listener.setState({[attribute.id]: e.target.value})}}
+                { ...attribute.props }
+            />;
+        case 'Select':
+            return <Select
+                id={ attribute.id }
+                onChange={e => {listener.setState({[attribute.id]: e.target.value})}}
+                { ...attribute.props }
+            >
+                {attribute.options.map(option => {
+                    return <Option value={option.value}>{option.name}</Option>
+                })}
+            </Select>;
         default: return null;
     }
 }

@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import Message from "../../views/Message";
 import parseEmoji from "../../helpers/Emoji";
 import { ConservativeBox } from "../../views/design/Containers";
+import User from "../shared/models/User";
 
 const Position = styled.div`
   height: 100%;
@@ -112,10 +113,7 @@ class Chat extends React.Component {
       // request setup
       const url = `/chat/${this.props.chatId}`;
       const requestBody = JSON.stringify({text: inputField.value});
-      const config = { headers: {
-          'userId': localStorage.getItem('userId'),
-          'token': localStorage.getItem('token')
-      }};
+      const config = { headers: User.getUserAuthentication()};
       const response = await api.post(url, requestBody, config);
       console.log(response);
       inputField.value = "";    // reset input field
