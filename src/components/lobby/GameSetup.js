@@ -3,7 +3,7 @@ import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import {ConservativeBox } from "../../views/design/Containers";
 import User from "../shared/models/User";
-import Form from "../general/Fom";
+import Form from "../general/Form";
 
 class Lobby extends React.Component {
     constructor() {

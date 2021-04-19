@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import {HorizontalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
 import UserList from "../../views/UserList";
-import Form from "../general/Fom";
+import Form from "../general/Form";
 
 class Lobby extends React.Component {
     constructor(props) {
