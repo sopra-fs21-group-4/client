@@ -76,34 +76,33 @@ InputField.defaultProps = {
 }
 
 export const Slider = styled.input`
-    -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     height: 35px;
-    border: none;
     background: #00000000;
-    &::-webkit-slider-runnable-track {
-        height: .35em;
-        background: #21212114;
-        border: none;
-        border-radius: 3px;
-    }
-    &::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        border: none;
-        height: 1em;
-        width: 1em;
-        border-radius: 50%;
-        background: #bf3eff;
-        margin-top: -5px;
-    }
     
-    &:active::-webkit-slider-thumb {
-        background: rgba(191,62,255, 0.5);
-    }
+    &::-webkit-slider-runnable-track {height: .35em; background: #21212114; border: none; border-radius: 3px;}
+    &::-moz-range-track {height: .35em; background: #21212114; border: none; border-radius: 3px;}
+    
+    &::-webkit-slider-thumb {appearance: none; height: 15px; width: 15px; border-radius: 50%; margin-top: -5px; background: #bf3eff;}
+    &::-moz-range-thumb {appearance: none; border: none; height: 15px; width: 15px; border-radius: 50%; margin-top: -5px; background: #bf3eff;}
+    
+    &:active::-webkit-slider-thumb {background: #bf3eff7f; }
+    &:active::-moz-range-thumb {background: #bf3eff7f;}
+    
 `;
 Slider.defaultProps = {
     type: "range",
 }
+
+export const SliderLabel = styled.div`
+    display: inline-block;
+    width: 3em;
+    text-align: right;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+`;
 
 // TODO image copyrights?
 export const Select = styled.select`

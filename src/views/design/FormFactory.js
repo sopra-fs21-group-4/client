@@ -1,7 +1,7 @@
-import {MediumForm} from "./Containers";
+import {FlexBox, HorizontalBox, MediumForm} from "./Containers";
 import {Label, Title} from "./Text";
 import React from "react";
-import {Button, InputField, LinkButton, Option, Select, Slider} from "./Input";
+import {Button, InputField, LinkButton, Option, Select, Slider, SliderLabel} from "./Input";
 import styled from "styled-components";
 
 const Row = styled.tr`
@@ -93,11 +93,16 @@ function inputComponent(attribute, listener) {
             />;
 
         case 'Range':
-            return <Slider
+            return <FlexBox>
+                <Slider
                 id={ attribute.id }
                 onChange={e => {listener.setState({[attribute.id]: e.target.value})}}
                 { ...attribute.props }
-            />;
+                />
+                <SliderLabel>
+                    { listener.state[`${attribute.id}`] }
+                </SliderLabel>
+            </FlexBox>;
         case 'Select':
             return <Select
                 id={ attribute.id }

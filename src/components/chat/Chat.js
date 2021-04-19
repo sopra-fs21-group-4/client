@@ -12,9 +12,9 @@ import User from "../shared/models/User";
 const Position = styled.div`
   height: 100%;
   position: fixed;
-  top: 0px;
+  top: 50px;
   right: 0px;
-  padding-top: 50px;
+  padding-bottom: 50px;
 `;
 
 const Container = styled.div`
@@ -29,10 +29,9 @@ const ChatExtended = styled.div`
   padding-bottom: 75px;
 `;
 
-const ChatReduced = styled.div`
+const ChatCollapsed = styled.div`
   width: 150px;
   height: 100%;
-  padding-bottom: 20px;
 `;
 
 const MessageList = styled.div`
@@ -40,8 +39,8 @@ const MessageList = styled.div`
   height: 100%;
   padding-top: 10px;
   padding-right: 10px;
-  padding-left: 20px;
-  margin-bottom: 75px;
+  padding-left: 16px;
+  padding-bottom: 10px;
   overflow:auto;   
 }
 `;
@@ -53,6 +52,7 @@ const InputBox = styled.div`
   display: flex;
   justify-content: center;
   padding: 20px;
+  padding-bottom: 75px;
   background: #f0f0ff;
 `;
 
@@ -67,7 +67,7 @@ const InputField = styled.input`
   color: #000000;
 `;
 
-const PinButton = styled.button`
+const CollapseButton = styled.button`
   &:hover {
     background: #382445;
   }
@@ -88,11 +88,11 @@ const PinButton = styled.button`
 `;
 
 class Chat extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       messages: null,
-      pinned: true,
+      collapsed: false,
     };
   }
 
@@ -152,21 +152,21 @@ class Chat extends React.Component {
           ) : (
               <ConservativeBox>
                   <div>
-                      <PinButton
-                          onClick={() => {this.state.pinned = !this.state.pinned;}}
+                      <CollapseButton
+                          onClick={() => {this.state.collapsed = !this.state.collapsed;}}
                       >
-                          {this.state.pinned? '▶' : '◀'}
-                      </PinButton>
+                          {this.state.collapsed? '◀' : '▶' }
+                      </CollapseButton>
                   </div>
-                {this.state.pinned? (
-                    <ChatExtended>
-                        {this.messageList()}
-                        {this.inputBox()}
-                    </ChatExtended>
+                {this.state.collapsed? (
+                    <ChatCollapsed>
+                      {this.messageList()}
+                    </ChatCollapsed>
                 ) : (
-                    <ChatReduced>
-                        {this.messageList()}
-                    </ChatReduced>
+                    <ChatExtended>
+                      {this.messageList()}
+                      {this.inputBox()}
+                    </ChatExtended>
                 )}
               </ConservativeBox>
           )}
