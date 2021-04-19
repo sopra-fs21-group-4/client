@@ -1,132 +1,113 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
-import Player from '../../views/Player';
-import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Input';
 import { withRouter } from 'react-router-dom';
-import styles from './Lobby.module.css';
-import styled from 'styled-components';
-//---------------------------------------------------
-const InputField = styled.input`
-  height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: none;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  rgba(0, 0, 0, 0.6);
-  /* Surface overlay */
-background: rgba(33, 33, 33, 0.08);
-border-radius: 4px 4px 0px 0px;
-`;
+import {HorizontalBox} from "../../views/design/Containers";
+import User from "../shared/models/User";
+import UserList from "../../views/UserList";
+import Form from "../general/Fom";
 
 class Lobby extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
+            generalCollapsed: true,
+            timersCollapsed: true,
         };
     }
 
+    // TODO implement in backend
+    async updateSettings() {
+        try {
+            // request setup
+            const url = `/lobbies/${this.props.match.params['gameId']}`;
+            const requestBody = JSON.stringify({
+                subreddit: this.state.subreddit,
+                memeType: this.state.memeType,
+                totalRounds: this.state.totalRounds,
+                namingTime: this.state.namingTime,
+                votingTime: this.state.votingTime,
+                resultsTime: this.state.resultsTime,
+            });
+            const config = {headers: User.getUserAuthentication()};
+
+            // send request
+            const response = await api.put(url, requestBody, config);
+            console.log(response);
+
+        } catch (error) {
+            alert(`Something went wrong on updating the game settings: \n${handleError(error)}`);
+        }
+    }
+
+    isGameMaster() {
+        // TODO not sure if userId is best here. Maybe better take username.
+        return User.getAttribute('userId') == this.props.game['gameMaster'];
+    }
+
+    async componentDidMount() {
+        try {
+            // request setup
+            const url = `/users`;
+            const params = new URLSearchParams([['userIds', this.props.game.players]]);
+
+            // send request
+            const response = await api.get(url, {params});
+            console.log(response);
+            this.setState({ players: response.data });
+        } catch (error) {
+            alert(`Something went wrong while fetching the players: \n${handleError(error)}`);
+        }
+    }
+
     render() {
+        // TODO game settings: update in backend
+        // TODO better proportions for UserList (maybe also absolute position?)
+        // TODO gamemaster can ban players
         return (
-            <div className={styles.Base}>
-                <div className={styles.TitleContainer}>
-                    <div className={styles.Title}>Creating a new Game</div>
-                    <div className={styles.Title}>
-                        <div className={styles.RightTitle}>Do you even Meme?</div>
-                    </div>
-                </div>
-                <div className={styles.SubTitle}> SoPra Group 04 </div>
-                <div className={styles.Content}>
-                    <div className={styles.ContentBox}>
-                        <div className={styles.ContentTitle}>Lobby-Settings</div>
-                        <div className={styles.Form}>
-                            <table>
-                                <tr>
-                                    <th><div className={styles.Settings}>Lobby Name:</div></th>
-                                    <td>
-                                        <InputField
-                                            placeholder="Enter here.."
-                                            onChange={e => {
-                                                this.handleInputChange('username', e.target.value);
-                                            }} />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><div className={styles.Settings}>Subreddit:</div></th>
-                                    <td>
-                                        <InputField
-                                            placeholder="Enter here.."
-                                            onChange={e => {
-                                                this.handleInputChange('username', e.target.value);
-                                            }} />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><div className={styles.Settings}>Max. Players:</div></th>
-                                    <td>
-                                        <InputField
-                                            placeholder="Enter here.."
-                                            onChange={e => {
-                                                this.handleInputChange('username', e.target.value);
-                                            }} />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><div className={styles.Settings}>Lobby Key:</div></th>
-                                    <td>
-                                        <InputField
-                                            placeholder="Enter here.."
-                                            onChange={e => {
-                                                this.handleInputChange('username', e.target.value);
-                                            }} />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><div className={styles.Settings}>Round Timer:</div></th>
-                                    <td>
-                                        <InputField
-                                            placeholder="Enter here.."
-                                            onChange={e => {
-                                                this.handleInputChange('username', e.target.value);
-                                            }} />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><div className={styles.Settings}>Number of Rounds:</div></th>
-                                    <td>
-                                        <InputField
-                                            placeholder="Enter here.."
-                                            onChange={e => {
-                                                this.handleInputChange('username', e.target.value);
-                                            }} />
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div className={styles.Content}>
-                        <div className={styles.ContentBox}>
-                            <div className={styles.ContentTitle}>Players in Lobby</div>
-                            <div className={styles.PlayersList}>
-                                <table responsive>
-                                    <tr>
-                                        <th>Player Name<hr class="solid"></hr></th>
-                                        
-                                        <th>Player Karma<hr class="solid"></hr></th>
-                                        
-                                    </tr>
-                                        {Array.from({ length: 2 }).map((_, index) => (
-                                            <tr><td key={index}>Table cell {index}<hr class="solid"></hr></td></tr>
-                                        ))}
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <HorizontalBox>
+                {this.gameSettings()}
+                <UserList users={this.state.players}/>
+            </HorizontalBox>
         );
+    }
+
+    gameSettings() {
+
+        const general = { label: 'General', key: 'general', type: 'Group' };
+
+        const subreddit = { label: 'Subreddit', key: 'subreddit', type: 'Input', group: 'general',
+            props:{defaultValue: this.props.game['subreddit'], disabled: !this.isGameMaster()} };
+
+        const memeType = { label: 'Meme Type', key: 'memeType', type: 'Select', group: 'general',
+            options: [
+                {name:'Hot',value:'HOT'},
+                {name:'Random',value:'RANDOM'},
+                {name:'Rising',value:'RISING'},
+                {name:'Top',value:'TOP'}],
+            props:{defaultValue: this.props.game['memeType'], disabled: !this.isGameMaster()} };
+
+        const totalRounds = { label: 'Number of Rounds', key: 'totalRounds', type: 'Range', group: 'general',
+            props:{ min:1, max:30, defaultValue: this.props.game['totalRounds'], disabled: !this.isGameMaster() } };
+
+        const timers = { label: 'Timers', key: 'timers', type: 'Group' };
+
+        const namingTime = { label: 'Naming Time', key: 'namingTime', type: 'Range', group: 'timers',
+            props:{ min:10, max:60, defaultValue: this.props.game['namingTime'], disabled: !this.isGameMaster() } };
+
+        const votingTime = { label: 'Voting Time', key: 'votingTime', type: 'Range', group: 'timers',
+            props:{ min:10, max:60, defaultValue: this.props.game['votingTime'], disabled: !this.isGameMaster() } };
+
+        const resultsTime = { label: 'Results Time', key: 'resultsTime', type: 'Range', group: 'timers',
+            props:{ min:3, max:30, defaultValue: this.props.game['resultsTime'], disabled: !this.isGameMaster() } };
+
+        return <Form
+            title='Game Settings'
+            attributes={[general, subreddit, memeType, totalRounds, timers, namingTime, votingTime, resultsTime]}
+            withoutSubmitButton='true'
+            withoutCancelButton='true'
+            listener={this}
+            initialState={{generalCollapsed: true, timersCollapsed: true}}
+        />
     }
 
 }

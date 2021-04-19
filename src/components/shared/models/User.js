@@ -1,3 +1,5 @@
+import {api, handleError} from "../../../helpers/api";
+
 /**
  * User model
  */
@@ -41,6 +43,29 @@ class User {
 
   static getAttribute(attribute) {
     return sessionStorage.getItem(attribute);
+  }
+
+  /**
+   * fetches either a single user or an array of users from the backend
+   * @param value single username/userId or array of usernames/userIds
+   * @param key 'username' or 'userId'
+   * @returns {Promise<User|*>} User instance(s) from backend
+   */
+  static async fetch(value) {
+    if (!value) return value;
+    // arrays will be mapped
+    if (value.length) {
+      return value.map(entry => User.fetch(entry))
+    }
+    // single users will be fetched
+    try {
+      const response = await api.get(`/user/${value}`);
+      console.log(response);
+      return new User(response.data);
+    } catch (error) {
+      alert(`Something went wrong while fetching user ${value}: \n${handleError(error)}`);
+    }
+
   }
 
 }

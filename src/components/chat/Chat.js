@@ -6,7 +6,7 @@ import { Button } from '../../views/design/Input';
 import { withRouter } from 'react-router-dom';
 import Message from "../../views/Message";
 import parseEmoji from "../../helpers/Emoji";
-import { ConservativeBox } from "../../views/design/Containers";
+import {ConservativeBox, VerticalScroller} from "../../views/design/Containers";
 import User from "../shared/models/User";
 
 const Position = styled.div`
@@ -32,17 +32,6 @@ const ChatExtended = styled.div`
 const ChatCollapsed = styled.div`
   width: 150px;
   height: 100%;
-`;
-
-const MessageList = styled.div`
-  width: inherit;
-  height: 100%;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-left: 16px;
-  padding-bottom: 10px;
-  overflow:auto;   
-}
 `;
 
 const InputBox = styled.div`
@@ -176,13 +165,21 @@ class Chat extends React.Component {
   }
 
   messageList() {
-    return (<MessageList>
-      {this.state.messages.map(message => {
+    return (<VerticalScroller style={{
+      paddingTop: '10px',
+      paddingRight: '10px',
+      paddingLeft: '16px',
+      paddingBottom: '10px',
+      display: 'flex',
+      flexDirection: 'column-reverse'
+    }}>
+      {/* double reverse the message list to stay scrolled on the bottom */}
+      {this.state.messages.slice().reverse().map(message => {
         return (
             <Message message={message} />
         );
       })}
-    </MessageList>);
+    </VerticalScroller>);
   }
 
   inputBox() {

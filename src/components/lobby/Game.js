@@ -1,7 +1,7 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
-import Lobby from "../lobby/Lobby";
+import Lobby from "./Lobby";
 import Chat from "../chat/Chat";
 import { ConservativeBox } from "../../views/design/Containers";
 import { Label } from "../../views/design/Text";
@@ -86,7 +86,7 @@ class Game extends React.Component {
       case 200: // 200: OK
         return (
             <ConservativeBox>
-              <ConservativeBox>
+              <ConservativeBox style={{paddingRight:'150px'}}>
                 {this.currentGameStateUI()}
               </ConservativeBox>
               <Chat
@@ -138,11 +138,11 @@ class Game extends React.Component {
   currentGameStateUI() {
     // TODO return right game UI dependent on game state
     switch (this.state.game.gameState) {
-      case 'LOBBY':  return (<Lobby updateLoop={this.props.updateLoop} />);
-      case 'TITLE':  return (<Lobby updateLoop={this.props.updateLoop} />);
-      case 'VOTE':   return (<Lobby updateLoop={this.props.updateLoop} />);
-      case 'POINTS': return (<Lobby updateLoop={this.props.updateLoop} />);
-      case 'FINISH': return (<Lobby updateLoop={this.props.updateLoop} />);
+      case 'LOBBY':  return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
+      case 'TITLE':  return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
+      case 'VOTE':   return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
+      case 'POINTS': return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
+      case 'FINISH': return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
       default: throw "unknown game state!";
     }
   }

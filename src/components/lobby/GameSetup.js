@@ -3,7 +3,7 @@ import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import {ConservativeBox } from "../../views/design/Containers";
 import User from "../shared/models/User";
-import * as FormFactory from "../../views/design/FormFactory";
+import Form from "../general/Fom";
 
 class Lobby extends React.Component {
     constructor() {
@@ -16,7 +16,6 @@ class Lobby extends React.Component {
             password: null,
             maxPlayers: 6,
             totalRounds: 10,
-            timersCollapsed: true,
             namingTime: 25,
             votingTime: 20,
             resultsTime: 10,
@@ -50,46 +49,46 @@ class Lobby extends React.Component {
         }
     }
 
+    handleInputChange(key, value) {
+        this.setState({[key]: value})
+    }
+
     render() {
         return (
             <ConservativeBox>
-                { FormFactory.generateForm(
-                    'Game Setup',
-                    [
-                        { label: 'Name*', id: 'name', type: 'Input',
+                <Form
+                    title='Game Setup'
+                    listener={this}
+                    onCancel={() => { this.props.history.push('/') }}
+                    onSubmit={() => { this.createGame() }}
+                    initialState={{timersCollapsed: true}}
+                    attributes={[
+                        { label: 'Name', key: 'name', type: 'Input',
+                            props:{}, required: true },
+                        { label: 'Subreddit', key: 'subreddit', type: 'Input',
                             props:{} },
-                        { label: 'Subreddit', id: 'subreddit', type: 'Input',
-                            props:{} },
-                        { label: 'Meme Type', id: 'memeType', type: 'Select',
+                        { label: 'Meme Type', key: 'memeType', type: 'Select',
                             options: [
                                 {name:'Hot',value:'HOT'},
                                 {name:'Random',value:'RANDOM'},
                                 {name:'Rising',value:'RISING'},
                                 {name:'Top',value:'TOP'}],
                             props:{} },
-                        { label: 'Password', id: 'password', type: 'Input',
+                        { label: 'Password', key: 'password', type: 'Input',
                             props:{ autoComplete: 'off' } },
-                        { label: 'Max. Players', id: 'maxPlayers', type: 'Range',
-                            props:{ min:3, max:10, defaultValue: this.state.maxPlayers } },
-                        { label: 'Number of Rounds', id: 'totalRounds', type: 'Range',
-                            props:{ min:1, max:30, defaultValue: this.state.totalRounds } },
-                        { label: 'Timers', id: 'timers', type: 'Group' },
-                        { label: 'Naming Time', id: 'namingTime', type: 'Range', group: 'timers',
-                            props:{ min:10, max:180, defaultValue: this.state.namingTime } },
-                        { label: 'Voting Time', id: 'votingTime', type: 'Range', group: 'timers',
-                            props:{ min:10, max:180, defaultValue: this.state.votingTime } },
-                        { label: 'Results Time', id: 'resultsTime', type: 'Range', group: 'timers',
-                            props:{ min:3, max:30, defaultValue: this.state.resultsTime } },
-                    ],
-                    this,
-                    {
-                        onClick: () => { this.createGame(); },
-                        disabled: !this.state.name,
-                    },
-                    {
-                        onClick: () => { this.props.history.push('/'); },
-                    },
-                ) }
+                        { label: 'Max. Players', key: 'maxPlayers', type: 'Range',
+                            props:{ min:3, max:10, defaultValue: this.state['maxPlayers'] } },
+                        { label: 'Number of Rounds', key: 'totalRounds', type: 'Range',
+                            props:{ min:1, max:30, defaultValue: this.state['totalRounds'] } },
+                        { label: 'Timers', key: 'timers', type: 'Group' },
+                        { label: 'Naming Time', key: 'namingTime', type: 'Range', group: 'timers',
+                            props:{ min:10, max:180, defaultValue: this.state['namingTime'] } },
+                        { label: 'Voting Time', key: 'votingTime', type: 'Range', group: 'timers',
+                            props:{ min:10, max:180, defaultValue: this.state['votingTime'] } },
+                        { label: 'Results Time', key: 'resultsTime', type: 'Range', group: 'timers',
+                            props:{ min:3, max:30, defaultValue: this.state['resultsTime'] } },
+                    ]}
+                />
             </ConservativeBox>
         );
     }

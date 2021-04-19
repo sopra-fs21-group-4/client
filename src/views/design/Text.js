@@ -19,3 +19,9 @@ export const Info = styled.p`
     text-align: left;
     vertical-align: middle;
 `;
+
+export const Error = styled.p`
+    font-size: 12px;
+    font-weight: bold;
+    color: #ff0000;
+`;
