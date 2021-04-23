@@ -21,7 +21,7 @@ class Game extends React.Component {
   async tryJoin() {
     try {
       // request setup
-      const url = `/lobbies/${this.props.match.params.gameId}/join`;
+      const url = `/games/${this.props.match.params.gameId}/join`;
       const config = {
         headers: {
           ...User.getUserAuthentication(),
@@ -45,7 +45,7 @@ class Game extends React.Component {
 
     try {
       // request setup
-      const url = `/lobbies/${this.props.match.params.gameId}`;
+      const url = `/games/${this.props.match.params.gameId}`;
       const config = { headers: User.getUserAuthentication() };
 
       const response = await api.get(url, config);
@@ -91,7 +91,7 @@ class Game extends React.Component {
               </ConservativeBox>
               <Chat
                   updateLoop={this.props.updateLoop}
-                  chatId={this.state.game.chatId}
+                  chatId={this.state.game.gameChatId}
               />
             </ConservativeBox>
         );
@@ -106,12 +106,6 @@ class Game extends React.Component {
             }} />
           </div>
         );
-      case 403: // 404: FORBIDDEN
-        return (
-            <Label>
-              You have been banned from this game.
-            </Label>
-        );
       case 404: // 404: NOT_FOUND
         return (
             <Label>
@@ -124,10 +118,16 @@ class Game extends React.Component {
               This game is over. What are you still doing here?
             </Label>
         );
-      case 423: // 423: LOCKED
+      case 422: // 422: UNPROCESSABLE_ENTITY
         return (
             <Label>
               This game is either full or already running.
+            </Label>
+        );
+      case 423: // 423: LOCKED
+        return (
+            <Label>
+              You have been banned from this game.
             </Label>
         );
 

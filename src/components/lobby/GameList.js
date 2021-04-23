@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import GameInfoItem from "./GameInfoItem";
 import {Label, Title} from "../../views/design/Text";
 import {HorizontalBox, MediumForm, VerticalBox} from "../../views/design/Containers";
+import User from "../shared/models/User";
 
 const LobbyButton = styled.button`
   &:hover {
@@ -33,26 +34,29 @@ class GameList extends React.Component {
   constructor() {
     super();
     this.state = {
-      lobbies: null,
-      updating: false,
-      active: true,
+      games: null,
     };
   }
 
   async update() {
     try {
 
-      const response = await api.get(`/lobbies`);
+      // request setup
+      const url = `/games`;
+      const config = {headers: User.getUserAuthentication()};
+      // send request
+      const response = await api.get(url, config);
       console.log(response);
-      this.setState({ lobbies: response.data });
+      this.setState({ games: response.data });
 
     } catch (error) {
-      alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
+      // TODO memes?
+      alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
     }
   }
 
-  async enterLobby(lobby) {
-    this.props.history.push(`game/${lobby.lobbyId}`);
+  async enterGame(game) {
+    this.props.history.push(`game/${game.gameId}`);
   }
 
   async componentDidMount() {
@@ -65,7 +69,9 @@ class GameList extends React.Component {
 
   render() {
     return (
-    <MediumForm style={{paddingTop: '30px'}}>
+    <MediumForm style={{
+      paddingTop: '30px',
+    }}>
 
       <Title> Do you even meme? </Title>
 
@@ -77,14 +83,14 @@ class GameList extends React.Component {
       </HorizontalBox>
 
       <Label>
-        {this.state.lobbies? (this.state.lobbies.length? 'Join a Game:' : 'No open games 😥') : ('loading..')}
+        {this.state.games? (this.state.games.length? 'Join a Game:' : 'No open games 😥') : ('loading..')}
       </Label>
 
       <VerticalBox>
-        {!this.state.lobbies ? (
+        {!this.state.games ? (
             <Spinner />
         ) : (
-            this.state.lobbies.map(game => {
+            this.state.games.map(game => {
               return <GameInfoItem game={game}/>;
             })
         )}

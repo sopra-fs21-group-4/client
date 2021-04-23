@@ -21,8 +21,8 @@ class GameInfoItem extends React.Component {
                     alignItems: 'center',
                     minWidth: '400px',
                 }}>
-                    <div style={{width:'30%'}}><LinkButton onClick={() => this.props.history.push(`/game/${game.lobbyId}`)}>
-                        {`${game.name} :`}
+                    <div style={{width:'30%'}}><LinkButton onClick={() => this.props.history.push(`/game/${game.gameId}`)}>
+                        {`${game['name']} :`}
                     </LinkButton></div>
                     <div style={{width:'20%'}}><Info>
                         {`${game['gameState']}`}
@@ -31,7 +31,7 @@ class GameInfoItem extends React.Component {
                         {`r/${game['subreddit']}`}
                     </Info></div>
                     <div style={{width:'10%'}}><Info>
-                        {`${game['players'].length}/${game['maxPlayers']}`}
+                        {`${game['playerNames'].length}/${game['maxPlayers']}`}
                     </Info></div>
                     <div style={{width:'15%'}}>
                         <LinkButton onClick={() => this.setState({collapsed: !this.state.collapsed})}>
@@ -55,7 +55,7 @@ class GameInfoItem extends React.Component {
                             {`type: ${game['memeType']}`}
                         </Info></div>
                         <div style={{width:'25%'}}><Info>
-                            {`time: ${game['namingTime']} / ${game['votingTime']} / ${game['resultsTime']}`}
+                            {`time: ${game['maxSuggestSeconds']} / ${game['maxVoteSeconds']} / ${game['maxAftermathSeconds']}`}
                         </Info></div>
                     </HorizontalBox>
                 }

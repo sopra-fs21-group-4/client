@@ -183,14 +183,14 @@ class UserProfile extends React.Component {
 
             // request setup
             const url = `/user`;
-            const params = new URLSearchParams([['username', this.props.match.params.username]]);
+            const config = {headers:{username: this.props.match.params.username}};
 
             // send request
-            const response = await api.get(url, {params});
+            const response = await api.get(url, config);
 
 
             this.setState({ user: response.data });
-            this.setState({userId: response.data.userId.toString()})
+            this.setState({ userId: response.data.userId })
 
             console.log(response);
         } catch (error) {

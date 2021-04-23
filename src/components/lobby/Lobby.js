@@ -24,9 +24,9 @@ class Lobby extends React.Component {
                 subreddit: this.state.subreddit,
                 memeType: this.state.memeType,
                 totalRounds: this.state.totalRounds,
-                namingTime: this.state.namingTime,
-                votingTime: this.state.votingTime,
-                resultsTime: this.state.resultsTime,
+                maxSuggestSeconds: this.state.maxSuggestSeconds,
+                maxVoteSeconds: this.state.maxVoteSeconds,
+                maxAftermathSeconds: this.state.maxAftermathSeconds,
             });
             const config = {headers: User.getUserAuthentication()};
 
@@ -40,18 +40,17 @@ class Lobby extends React.Component {
     }
 
     isGameMaster() {
-        // TODO not sure if userId is best here. Maybe better take username.
-        return User.getAttribute('userId') == this.props.game['gameMaster'];
+        return User.getAttribute('username') == this.props.game['gameMasterName'];
     }
 
     async componentDidMount() {
         try {
             // request setup
             const url = `/users`;
-            const params = new URLSearchParams([['userIds', this.props.game.players]]);
+            const config = {headers: {usernames: this.props.game.playerNames}};
 
             // send request
-            const response = await api.get(url, {params});
+            const response = await api.get(url, config);
             console.log(response);
             this.setState({ players: response.data });
         } catch (error) {
@@ -65,8 +64,17 @@ class Lobby extends React.Component {
         // TODO gamemaster can ban players
         return (
             <HorizontalBox>
-                {this.gameSettings()}
-                <UserList users={this.state.players}/>
+                <div style={{
+                    width: '80%'
+                }}>
+                    {this.gameSettings()}
+                </div>
+                <div style={{
+                    width: '20%',
+                    paddingTop: '30px',
+                }}>
+                    <UserList users={this.state.players}/>
+                </div>
             </HorizontalBox>
         );
     }

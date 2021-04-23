@@ -10,10 +10,16 @@ import {Info} from "./design/Text";
 
 /**
  * TODO there's probably more to add here
+ * TODO cannot push to history. probably needs to be an object instead of a function.
  */
 const UserList = ({ users }) => {
   return users? (
-    <VerticalScroller>
+    <VerticalScroller style={{
+      width: '100%',
+      maxWidth: '100px',
+      borderRadius: '5px',
+      border: '1px solid #55ee00',
+    }}>
         {users.map(user => {
             return (
                 <FlexBox>

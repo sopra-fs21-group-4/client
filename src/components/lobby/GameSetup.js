@@ -10,22 +10,22 @@ class Lobby extends React.Component {
         super();
         // setting default values
         this.state = {
-            name: null,
+            name: `${User.getAttribute('username')}'s game`,
             subreddit: null,
             memeType: 'HOT',
             password: null,
             maxPlayers: 6,
             totalRounds: 10,
-            namingTime: 25,
-            votingTime: 20,
-            resultsTime: 10,
+            maxSuggestSeconds: 25,
+            maxVoteSeconds: 20,
+            maxAftermathSeconds: 10,
         };
     }
 
     async createGame() {
         try {
             // request setup
-            const url = `/lobbies/create`;
+            const url = `/games/create`;
             const requestBody = JSON.stringify({
                 name: this.state.name,
                 subreddit: this.state.subreddit,
@@ -33,16 +33,16 @@ class Lobby extends React.Component {
                 password: this.state.password,
                 maxPlayers: this.state.maxPlayers,
                 totalRounds: this.state.totalRounds,
-                namingTime: this.state.namingTime,
-                votingTime: this.state.votingTime,
-                resultsTime: this.state.resultsTime,
+                maxSuggestSeconds: this.state.maxSuggestSeconds,
+                maxVoteSeconds: this.state.maxVoteSeconds,
+                maxAftermathSeconds: this.state.maxAftermathSeconds,
             });
             const config = {headers: User.getUserAuthentication()};
 
             // send request
             const response = await api.post(url, requestBody, config);
             console.log(response);
-            this.props.history.push(`/game/${response.data.lobbyId}`);
+            this.props.history.push(`/game/${response.data.gameId}`);
 
         } catch (error) {
             alert(`Something went wrong creating the game: \n${handleError(error)}`);
@@ -61,7 +61,10 @@ class Lobby extends React.Component {
                     listener={this}
                     onCancel={() => { this.props.history.push('/') }}
                     onSubmit={() => { this.createGame() }}
-                    initialState={{timersCollapsed: true}}
+                    initialState={{
+                        timersCollapsed: true,
+                        ...this.state
+                    }}
                     attributes={[
                         { label: 'Name', key: 'name', type: 'Input',
                             props:{}, required: true },
@@ -77,16 +80,16 @@ class Lobby extends React.Component {
                         { label: 'Password', key: 'password', type: 'Input',
                             props:{ autoComplete: 'off' } },
                         { label: 'Max. Players', key: 'maxPlayers', type: 'Range',
-                            props:{ min:3, max:10, defaultValue: this.state['maxPlayers'] } },
+                            props:{ min:3, max:10} },
                         { label: 'Number of Rounds', key: 'totalRounds', type: 'Range',
-                            props:{ min:1, max:30, defaultValue: this.state['totalRounds'] } },
+                            props:{ min:1, max:30 } },
                         { label: 'Timers', key: 'timers', type: 'Group' },
-                        { label: 'Naming Time', key: 'namingTime', type: 'Range', group: 'timers',
-                            props:{ min:10, max:60, defaultValue: this.state['namingTime'] } },
-                        { label: 'Voting Time', key: 'votingTime', type: 'Range', group: 'timers',
-                            props:{ min:10, max:60, defaultValue: this.state['votingTime'] } },
-                        { label: 'Results Time', key: 'resultsTime', type: 'Range', group: 'timers',
-                            props:{ min:3, max:30, defaultValue: this.state['resultsTime'] } },
+                        { label: 'Naming Time', key: 'maxSuggestSeconds', type: 'Range', group: 'timers',
+                            props:{ min:10, max:60 } },
+                        { label: 'Voting Time', key: 'maxVoteSeconds', type: 'Range', group: 'timers',
+                            props:{ min:10, max:60 } },
+                        { label: 'Results Time', key: 'maxAftermathSeconds', type: 'Range', group: 'timers',
+                            props:{ min:3, max:30 } },
                     ]}
                 />
             </ConservativeBox>

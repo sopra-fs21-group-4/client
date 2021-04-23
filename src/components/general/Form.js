@@ -92,6 +92,7 @@ class Form extends React.Component {
       case 'Input':
         return <InputField
             id={ attribute.key }
+            value={this.state[attribute.key]}
             onChange={e => {this.handleInputChange(attribute.key, e.target.value)}}
             { ...attribute.props }
         />;
@@ -100,17 +101,19 @@ class Form extends React.Component {
         return <FlexBox>
           <Slider
               id={ attribute.key }
+              defaultValue={this.state[attribute.key]}
               onChange={e => {this.handleInputChange(attribute.key, e.target.value)}}
               { ...attribute.props }
           />
           <SliderLabel>
-            { document.getElementById(attribute.key)? document.getElementById(attribute.key).value : null }
+            { this.state[attribute.key] }
           </SliderLabel>
         </FlexBox>;
 
       case 'Select':
         return <Select
             id={ attribute.key }
+            value={this.state[attribute.key]}
             onChange={e => {this.handleInputChange(attribute.key, e.target.value)}}
             { ...attribute.props }
         >
