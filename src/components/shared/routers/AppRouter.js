@@ -12,6 +12,7 @@ import Lobby from "../../lobby/LobbyOld";
 import Game from "../../lobby/Game";
 import GameSetup from "../../lobby/GameSetup";
 import GameList from "../../lobby/GameList";
+import GameRoundSummary from "../../lobby/GameRoundSummary";
 
 
 /**
@@ -87,7 +88,7 @@ class AppRouter extends React.Component {
 
 
 
-            <Route  // TODO add profile editor
+            <Route
                 exact
                 path={"/users/:username"}
                 render={() => (
@@ -113,6 +114,15 @@ class AppRouter extends React.Component {
                     <GuestGuard>
                         <Register updateLoop={this.props.updateLoop} />
                     </GuestGuard>
+                )}
+            />
+            <Route
+                exact
+                path="/RoundSummary"
+                render={() => (
+
+                        <GameRoundSummary  /> //updateLoop={this.props.updateLoop} this was inside
+
                 )}
             />
 
