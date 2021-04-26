@@ -5,7 +5,7 @@ import { Spinner } from '../../views/design/Spinner';
 import { withRouter } from 'react-router-dom';
 import Lobby from "../lobby/Lobby";
 import Chat from "../chat/Chat";
-import {FlexBox, HorizontalBox, VerticalBox} from "../../views/design/Containers";
+import {FlexBox, HorizontalBox, VerticalBox, VerticalScroller} from "../../views/design/Containers";
 import { BaseContainer } from '../../helpers/layout';
 import {Info, Label, Title} from "../../views/design/Text";
 
@@ -62,7 +62,7 @@ class GameRound extends React.Component {
                     <div>
                         <img maxHeight='100px' src={this.props.game.currentMemeURL} />
                     </div>
-                    {this.currentRoundPhaseUI()}
+                    {this.currentRoundPhaseInteractives()}
                 </VerticalBox>
             </HorizontalBox>
         );
@@ -78,14 +78,21 @@ class GameRound extends React.Component {
         }
     }
 
-    currentRoundPhaseUI() {
-        // TODO return right game UI dependent on game state
+    currentRoundPhaseInteractives() {
         if (!this.props.game.currentRoundPhase) return (<Spinner />);
         switch (this.props.game.currentRoundPhase) {
-            case 'STARTING': return null;
-            case 'SUGGEST': return null;
-            case 'VOTE': return null;
-            case 'AFTERMATH': return null;
+            case 'STARTING':    return null;
+            case 'SUGGEST':     return null;    // TODO input field
+            case 'VOTE':        return  <VerticalScroller>
+                                            {Object.keys(this.props.game.currentSuggestions).map(user => {
+                                                return <div><Label>{`${user}: ${this.props.game.currentSuggestions[user]}`}</Label></div>
+                                            })}
+                                        </VerticalScroller>;    // TODO click to vote
+            case 'AFTERMATH':   return <VerticalScroller>
+                                            {Object.keys(this.props.game.scores).map(user => {
+                                                return <div><Label>{`${user}: ${this.props.game.scores[user]}`}</Label></div>
+                                            })}
+                                        </VerticalScroller>;
             default: return <Spinner />;
         }
     }

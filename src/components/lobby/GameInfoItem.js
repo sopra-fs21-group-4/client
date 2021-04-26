@@ -31,7 +31,7 @@ class GameInfoItem extends React.Component {
                         {`r/${game['subreddit']}`}
                     </Info></div>
                     <div style={{width:'10%'}}><Info>
-                        {`${game['playerNames'].length}/${game['maxPlayers']}`}
+                        {`${game['playerCount']}/${game['maxPlayers']}`}
                     </Info></div>
                     <div style={{width:'15%'}}>
                         <LinkButton onClick={() => this.setState({collapsed: !this.state.collapsed})}>

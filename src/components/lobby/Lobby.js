@@ -47,7 +47,7 @@ class Lobby extends React.Component {
         try {
             // request setup
             const url = `/users`;
-            const config = {headers: {usernames: this.props.game.playerNames}};
+            const config = {headers: {userIds: this.props.game.players}};
 
             // send request
             const response = await api.get(url, config);
