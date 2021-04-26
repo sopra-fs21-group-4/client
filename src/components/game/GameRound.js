@@ -74,7 +74,7 @@ class GameRound extends React.Component {
             case 'SUGGEST':     return 'suggest a title';
             case 'VOTE':        return 'vote';
             case 'AFTERMATH':   return 'worship the winner';
-            default:            return 'relax';
+            default:            return 'relax a bit';
         }
     }
 
