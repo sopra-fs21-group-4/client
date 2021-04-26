@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import AppRouter from "./components/shared/routers/AppRouter";
 import UpdateLoop from "./components/shared/UpdateLoop";
-import User from "./components/shared/models/User";
 
 /**
  * Happy coding!
@@ -11,7 +10,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      updateLoop: new UpdateLoop(100),
+      updateLoop: new UpdateLoop(200),
     };
   }
 

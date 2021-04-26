@@ -7,6 +7,9 @@ import { ConservativeBox } from "../../views/design/Containers";
 import { Label } from "../../views/design/Text";
 import { InputField } from "../../views/design/Input";
 import User from "../shared/models/User";
+import GamePhase1 from "../game/GamePhase1";
+import {Spinner} from "../../views/design/Spinner";
+import GameRound from "../game/GameRound";
 
 class Game extends React.Component {
   constructor() {
@@ -42,7 +45,6 @@ class Game extends React.Component {
   }
 
   async fetchGameData() {
-
     try {
       // request setup
       const url = `/games/${this.props.match.params.gameId}`;
@@ -56,7 +58,8 @@ class Game extends React.Component {
       });
     } catch (error) {
       // the component will react accordingly when we update the status
-      this.setState({status: error.response.status});
+      if (error.response) this.setState({status: error.response.status});
+      else alert(`Something went wrong internally while fetching game info: \n${handleError(error)}`);
     }
   }
 
@@ -138,11 +141,11 @@ class Game extends React.Component {
   currentGameStateUI() {
     // TODO return right game UI dependent on game state
     switch (this.state.game.gameState) {
-      case 'LOBBY':  return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
-      case 'TITLE':  return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
-      case 'VOTE':   return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
-      case 'POINTS': return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
-      case 'FINISH': return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
+      case 'LOBBY':     return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
+      case 'STARTING':  return <Spinner/>;  // TODO loading screen
+      case 'PAUSED':
+      case 'RUNNING':   return <GameRound game={this.state.game}/>;
+      case 'AFTERMATH': return <Spinner/>;
       default: throw "unknown game state!";
     }
   }
