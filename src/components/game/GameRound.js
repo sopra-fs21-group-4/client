@@ -5,48 +5,47 @@ import { Spinner } from '../../views/design/Spinner';
 import { withRouter } from 'react-router-dom';
 import Lobby from "../lobby/Lobby";
 import Chat from "../chat/Chat";
-import {FlexBox, HorizontalBox, VerticalBox, VerticalScroller} from "../../views/design/Containers";
+import {FlexBox, HorizontalBox, VerticalBox, VerticalList, VerticalScroller} from "../../views/design/Containers";
 import { BaseContainer } from '../../helpers/layout';
 import {Info, Label, Title} from "../../views/design/Text";
+import User from "../shared/models/User";
 
-const Meme = styled.input`
-    display:flex;
+
+
+const VoteButton = styled.button`
+  &:hover {
+    transform: translateWidth(+5px);
+  }
+  padding: 6px;
+  margin: 5px;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+  color: #000;
+  width: ${props => props.width || null};
   height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
+  border: none;
+  border-radius: 20px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: #yellow;
+  transition: all 0.3s ease;
 `;
 
 class GameRound extends React.Component {
-    constructor() {
-        super();
-    }
 
-    async componentDidMount() {
-        let gameId = this.props.match.params.userid;
-        //ToDO get meme from backend
-        /**try {
-            const response = await api.get(`/`);
+    async vote(recipient) {
+        try {
+            // request setup
+            const url = `/games/${this.props.match.params.gameId}/vote`;
+            const config = {
+                headers: User.getUserAuthentication()
+            }
+            const response = await api.put(url, recipient.userId, config);
             console.log(response);
-            this.setState({
-                imgUrl: response.imgUrl,
-            });
         } catch (error) {
-            alert(`Could not fetch the next image: \n${handleError(error)}`);
-        }*/
-        this.imgUrl = "https://preview.redd.it/xm0379bidxg61.jpg?width=640&crop=smart&auto=webp&s=0cadfc66efbdb4f0f2ba12ff7711d6f4b53b7f82";
-
-    }
-
-    show_image(src) {
-        var img = document.createElement("img");
-        img.src = src;
-        /**img.width = width;
-        img.height = height;
-        img.alt = alt;*/
-
-        // This next line will just add it to the <body> tag
-        // but you can adapt to make it append to the element you want.
-        document.body.appendChild(img);
+            alert(`Something went wrong while voting: \n${handleError(error)}`);
+        }
     }
 
     render() { // TODO scale image to max size, also display suggestions
@@ -55,14 +54,16 @@ class GameRound extends React.Component {
                 <VerticalBox>
                     <Title>{this.props.game.currentRoundTitle}</Title>
                     <br/>
-                    <Label>{`${this.currentActivity()}!`}</Label>
+                    <Label>{`${this.currentActivity()}`}</Label>
                     <br/>
                     <Info>{`time remaining: ${Math.round(this.props.game.currentCountdown / 1000)}`}</Info>
                     <br/>
-                    <div>
-                        <img maxHeight='100px' src={this.props.game.currentMemeURL} />
-                    </div>
-                    {this.currentRoundPhaseInteractives()}
+                    <HorizontalBox>
+                        <img width='400px' src={this.props.game.currentMemeURL} />
+                        <VerticalScroller style={{paddingLeft: '30px'}}>
+                            {this.currentRoundPhaseInteractives()}
+                        </VerticalScroller>
+                    </HorizontalBox>
                 </VerticalBox>
             </HorizontalBox>
         );
@@ -70,31 +71,49 @@ class GameRound extends React.Component {
 
     currentActivity() {
         switch (this.props.game.currentRoundPhase) {
-            case 'STARTING':    return'prepare';
-            case 'SUGGEST':     return 'suggest a title';
-            case 'VOTE':        return 'vote';
-            case 'AFTERMATH':   return 'worship the winner';
-            default:            return 'relax a bit';
+            case 'STARTING':    return'prepare!';
+            case 'SUGGEST':     return 'suggest a title!';
+            case 'VOTE':        return 'vote!';
+            case 'AFTERMATH':   return 'admire the winner!';
+            default:            return 'relax!';
         }
     }
 
     currentRoundPhaseInteractives() {
-        if (!this.props.game.currentRoundPhase) return (<Spinner />);
-        switch (this.props.game.currentRoundPhase) {
+        let game = this.props.game;
+        switch (game.currentRoundPhase) {
             case 'STARTING':    return null;
             case 'SUGGEST':     return null;    // TODO input field
-            case 'VOTE':        return  <VerticalScroller>
-                                            {Object.keys(this.props.game.currentSuggestions).map(user => {
-                                                return <div><Label>{`${user}: ${this.props.game.currentSuggestions[user]}`}</Label></div>
-                                            })}
-                                        </VerticalScroller>;    // TODO click to vote
-            case 'AFTERMATH':   return <VerticalScroller>
-                                            {Object.keys(this.props.game.scores).map(user => {
-                                                return <div><Label>{`${user}: ${this.props.game.scores[user]}`}</Label></div>
-                                            })}
-                                        </VerticalScroller>;
+            case 'VOTE':        return this.voteButtonList();
+            case 'AFTERMATH':   return this.resultsList();
             default: return <Spinner />;
         }
+    }
+
+    voteButtonList() {
+        return <VerticalList>
+            {this.props.players.map(player => {
+                return <VoteButton
+                    disabled={player.userId == User.getAttribute('userId')}
+                    onClick={e => this.vote(player)}
+                    style={{background: (this.props.game.currentVotes[User.getAttribute('userId')] == player.userId)? '#a59aed' : '#9aeced'}}
+                >
+                    {`${player.username}: ${this.props.game.currentSuggestions[player.userId]}`}</VoteButton>
+            })}
+        </VerticalList>
+    }
+
+    resultsList() {
+        return <VerticalList>
+            <Label>Scores:</Label>
+            {this.props.players.map(player => {
+                return <div style={{
+                    paddingBottom:'15px'
+                }}>
+                    <Label>{`${this.props.game.currentSuggestions[player.userId]} (${player.username}): ${this.props.game.currentScores[player.userId]}`}</Label>
+                </div>
+            })}
+        </VerticalList>
     }
 
 }

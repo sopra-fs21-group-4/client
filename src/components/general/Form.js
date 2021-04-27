@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Button, InputField, LinkButton, Option, Select, Slider, SliderLabel} from '../../views/design/Input';
+import {Button, InputField, LinkButton, Option, Select, Slider, SliderLabel} from '../../views/design/Interaction';
 import {FlexBox, MediumForm, VerticalScroller} from "../../views/design/Containers";
 import {Error, Label, Title} from "../../views/design/Text";
 

@@ -3,13 +3,14 @@ import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import Lobby from "./Lobby";
 import Chat from "../chat/Chat";
-import { ConservativeBox } from "../../views/design/Containers";
+import { HorizontalBox } from "../../views/design/Containers";
 import { Label } from "../../views/design/Text";
-import { InputField } from "../../views/design/Input";
+import { InputField } from "../../views/design/Interaction";
 import User from "../shared/models/User";
-import GamePhase1 from "../game/GamePhase1";
 import {Spinner} from "../../views/design/Spinner";
 import GameRound from "../game/GameRound";
+import ExpandableVBox from "../../views/design/ExpandableVBox";
+import PlayerList from "../game/PlayerList";
 
 class Game extends React.Component {
   constructor() {
@@ -50,12 +51,15 @@ class Game extends React.Component {
       const url = `/games/${this.props.match.params.gameId}`;
       const config = { headers: User.getUserAuthentication() };
 
-      const response = await api.get(url, config);
-      console.log(response);
+      const gameResponse = await api.get(url, config);
+      console.log(gameResponse);
       this.setState({
-        game: response.data,
-        status: response.status,
+        game: gameResponse.data,
+        status: gameResponse.status,
       });
+      const players = await api.get(`/users`, { headers:{ userIds: this.state.game.players } });
+      console.log(players);
+      this.setState({players: players.data});
     } catch (error) {
       // the component will react accordingly when we update the status
       if (error.response) this.setState({status: error.response.status});
@@ -71,6 +75,8 @@ class Game extends React.Component {
       case 200: // 200: OK
       case 201: // 201: CREATED
         this.fetchGameData();
+        break;
+      case 404: // 404: NOT_FOUND
         break;
       default: this.tryJoin();
     }
@@ -88,15 +94,37 @@ class Game extends React.Component {
     switch(this.state.status) {
       case 200: // 200: OK
         return (
-            <ConservativeBox>
-              <ConservativeBox style={{paddingRight:'150px'}}>
-                {this.currentGameStateUI()}
-              </ConservativeBox>
-              <Chat
-                  updateLoop={this.props.updateLoop}
-                  chatId={this.state.game.gameChatId}
-              />
-            </ConservativeBox>
+            <HorizontalBox>
+              {this.currentGameStateUI()}
+              <ExpandableVBox
+                style={{
+                  height: '95vh',
+                }}
+              >
+                <div
+                    style={{
+                      height: '20%',
+                      background: '#dfebe3',
+                    }}
+                >
+                  <PlayerList
+                      game={this.state.game}
+                      players={this.state.players}
+                  />
+                </div>
+                <div
+                    style={{
+                      height: '80%',
+                      background: '#f0f0ff',
+                    }}
+                >
+                  <Chat
+                      updateLoop={this.props.updateLoop}
+                      chatId={this.state.game.gameChatId}
+                  />
+                </div>
+              </ExpandableVBox>
+            </HorizontalBox>
         );
       case 401: // 401: UNAUTHORIZED
         return (
@@ -141,10 +169,10 @@ class Game extends React.Component {
   currentGameStateUI() {
     // TODO return right game UI dependent on game state
     switch (this.state.game.gameState) {
-      case 'LOBBY':     return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
+      case 'LOBBY':     return (<Lobby game={this.state.game} />);
       case 'STARTING':  return <Spinner/>;  // TODO loading screen
       case 'PAUSED':
-      case 'RUNNING':   return <GameRound game={this.state.game}/>;
+      case 'RUNNING':   return <GameRound game={this.state.game} players={this.state.players} />;
       case 'AFTERMATH': return <Spinner/>;
       default: throw "unknown game state!";
     }

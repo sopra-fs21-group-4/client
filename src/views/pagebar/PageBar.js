@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import UserInfo from "./UserInfo";
-import {InvisibleButton} from "../design/Input";
+import {InvisibleButton} from "../design/Interaction";
 import {withRouter} from "react-router-dom";
 
 
@@ -12,7 +12,7 @@ import {withRouter} from "react-router-dom";
  * https://www.styled-components.com/
  */
 const Container = styled.div`
-  height: 50px;
+  height: 5vh;
   width: 100%;
   background: rgba(6, 196, 255, 0.2);
   display: flex;

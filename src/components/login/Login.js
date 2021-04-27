@@ -4,7 +4,7 @@ import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
-import { Button } from '../../views/design/Input';
+import { Button } from '../../views/design/Interaction';
 import Header from "../../views/pagebar/PageBar";
 import title from '../../views/design/title.module.css'
 import doge from "../../views/design/Memes/doge.jpg"

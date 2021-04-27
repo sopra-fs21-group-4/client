@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from 'react-router-dom';
 import User from "../../components/shared/models/User";
-import {DiscreetButton} from "../design/Input";
+import {DiscreetButton} from "../design/Interaction";
 import {Label} from "../design/Text";
 import {FlexBox} from "../design/Containers";
 

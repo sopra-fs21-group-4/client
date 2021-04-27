@@ -3,7 +3,7 @@ import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import {HorizontalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
-import UserList from "../../views/UserList";
+import UserList from "../game/PlayerList";
 import Form from "../general/Form";
 
 class GameRoundSummary extends React.Component {

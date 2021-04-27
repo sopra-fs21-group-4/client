@@ -2,47 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import { api, handleError } from '../../helpers/api';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Input';
+import { Button } from '../../views/design/Interaction';
 import { withRouter } from 'react-router-dom';
 import Message from "../../views/Message";
 import parseEmoji from "../../helpers/Emoji";
-import {ConservativeBox, VerticalScroller} from "../../views/design/Containers";
+import { VerticalBox, VerticalScroller } from "../../views/design/Containers";
 import User from "../shared/models/User";
-
-const Position = styled.div`
-  height: 100%;
-  position: fixed;
-  top: 50px;
-  right: 0px;
-  padding-bottom: 50px;
-`;
-
-const Container = styled.div`
-  width: inherit;
-  height: 100%;
-  background: #f0f0ff;
-`;
-
-const ChatExtended = styled.div`
-  width: 450px;
-  height: 100%;
-  padding-bottom: 75px;
-`;
-
-const ChatCollapsed = styled.div`
-  width: 150px;
-  height: 100%;
-`;
 
 const InputBox = styled.div`
   position: absolute;
   bottom: 0;
-  width: inherit;
+  width: 100%;
   display: flex;
   justify-content: center;
-  padding: 20px;
-  padding-bottom: 75px;
-  background: #f0f0ff;
+  padding: 15px;
 `;
 
 const InputField = styled.input`
@@ -54,26 +27,6 @@ const InputField = styled.input`
   border: 1px solid #06c4ff;
   background: #ffffff88;
   color: #000000;
-`;
-
-const CollapseButton = styled.button`
-  &:hover {
-    background: #382445;
-  }
-  display: block;
-  width: 15px;  
-  height: 100%;
-  padding: 0;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  border: none;
-  background: #00000000;
-  transition: all 0.3s ease;
-  position: absolute;
-  left: 0;
-  text-align: center;
-  vertical-align: middle;
-  color: #bf62ff;
-  font-weight: bolder;
 `;
 
 class Chat extends React.Component {
@@ -94,7 +47,7 @@ class Chat extends React.Component {
    */
   async postMessage() {
     try {
-      let inputField = document.getElementById("inputField");
+      let inputField = document.getElementById(`chatInput${this.props.chatId}`);
 
       // if there's nothing to send, we cancel the operation
       if (!inputField.value) return;
@@ -115,7 +68,6 @@ class Chat extends React.Component {
   async update() {
     if (!this.props.chatId) return;
     try {
-      // TODO ?latest=10 for debugging purposes
       const response = await api.get(`/chat/${this.props.chatId}`);
       console.log(response);
       this.setState({ messages: response.data });
@@ -134,44 +86,38 @@ class Chat extends React.Component {
 
   render() {
     return (
-      <Position>
-        <Container>
-          {!this.state.messages ? (
-              <Spinner />
-          ) : (
-              <ConservativeBox>
-                  <div>
-                      <CollapseButton
-                          onClick={() => {this.state.collapsed = !this.state.collapsed;}}
-                      >
-                          {this.state.collapsed? '◀' : '▶' }
-                      </CollapseButton>
-                  </div>
-                {this.state.collapsed? (
-                    <ChatCollapsed>
-                      {this.messageList()}
-                    </ChatCollapsed>
-                ) : (
-                    <ChatExtended>
-                      {this.messageList()}
-                      {this.inputBox()}
-                    </ChatExtended>
-                )}
-              </ConservativeBox>
-          )}
-        </Container>
-      </Position>
+        <VerticalBox
+            style={{
+                position: 'relative',
+                bottom: 0,
+                height: '100%',
+            }}
+        >
+          <div
+              style={{
+                  position: 'relative',
+                  height: '100%',
+                  paddingBottom: '65px',
+              }}
+          >
+            {this.state.messages? this.messageList() : <Spinner/>}
+          </div>
+            {this.inputBox()}
+        </VerticalBox>
     );
   }
 
   messageList() {
     return (<VerticalScroller style={{
-      paddingTop: '10px',
-      paddingRight: '10px',
-      paddingLeft: '16px',
-      paddingBottom: '10px',
-      display: 'flex',
-      flexDirection: 'column-reverse'
+        position: 'relative',
+        bottom: '0px',
+        height: '100%',
+        width: '100%',
+        overflow:'auto',
+        paddingRight: '10px',
+        paddingLeft: '10px',
+        display: 'flex',
+        flexDirection: 'column-reverse',
     }}>
       {/* double reverse the message list to stay scrolled on the bottom */}
       {this.state.messages.slice().reverse().map(message => {
@@ -186,7 +132,7 @@ class Chat extends React.Component {
     return (
         <InputBox>
           <InputField             // this is the component where the user can write text messages
-              id="inputField"
+              id={`chatInput${this.props.chatId}`}
               type="text"
               autoComplete="off"
               placeholder=" ... "

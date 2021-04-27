@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { api, handleError } from '../../helpers/api';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Input';
+import { Button } from '../../views/design/Interaction';
 import { withRouter } from 'react-router-dom';
 import GameInfoItem from "./GameInfoItem";
 import {Label, Title} from "../../views/design/Text";

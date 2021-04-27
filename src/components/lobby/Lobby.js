@@ -3,7 +3,6 @@ import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import {HorizontalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
-import UserList from "../../views/UserList";
 import Form from "../general/Form";
 
 class Lobby extends React.Component {
@@ -19,7 +18,7 @@ class Lobby extends React.Component {
     async updateSettings() {
         try {
             // request setup
-            const url = `/lobbies/${this.props.match.params['gameId']}`;
+            const url = `/games/${this.props.match.params['gameId']}`;
             const requestBody = JSON.stringify({
                 subreddit: this.state.subreddit,
                 memeType: this.state.memeType,
@@ -43,38 +42,16 @@ class Lobby extends React.Component {
         return User.getAttribute('username') == this.props.game['gameMasterName'];
     }
 
-    async componentDidMount() {
-        try {
-            // request setup
-            const url = `/users`;
-            const config = {headers: {userIds: this.props.game.players}};
-
-            // send request
-            const response = await api.get(url, config);
-            console.log(response);
-            this.setState({ players: response.data });
-        } catch (error) {
-            alert(`Something went wrong while fetching the players: \n${handleError(error)}`);
-        }
-    }
-
     render() {
         // TODO game settings: update in backend
         // TODO better proportions for UserList (maybe also absolute position?)
         // TODO gamemaster can ban players
         return (
             <HorizontalBox>
-                <div style={{
-                    width: '80%'
-                }}>
+                <div>
                     {this.gameSettings()}
                 </div>
-                <div style={{
-                    width: '20%',
-                    paddingTop: '30px',
-                }}>
-                    <UserList users={this.state.players}/>
-                </div>
+                {/* ready button */}
             </HorizontalBox>
         );
     }

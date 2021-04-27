@@ -51,7 +51,7 @@ class User {
    * @param key 'username' or 'userId'
    * @returns {Promise<User|*>} User instance(s) from backend
    */
-  static async fetch(value) {
+  static async fetch(key, value) {
     if (!value) return value;
     // arrays will be mapped
     if (value.length) {
@@ -59,7 +59,7 @@ class User {
     }
     // single users will be fetched
     try {
-      const response = await api.get(`/user/${value}`);
+      const response = await api.get(`/user`, { headers:{ [key]: value } });
       console.log(response);
       return new User(response.data);
     } catch (error) {

@@ -17,6 +17,11 @@ export const VerticalBox = styled.div`
 
 `;
 
+export const VerticalList = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
 export const VerticalScroller = styled.div`
   width: inherit;
   height: 100%;

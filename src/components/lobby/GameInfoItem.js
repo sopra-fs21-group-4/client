@@ -1,7 +1,7 @@
 import React from "react";
 import { HorizontalBox, VerticalBox } from "../../views/design/Containers";
 import { Info } from "../../views/design/Text";
-import { LinkButton } from "../../views/design/Input";
+import { LinkButton } from "../../views/design/Interaction";
 import { withRouter } from "react-router-dom";
 
 class GameInfoItem extends React.Component {

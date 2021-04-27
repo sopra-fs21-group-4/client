@@ -1,7 +1,7 @@
 import {FlexBox, HorizontalBox, MediumForm} from "./Containers";
 import {Label, Title} from "./Text";
 import React from "react";
-import {Button, InputField, LinkButton, Option, Select, Slider, SliderLabel} from "./Input";
+import {Button, InputField, LinkButton, Option, Select, Slider, SliderLabel} from "./Interaction";
 import styled from "styled-components";
 
 const Row = styled.tr`

@@ -6,7 +6,7 @@ import Login from "../../login/Login";
 import Register from "../../login/Register";
 import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
-import Header from "../../../views/pagebar/PageBar";
+import PageBar from "../../../views/pagebar/PageBar";
 import UserProfile from "../../user/UserProfile";
 import Lobby from "../../lobby/LobbyOld";
 import Game from "../../lobby/Game";
@@ -29,7 +29,7 @@ class AppRouter extends React.Component {
 
     return (
       <BrowserRouter>
-          <Header updateLoop={this.props.updateLoop} />
+          <PageBar updateLoop={this.props.updateLoop} />
         <Switch>
             <Route
                 exact
