@@ -5,7 +5,7 @@ import { Spinner } from '../../views/design/Spinner';
 import { withRouter } from 'react-router-dom';
 import {
     ConservativeBox,
-    HorizontalBox,
+    HorizontalBox, VerticalBox,
     VerticalList,
     VerticalScroller
 } from "../../views/design/Containers";
@@ -70,30 +70,33 @@ class GameRound extends React.Component {
     }
 
     render() {
-        return (
-            <ConservativeBox
-                style={{padding: '10%'}}
-            >
-
-                <Title style={{
-                    textAlign: 'left',
-                    paddingLeft: '100px',
-                }}>
-                    {this.props.game.currentRoundTitle}
-                </Title>
-                <br/>
-                <HorizontalBox style={{justifyContent: 'left'}}>
-                    <img width='400px' src={this.props.game.currentMemeURL} />
-                    <VerticalScroller style={{paddingLeft: '30px', width: '400px'}}>
-                        <Label>{`${this.currentActivity()}`}</Label>
-                        <br/>
-                        <Info>{`time remaining: ${Math.round(this.props.game.currentCountdown / 1000)}`}</Info>
-                        <br/>
-                        {this.currentRoundPhaseInteractive()}
-                    </VerticalScroller>
-                </HorizontalBox>
-            </ConservativeBox>
-        );
+        if (!this.props.game || !this.props.players) {
+            return <Spinner/>
+        }
+        return <VerticalBox
+            style={{
+                paddingLeft: '10%',
+                paddingRight: '10%',
+            }}
+        >
+            <Title style={{
+                textAlign: 'left',
+                paddingLeft: '100px',
+            }}>
+                {this.props.game.currentRoundTitle}
+            </Title>
+            <br/>
+            <HorizontalBox style={{justifyContent: 'left'}}>
+                <img width='400px' src={this.props.game.currentMemeURL} />
+                <VerticalScroller style={{paddingLeft: '30px', width: '400px'}}>
+                    <Label>{`${this.currentActivity()}`}</Label>
+                    <br/>
+                    <Info>{`time remaining: ${Math.round(this.props.game.currentCountdown / 1000)}`}</Info>
+                    <br/>
+                    {this.currentRoundPhaseInteractive()}
+                </VerticalScroller>
+            </HorizontalBox>
+        </VerticalBox>
     }
 
     currentActivity() {
@@ -135,24 +138,30 @@ class GameRound extends React.Component {
     voteInteractive() {
         return <VerticalList>
             {this.props.players.map(player => {
-                return <VoteButton
+                return (this.props.game.currentSuggestions[player.userId]? <VoteButton
                     disabled={player.userId == User.getAttribute('userId')}
                     onClick={e => this.vote(player)}
                     style={{background: (this.props.game.currentVotes[User.getAttribute('userId')] == player.userId)? '#a59aed' : '#9aeced'}}
                 >
                     {`${player.username}: ${this.props.game.currentSuggestions[player.userId]}`}</VoteButton>
+                : null);
             })}
         </VerticalList>
     }
 
     aftermathInteractive() {
+        let game = this.props.game;
+        let players = this.props.players.slice();
+        players.sort((a,b) => {return game.currentScores[b.userId] - game.currentScores[a.userId]});
         return <VerticalList>
             <Label>Scores:</Label>
-            {this.props.players.map(player => {
+            {players.map(player => {
+                let suggestion = game.currentSuggestions[player.userId];
+                let score = game.currentScores[player.userId];
                 return <div style={{
                     paddingBottom:'15px'
                 }}>
-                    <Label>{`${this.props.game.currentSuggestions[player.userId]} (${player.username}): ${this.props.game.currentScores[player.userId]}`}</Label>
+                    <Label>{`${suggestion? suggestion : '🅱'} (${player.username}): ${score? score : '0'}`}</Label>
                 </div>
             })}
         </VerticalList>

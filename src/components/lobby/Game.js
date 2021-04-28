@@ -94,10 +94,21 @@ class Game extends React.Component {
     switch(this.state.status) {
       case 200: // 200: OK
         return (
-            <HorizontalBox>
+            <HorizontalBox
+                style={{
+                  position:'fixed',
+                  bottom:0,
+                  left:0,
+                  height: '95vh',
+                  width: '100%',
+                }}
+            >
               {this.currentGameStateUI()}
               <ExpandableVBox
                 style={{
+                  position:'fixed',
+                  bottom:0,
+                  right:0,
                   height: '95vh',
                 }}
               >
