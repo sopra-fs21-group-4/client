@@ -82,6 +82,14 @@ class Form extends React.Component {
                 </Button>}
               </Cell>
             </Row>
+            {/*<Button*/}
+            {/*    width='100%'*/}
+            {/*    onClick={this.props['onStart']}*/}
+            {/*    disabled={this.props['submitCondition']? !this.props['submitCondition']() : this.nextRequired()}*/}
+            {/*    { ...this.props['submitButtonProps'] }*/}
+            {/*>*/}
+            {/*  {this.props.submitButtonText? this.props.submitButtonText : 'Submit'}*/}
+            {/*</Button>*/}
           </table>
         </MediumForm>
     );

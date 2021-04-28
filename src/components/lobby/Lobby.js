@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import {HorizontalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
 import Form from "../general/Form";
+import {Button} from "../../views/design/Interaction";
 
 class Lobby extends React.Component {
     constructor(props) {
@@ -69,6 +70,7 @@ class Lobby extends React.Component {
             // send request
             const response = await api.put(url, requestBody, config);
             console.log(response);
+            this.props.history.push('/')
 
         } catch (error) {
             alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
@@ -92,8 +94,10 @@ class Lobby extends React.Component {
             <HorizontalBox>
                 <div>
                     {this.gameSettings()}
+
                 </div>
                 {/* ready button */}
+
             </HorizontalBox>
         );
     }
@@ -142,6 +146,8 @@ class Lobby extends React.Component {
             onSubmit={() => this.sendReady()}
             cancelButtonText='Leave'
             onCancel={() => this.leave()}
+            //onStart={() => this.}
+            //startButtonText='Start the game'
         />
     }
 

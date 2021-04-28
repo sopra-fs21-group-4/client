@@ -73,6 +73,9 @@ const InputField = styled.input`
   color: black;
 `;
 
+const BackButton = styled(Button)({
+    margin: 'auto',
+})
 
 const Form = styled.div`
   display: flex;
@@ -153,7 +156,9 @@ class UserProfile extends React.Component {
         this.setState({ [key]: value });
     }
 
-
+    goBack(){
+        this.props.history.push('/');
+    }
     async updateProfile() {
             var everyThingsFine = true;
         const requestBody = JSON.stringify({
@@ -210,14 +215,24 @@ class UserProfile extends React.Component {
                                 (sessionStorage.getItem("userId") == this.state.userId)? (
 
                                     <Button
+                                        margin="auto"
                                         width="120px"
                                         onClick={() => {this.showModal();}}
                                     >
                                         Edit
                                     </Button>
                                 ) : (<div/>)
+
+
                             }
 
+                            <BackButton
+
+                                width="120px"
+                                onClick={() => {this.goBack();}}
+                            >
+                                Back
+                            </BackButton>
                         </HeaderContainer>
 
                         <div>
