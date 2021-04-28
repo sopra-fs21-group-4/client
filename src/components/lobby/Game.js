@@ -3,7 +3,7 @@ import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import Lobby from "./Lobby";
 import Chat from "../chat/Chat";
-import { HorizontalBox } from "../../views/design/Containers";
+import {ConservativeBox, HorizontalBox} from "../../views/design/Containers";
 import { Label } from "../../views/design/Text";
 import { InputField } from "../../views/design/Interaction";
 import User from "../shared/models/User";
@@ -170,10 +170,10 @@ class Game extends React.Component {
     // TODO return right game UI dependent on game state
     switch (this.state.game.gameState) {
       case 'LOBBY':     return (<Lobby game={this.state.game} />);
-      case 'STARTING':  return <Spinner/>;  // TODO loading screen
+      case 'STARTING':  return <ConservativeBox><Spinner/></ConservativeBox>;  // TODO loading screen
       case 'PAUSED':
       case 'RUNNING':   return <GameRound game={this.state.game} players={this.state.players} />;
-      case 'AFTERMATH': return <Spinner/>;
+      case 'AFTERMATH': return <ConservativeBox><Spinner/></ConservativeBox>;
       default: throw "unknown game state!";
     }
   }

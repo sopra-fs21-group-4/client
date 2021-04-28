@@ -207,7 +207,7 @@ class UserProfile extends React.Component {
 
                             <Title>{this.props.match.params.username}'s profile</Title>
                             {
-                                (sessionStorage.getItem("userId") === this.state.userId)? (
+                                (sessionStorage.getItem("userId") == this.state.userId)? (
 
                                     <Button
                                         width="120px"
@@ -243,7 +243,7 @@ class UserProfile extends React.Component {
                                     </tr>
                                     <tr>
                                         <th>Current Lobby: </th>
-                                        <td>{this.state.user.currentLobby}</td>
+                                        <td>{this.state.user.currentGameId}</td>
                                     </tr>
                                 </Table>
                             )}

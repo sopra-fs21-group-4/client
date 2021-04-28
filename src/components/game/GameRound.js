@@ -3,12 +3,16 @@ import { api, handleError } from '../../helpers/api';
 import styled from 'styled-components';
 import { Spinner } from '../../views/design/Spinner';
 import { withRouter } from 'react-router-dom';
-import Lobby from "../lobby/Lobby";
-import Chat from "../chat/Chat";
-import {FlexBox, HorizontalBox, VerticalBox, VerticalList, VerticalScroller} from "../../views/design/Containers";
-import { BaseContainer } from '../../helpers/layout';
+import {
+    ConservativeBox,
+    HorizontalBox,
+    VerticalList,
+    VerticalScroller
+} from "../../views/design/Containers";
 import {Info, Label, Title} from "../../views/design/Text";
 import User from "../shared/models/User";
+import parseEmoji from "../../helpers/Emoji";
+import InputField from "../general/InputField";
 
 
 
@@ -17,7 +21,7 @@ const VoteButton = styled.button`
     transform: translateWidth(+5px);
   }
   padding: 6px;
-  margin: 5px;
+  margin-bottom: 10px;
   font-weight: 700;
   font-size: 13px;
   text-align: center;
@@ -48,24 +52,47 @@ class GameRound extends React.Component {
         }
     }
 
-    render() { // TODO scale image to max size, also display suggestions
+    async suggest() {
+        try {
+            let inputField = document.getElementById(`suggestionInput`);
+            // request setup
+            const url = `/games/${this.props.match.params.gameId}/suggest`;
+            const config = {
+                headers: User.getUserAuthentication()
+            }
+            const response = await api.put(url, inputField.value, config);
+            console.log(response);
+            inputField.value = "";    // reset input field
+
+        } catch (error) {
+            alert(`Something went wrong while suggesting: \n${handleError(error)}`);
+        }
+    }
+
+    render() {
         return (
-            <HorizontalBox>
-                <VerticalBox>
-                    <Title>{this.props.game.currentRoundTitle}</Title>
-                    <br/>
-                    <Label>{`${this.currentActivity()}`}</Label>
-                    <br/>
-                    <Info>{`time remaining: ${Math.round(this.props.game.currentCountdown / 1000)}`}</Info>
-                    <br/>
-                    <HorizontalBox>
-                        <img width='400px' src={this.props.game.currentMemeURL} />
-                        <VerticalScroller style={{paddingLeft: '30px'}}>
-                            {this.currentRoundPhaseInteractives()}
-                        </VerticalScroller>
-                    </HorizontalBox>
-                </VerticalBox>
-            </HorizontalBox>
+            <ConservativeBox
+                style={{padding: '10%'}}
+            >
+
+                <Title style={{
+                    textAlign: 'left',
+                    paddingLeft: '100px',
+                }}>
+                    {this.props.game.currentRoundTitle}
+                </Title>
+                <br/>
+                <HorizontalBox style={{justifyContent: 'left'}}>
+                    <img width='400px' src={this.props.game.currentMemeURL} />
+                    <VerticalScroller style={{paddingLeft: '30px', width: '400px'}}>
+                        <Label>{`${this.currentActivity()}`}</Label>
+                        <br/>
+                        <Info>{`time remaining: ${Math.round(this.props.game.currentCountdown / 1000)}`}</Info>
+                        <br/>
+                        {this.currentRoundPhaseInteractive()}
+                    </VerticalScroller>
+                </HorizontalBox>
+            </ConservativeBox>
         );
     }
 
@@ -79,18 +106,33 @@ class GameRound extends React.Component {
         }
     }
 
-    currentRoundPhaseInteractives() {
+    currentRoundPhaseInteractive() {
         let game = this.props.game;
         switch (game.currentRoundPhase) {
             case 'STARTING':    return null;
-            case 'SUGGEST':     return null;    // TODO input field
-            case 'VOTE':        return this.voteButtonList();
-            case 'AFTERMATH':   return this.resultsList();
+            case 'SUGGEST':     return this.suggestionInteractive();
+            case 'VOTE':        return this.voteInteractive();
+            case 'AFTERMATH':   return this.aftermathInteractive();
             default: return <Spinner />;
         }
     }
 
-    voteButtonList() {
+    suggestionInteractive() {
+        let currentSuggestion = this.props.game.currentSuggestions[User.getAttribute('userId')];
+        return <VerticalList >
+            <Label>{currentSuggestion? currentSuggestion : 'what title would you suggest?'}</Label>
+            <div>
+                <InputField
+                    id={`suggestionInput`}
+                    submitAction={() => this.suggest()}
+                    // submitButtonText='Suggest' // too long
+                    textFilters={[parseEmoji]}
+                />
+            </div>
+        </VerticalList>
+    }
+
+    voteInteractive() {
         return <VerticalList>
             {this.props.players.map(player => {
                 return <VoteButton
@@ -103,7 +145,7 @@ class GameRound extends React.Component {
         </VerticalList>
     }
 
-    resultsList() {
+    aftermathInteractive() {
         return <VerticalList>
             <Label>Scores:</Label>
             {this.props.players.map(player => {

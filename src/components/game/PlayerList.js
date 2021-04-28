@@ -9,8 +9,7 @@ import User from "../shared/models/User";
 import {Info, Label} from "../../views/design/Text";
 
 /**
- * TODO there's probably more to add here
- * TODO cannot push to history. probably needs to be an object instead of a function.
+ * TODO there's probably more to add here (friend requests maybe)
  */
 class PlayerList extends React.Component {
 

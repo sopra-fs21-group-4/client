@@ -38,8 +38,45 @@ class Lobby extends React.Component {
         }
     }
 
+    async sendReady() {
+        try {
+            // request setup
+            const url = `/games/${this.props.match.params['gameId']}/ready`;
+            const requestBody = this.isReady()? 'false' : 'true';
+            const config = {headers: User.getUserAuthentication()};
+
+            // send request
+            const response = await api.put(url, requestBody, config);
+            console.log(response);
+
+        } catch (error) {
+            alert(`Something went wrong while setting you ready: \n${handleError(error)}`);
+        }
+    }
+
+    async leave() {
+        try {
+            // request setup
+            const url = `/games/${this.props.match.params['gameId']}/leave`;
+            const requestBody = "";
+            const config = {headers: User.getUserAuthentication()};
+
+            // send request
+            const response = await api.put(url, requestBody, config);
+            console.log(response);
+
+        } catch (error) {
+            alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
+        }
+    }
+
     isGameMaster() {
-        return User.getAttribute('username') == this.props.game['gameMasterName'];
+        return User.getAttribute('userId') == this.props.game['gameMaster'];
+    }
+
+    isReady() {
+        let playerState = this.props.game.playerStates[User.getAttribute('userId')];
+        return playerState == 'READY' || playerState == 'GM_READY';
     }
 
     render() {
@@ -88,10 +125,12 @@ class Lobby extends React.Component {
         return <Form
             title='Game Settings'
             attributes={[general, subreddit, memeType, totalRounds, timers, namingTime, votingTime, resultsTime]}
-            withoutSubmitButton='true'
-            withoutCancelButton='true'
             listener={this}
             initialState={{generalCollapsed: true, timersCollapsed: true}}
+            submitButtonText={this.isReady()? "Hold on.." : "I'm ready"}
+            onSubmit={() => this.sendReady()}
+            cancelButtonText='Leave'
+            onCancel={() => this.leave()}
         />
     }
 

@@ -67,7 +67,7 @@ class Form extends React.Component {
                         onClick={this.props['onCancel']}
                         { ...this.props['cancelButtonProps'] }
                     >
-                      Cancel
+                      {this.props.cancelButtonText? this.props.cancelButtonText : 'Cancel'}
                     </Button>}
               </Cell>
               <Cell>
@@ -78,7 +78,7 @@ class Form extends React.Component {
                     disabled={this.props['submitCondition']? !this.props['submitCondition']() : this.nextRequired()}
                     { ...this.props['submitButtonProps'] }
                 >
-                  Submit
+                  {this.props.submitButtonText? this.props.submitButtonText : 'Submit'}
                 </Button>}
               </Cell>
             </Row>
