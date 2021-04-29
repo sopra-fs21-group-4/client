@@ -12,7 +12,7 @@ import Lobby from "../../lobby/LobbyOld";
 import Game from "../../lobby/Game";
 import GameSetup from "../../lobby/GameSetup";
 import GameList from "../../lobby/GameList";
-import GameRoundSummary from "../../lobby/GameRoundSummary";
+import GameSummary from "../../lobby/GameSummary";
 
 
 /**
@@ -121,7 +121,7 @@ class AppRouter extends React.Component {
                 path="/RoundSummary"
                 render={() => (
 
-                        <GameRoundSummary  /> //updateLoop={this.props.updateLoop} this was inside
+                        <GameSummary  /> //updateLoop={this.props.updateLoop} this was inside
 
                 )}
             />

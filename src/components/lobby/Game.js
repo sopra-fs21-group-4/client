@@ -11,6 +11,7 @@ import {Spinner} from "../../views/design/Spinner";
 import GameRound from "../game/GameRound";
 import ExpandableVBox from "../../views/design/ExpandableVBox";
 import PlayerList from "../game/PlayerList";
+import GameSummary from "./GameSummary";
 
 class Game extends React.Component {
   constructor() {
@@ -215,7 +216,7 @@ class Game extends React.Component {
       case 'STARTING':  return <ConservativeBox><Spinner/></ConservativeBox>;  // TODO loading screen
       case 'PAUSED':
       case 'RUNNING':   return <GameRound game={this.state.game} players={this.state.players} />;
-      case 'AFTERMATH': return <ConservativeBox><Spinner/></ConservativeBox>;
+      case 'AFTERMATH': return <GameSummary game={this.state.game} players={this.state.players} />; //<ConservativeBox><Spinner/></ConservativeBox>;
       default: throw "unknown game state!";
     }
   }

@@ -43,3 +43,13 @@ export const FlexBox = styled.div`
   justify-content: right;
 `;
 
+export const Leaderboard = styled.div`
+
+
+
+
+`;
+
+
+
+
