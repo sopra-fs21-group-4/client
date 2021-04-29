@@ -147,7 +147,7 @@ class GameRound extends React.Component {
                     {`${this.props.game.currentSuggestions[player.userId]}`}</VoteButton>
                 : null);
             })).sort(function(a,b){
-                if(!a&&b){return 1}
+                if(!(a&&b)){return 1}
                     if (a.props.children>b.props.children){return 1}
                     else {return -1}
             })}

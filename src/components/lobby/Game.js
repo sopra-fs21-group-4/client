@@ -3,9 +3,9 @@ import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import Lobby from "./Lobby";
 import Chat from "../chat/Chat";
-import {ConservativeBox, HorizontalBox} from "../../views/design/Containers";
-import { Label } from "../../views/design/Text";
-import { InputField } from "../../views/design/Interaction";
+import {ConservativeBox, HorizontalBox, VerticalBox} from "../../views/design/Containers";
+import { Label, Title } from "../../views/design/Text";
+import {Button, InputField} from "../../views/design/Interaction";
 import User from "../shared/models/User";
 import {Spinner} from "../../views/design/Spinner";
 import GameRound from "../game/GameRound";
@@ -76,6 +76,8 @@ class Game extends React.Component {
       case 201: // 201: CREATED
         this.fetchGameData();
         break;
+      case 401: // 401: UNAUTHORIZED
+        break;
       case 404: // 404: NOT_FOUND
         break;
       default: this.tryJoin();
@@ -139,14 +141,43 @@ class Game extends React.Component {
         );
       case 401: // 401: UNAUTHORIZED
         return (
-          <div>
-            <Label>
-              This lobby seems to be password protected.
+          <VerticalBox
+          style={{
+            paddingLeft: '10%',
+              paddingRight: '10%',
+          }}
+          >
+            <Label
+                style={{
+                    fontSize: '20px',
+                    height: '80px',
+                    textAlign: 'left',
+                    paddingLeft: '10px',
+                }}>
+                This lobby seems to be password protected.
             </Label>
-            <InputField onChange={e => {
+              <div style={{ margin: "10px",}}>
+                <Label>
+                    Please enter the password:
+                </Label>
+              </div>
+            <InputField
+                placeholder={"Enter password here.."}
+                onChange={e => {
               this.setState({password: e.target.value})
             }} />
-          </div>
+            <Button
+                style={{
+                    size: '100px',
+                    margin: "10px",
+                    paddingLeft: '50px',
+                    paddingRight: '50px',
+                    textAlign: 'center',
+                }}
+                onClick={e => this.tryJoin()}
+            >  Join  </Button>
+
+          </VerticalBox>
         );
       case 404: // 404: NOT_FOUND
         return (
