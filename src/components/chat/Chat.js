@@ -48,7 +48,7 @@ class Chat extends React.Component {
         if (!this.props.chatId) return;
         try {
             const response = await api.get(`/chat/${this.props.chatId}`);
-            console.log(response);
+            //console.log(response);
             this.setState({ messages: response.data });
         } catch (error) {
             alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);

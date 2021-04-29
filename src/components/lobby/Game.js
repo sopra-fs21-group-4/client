@@ -52,13 +52,13 @@ class Game extends React.Component {
       const config = { headers: User.getUserAuthentication() };
 
       const gameResponse = await api.get(url, config);
-      console.log(gameResponse);
+      //console.log(gameResponse);
       this.setState({
         game: gameResponse.data,
         status: gameResponse.status,
       });
       const players = await api.get(`/users`, { headers:{ userIds: this.state.game.players } });
-      console.log(players);
+      //console.log(players);
       this.setState({players: players.data});
     } catch (error) {
       // the component will react accordingly when we update the status

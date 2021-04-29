@@ -123,7 +123,7 @@ class GameRound extends React.Component {
     suggestionInteractive() {
         let currentSuggestion = this.props.game.currentSuggestions[User.getAttribute('userId')];
         return <VerticalList >
-            <Label>{currentSuggestion? currentSuggestion : 'what title would you suggest?'}</Label>
+            <Label>{currentSuggestion? "Suggestion: " + currentSuggestion : 'What title would you suggest?'}</Label>
             <div>
                 <InputField
                     id={`suggestionInput`}
@@ -134,21 +134,26 @@ class GameRound extends React.Component {
             </div>
         </VerticalList>
     }
-
+    // i took out the name of the player so you dont know who you vote for, old: ${player.username}:
+    // buttons are sorted alphabetically so you dont know whose title you are voting for
     voteInteractive() {
         return <VerticalList>
-            {this.props.players.map(player => {
+            {(this.props.players.map(player => {
                 return (this.props.game.currentSuggestions[player.userId]? <VoteButton
                     disabled={player.userId == User.getAttribute('userId')}
                     onClick={e => this.vote(player)}
                     style={{background: (this.props.game.currentVotes[User.getAttribute('userId')] == player.userId)? '#a59aed' : '#9aeced'}}
                 >
-                    {`${player.username}: ${this.props.game.currentSuggestions[player.userId]}`}</VoteButton>
+                    {`${this.props.game.currentSuggestions[player.userId]}`}</VoteButton>
                 : null);
+            })).sort(function(a,b){
+                if(!a&&b){return 1}
+                    if (a.props.children>b.props.children){return 1}
+                    else {return -1}
             })}
         </VerticalList>
     }
-
+    // TODO remove 🅱 and replace with meaningful text
     aftermathInteractive() {
         let game = this.props.game;
         let players = this.props.players.slice();
