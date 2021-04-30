@@ -21,51 +21,39 @@ class Lobby extends React.Component {
             maxSuggestSeconds: 25,
             maxVoteSeconds: 20,
             maxAftermathSeconds: 10,
-            REDDIT_ACCESS_TOKEN_URL: 'https://www.reddit.com/api/v1/access_token',
-            APP_ONLY_GRANT_TYPE: 'https://oauth.reddit.com/grants/installed_client',
-            REDDIT_CLIENT_ID: "0Fr36RPWNt-F3g",
-            REDDIT_CLIENT_SECRET: "hWLk6igtgRKUxN5S7AzKZNbRcRotUQ",
-            accessToken: null,
         };
     }
 
     async createGame() {
         try {
-            console.log("REEEEEEEEEEEE")
-            // Creating Body for the POST request which are URL encoded
-            const params = new URLSearchParams()
-            params.append('grant_type', 'APP_ONLY_GRANT_TYPE')
-            params.append('device_id', 'DO_NOT_TRACK_THIS_DEVICE')
 
-            // Trigger POST to get the access token
-            const tokenData = await redditApi.post(this.state.REDDIT_ACCESS_TOKEN_URL, {
-                body: params,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': `Basic ${Buffer.from(`${this.state.REDDIT_CLIENT_ID}:`).toString('base64')}`, // Put password as empty
-                    'Code': this.state.REDDIT_CLIENT_SECRET,
+
+            const redditurl = `https://reddit.com/r/${this.state.subreddit}/${this.state.memeType.toLowerCase()}.json?sort=${this.state.memeType.toLowerCase()}&limit=100`
+            const data = await redditApi.get(redditurl)
+
+
+            let children = data.data.data.children
+            console.log(children)
+
+            // if(children.size() < this.state.totalRounds){
+            //     //todo error
+            // }
+
+            let urls = []
+            for(let child of children){
+                if(child.data.url.includes(".jpg") || child.data.url.includes(".png") || child.data.url.includes(".gif")){ //
+                    urls.push(child.data.url)
                 }
-            }).then(res => res.json())
-
-            console.log(tokenData);
-
-            if (!tokenData.error) {
-                // Fetch Reddit data by passing in the access_token
-                const url = `https://oauth.reddit.com/r/${this.state.subredit}/${this.state.memeType}`
-                const trendData = await redditApi.get(url, {
-                    headers: {
-                        Authorization: `Bearer ${tokenData.accessToken}`
-                    }
-                })
-
-                // Finding just the link of the post
-                console.log(trendData);
             }
 
-        } catch (error) {
-            console.log(error)
-        }
-        try {
+
+            console.log(urls)
+
+
+        // } catch (error) {
+        //     console.log(error)
+        // }
+        // try {
  
             // request setup
             const url = `/games/create`;
@@ -75,7 +63,7 @@ class Lobby extends React.Component {
                 memeType: this.state.memeType,
                 password: this.state.password,
                 maxPlayers: this.state.maxPlayers,
-                totalRounds: this.state.totalRounds,
+                memeURLs: urls,
                 maxSuggestSeconds: this.state.maxSuggestSeconds,
                 maxVoteSeconds: this.state.maxVoteSeconds,
                 maxAftermathSeconds: this.state.maxAftermathSeconds,
