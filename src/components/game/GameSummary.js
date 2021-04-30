@@ -1,18 +1,11 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
-import styled from 'styled-components';
 import { Spinner } from '../../views/design/Spinner';
 import { withRouter } from 'react-router-dom';
-import {
-    HorizontalBox, VerticalBox,
-    VerticalList,
-    VerticalScroller
-} from "../../views/design/Containers";
-import {Info, Label, Title} from "../../views/design/Text";
+import { VerticalList } from "../../views/design/Containers";
+import {Title} from "../../views/design/Text";
 import User from "../shared/models/User";
-import parseEmoji from "../../helpers/Emoji";
-import InputField from "../general/InputField";
-import GameRoundSummary from "../lobby/GameRoundSummary";
+import GameRoundSummary from "../game/GameRoundSummary";
 
 class GameSummary extends React.Component {
     constructor(props) {
