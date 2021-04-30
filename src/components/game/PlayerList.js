@@ -44,11 +44,11 @@ class PlayerList extends React.Component {
         return User.getAttribute('userId') == this.props.game['gameMaster'];
     }
 
-    async banPlayer(game, nameofbannedplayer){
+    async banPlayer(game, user){
         try {
             // request setup
             const url = `/games/${game.gameId}/ban`;
-            const requestBody = nameofbannedplayer;
+            const requestBody = user.userId;
             const config = {headers: User.getUserAuthentication()};
 
             // send request
@@ -107,7 +107,7 @@ class PlayerList extends React.Component {
                                 {this.isGameMaster() && (user.userId != User.getAttribute('userId'))?(
 
                                     <ButtonBan onClick={() => {
-                                        this.banPlayer(game, user.username);
+                                        this.banPlayer(game, user);
                                     }}>
                                         Ban
                                     </ButtonBan>
