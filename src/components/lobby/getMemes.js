@@ -8,61 +8,65 @@
             clientSecret: "hWLk6igtgRKUxN5S7AzKZNbRcRotUQ",
             endpointDomain: "reddit.com",
 */
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 
-var express = require('express')
-const { URLSearchParams } = require('url')
-var router = express.Router()
-const fetch = require('node-fetch')
+class getMemes extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            REDDIT_ACCESS_TOKEN_URL: 'https://www.reddit.com/api/v1/access_token',
+            APP_ONLY_GRANT_TYPE: 'https://oauth.reddit.com/grants/installed_client',
+            REDDIT_CLIENT_ID: "0Fr36RPWNt-F3g",
+            accessToken: null,
+        };
+    }
 
-const REDDIT_ACCESS_TOKEN_URL = 'https://www.reddit.com/api/v1/access_token'
-const APP_ONLY_GRANT_TYPE = 'https://oauth.reddit.com/grants/installed_client'
-
-const fetchRedditTrendingData = (sub, param, accessToken) =>
-    fetch(`https://oauth.reddit.com/r/${sub}/${param}`, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`
-        }
-    }).then(data => data.json())
 
     /**
-     * Authenicates and fetches the memes
+     * Authenicates and calls fetch
      * @param {*} subbredit  DEFAULT r/memes
      * @param {*} param DEFAULT rising
      * @param {*} amount DEFAULT 100
-     * @param {*} res no fucking clue what the fuck this is but idc pr
      */
-export const getMemes = (subbredit = "memes", param = "rising", amount = 100) =>{
-    const REDDIT_CLIENT_ID = "0Fr36RPWNt-F3g"
+    async getMemes(subredit = "memes", param = "rising", amount = 100) {
+        console.log("Please just work  ");
+        try {
+            // Creating Body for the POST request which are URL encoded
+            const params = new URLSearchParams()
+            params.append('grant_type', 'APP_ONLY_GRANT_TYPE')
+            params.append('device_id', 'DO_NOT_TRACK_THIS_DEVICE')
 
-    try {
-        // Creating Body for the POST request which are URL encoded
-        const params = new URLSearchParams()
-        params.append('grant_type', APP_ONLY_GRANT_TYPE)
-        params.append('device_id', 'DO_NOT_TRACK_THIS_DEVICE')
+            // Trigger POST to get the access token
+            const tokenData = await fetch(this.REDDIT_ACCESS_TOKEN_URL, {
+                method: 'POST',
+                body: params,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': `Basic ${Buffer.from(`${this.REDDIT_CLIENT_ID}:`).toString('base64')}` // Put password as empty
+                }
+            }).then(res => res.json())
 
-        // Trigger POST to get the access token
-        const tokenData = await fetch(REDDIT_ACCESS_TOKEN_URL, {
-            method: 'POST',
-            body: params,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': `Basic ${Buffer.from(`${REDDIT_CLIENT_ID}:`).toString('base64')}` // Put password as empty
+            console.log(tokenData);
+
+            if (!tokenData.error) {
+                // Fetch Reddit data by passing in the access_token
+                const url = `https://oauth.reddit.com/r/${subredit}/${param}`
+                const trendData = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${this.accessToken}`
+                    }
+                })
+
+                // Finding just the link of the post
+                console.log(trendData);
+                return trendData;
             }
-        }).then(res => res.json())
 
-        if (!tokenData.error) {
-            // Fetch Reddit data by passing in the access_token
-            const trendData = await fetchRedditTrendingData(subbredit, param, tokenData.access_token)
-
-            // Finding just the title of the post
-            const trendingResult = trendData.data.children.map(
-                child => child.data.title
-            )
-
-            return trendingResult;
+        } catch (error) {
+            console.log(error)
         }
-    
-    } catch (error) {
-        console.log(error)
     }
 }
+export default withRouter(getMemes);
