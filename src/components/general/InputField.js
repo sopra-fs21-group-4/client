@@ -6,7 +6,7 @@ import { HorizontalBox } from "../../views/design/Containers";
 
 const Input = styled.input`
   width: 100%;
-  margin-right: 20px;
+  margin-right: 15px;
   padding-left: 15px;
   padding-right: 15px;
   border-radius: 6px;

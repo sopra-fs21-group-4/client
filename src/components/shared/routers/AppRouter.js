@@ -9,7 +9,7 @@ import ChatCreator from "../../chat/ChatCreator";
 import PageBar from "../../../views/pagebar/PageBar";
 import UserProfile from "../../user/UserProfile";
 import Lobby from "../../lobby/LobbyOld";
-import Game from "../../lobby/Game";
+import Game from "../../game/Game";
 import GameSetup from "../../lobby/GameSetup";
 import GameList from "../../lobby/GameList";
 import GameSummary from "../../lobby/GameSummary";

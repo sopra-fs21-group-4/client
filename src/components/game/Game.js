@@ -1,16 +1,17 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
-import Lobby from "./Lobby";
+import Lobby from "../lobby/Lobby";
 import Chat from "../chat/Chat";
 import {ConservativeBox, HorizontalBox, VerticalBox} from "../../views/design/Containers";
 import { Label, Title } from "../../views/design/Text";
 import {Button, InputField} from "../../views/design/Interaction";
 import User from "../shared/models/User";
 import {Spinner} from "../../views/design/Spinner";
-import GameRound from "../game/GameRound";
+import GameRound from "./GameRound";
 import ExpandableVBox from "../../views/design/ExpandableVBox";
-import PlayerList from "../game/PlayerList";
+import PlayerList from "./PlayerList";
+import GameSummary from "./GameSummary";
 import GameSummary from "./GameSummary";
 
 class Game extends React.Component {
@@ -182,9 +183,10 @@ class Game extends React.Component {
         );
       case 404: // 404: NOT_FOUND
         return (
-            <Label>
-              This game doesn't seem to exist.
-            </Label>
+            <GameSummary/>
+            // <Label>
+            //   This game doesn't seem to exist.
+            // </Label>
         );
       case 410: // 410: GONE
         return (

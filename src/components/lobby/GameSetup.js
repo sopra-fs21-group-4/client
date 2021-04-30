@@ -13,7 +13,7 @@ class Lobby extends React.Component {
         // setting default values
         this.state = {
             name: `${User.getAttribute('username')}'s game`,
-            subreddit: null,
+            subreddit: 'cats',
             memeType: 'HOT',
             password: null,
             maxPlayers: 6,

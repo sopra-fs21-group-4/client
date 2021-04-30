@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import {HorizontalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
 import Form from "../general/Form";
-import {Button} from "../../views/design/Interaction";
 
 class Lobby extends React.Component {
     constructor(props) {
@@ -24,7 +23,7 @@ class Lobby extends React.Component {
     async updateSettings() {
         try {
             // request setup
-            const url = `/games/${this.props.match.params['gameId']}/updateSettings`;
+            const url = `/games/${this.props.match.params['gameId']}/update`;
             const requestBody = JSON.stringify({
                 subreddit: this.state.subreddit,
                 memeType: this.state.memeType,
@@ -104,7 +103,6 @@ class Lobby extends React.Component {
 
     handleInputChange(key, value) {
         this.setState({[key]: value})
-        // TODO maybe dont send the settings at every step
         this.updateSettings()
     }
 
@@ -141,7 +139,9 @@ class Lobby extends React.Component {
             title='Game Settings'
             attributes={[subreddit, memeType, totalRounds, timers, namingTime, votingTime, resultsTime]}
             listener={this}
-            initialState={{timersCollapsed: true,...this.state}}
+            initialState={{
+                timersCollapsed: true,
+                ...this.state}}
             submitButtonText={this.isReady()? "Hold on.." : "I'm ready"}
             onSubmit={() => this.sendReady()}
             cancelButtonText='Leave'
