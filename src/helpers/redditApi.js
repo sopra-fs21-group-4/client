@@ -1,8 +1,13 @@
 import axios from 'axios';
+import {getClientDomain} from "./getDomain.js";
+
+// TODO NOT USED ANYMORE, TO BE DELETED
 
 export const redditApi = axios.create({
-  baseURL: "",
-  headers: { 'Content-Type': 'application/json' }
+  baseURL:   'https://reddit.com',   // getClientDomain,
+  headers: { 'Content-Type': 'application/json',
+  },
+
 });
 
 export const handleRedditError = error => {

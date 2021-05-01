@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import {HorizontalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
 import Form from "../general/Form";
-import {redditApi} from "../../helpers/redditApi";
+
 
 class Lobby extends React.Component {
     constructor(props) {
@@ -25,29 +25,40 @@ class Lobby extends React.Component {
     async updateSettings() {
         try {
 
-            // Reddit API here, getting posts from subreddit
-            const redditUrl = `https://reddit.com/r/${this.state.subreddit}/${this.state.memeType.toLowerCase()}.json?sort=${this.state.memeType.toLowerCase()}&limit=100`
-            const data = await redditApi.get(redditUrl)
-            // TODO error
-
-            let children = data.data.data.children
-            // console.log(children)
-
-            if(children.length < this.state.totalRounds){
-                //todo error
-                console.log("error, not enough memes")
-            }
-
-            let urls = []
-            for(let child of children){
-                if(child.data.url.includes(".jpg") || child.data.url.includes(".png") || child.data.url.includes(".gif")){ //
-                    urls.push(child.data.url)
-                }
-            }
-
-            // take the correct amount of memes
-            urls = urls.slice(0,this.state.totalRounds)
-            // console.log(urls)
+            // console.log("test")
+            // const getPosts = () => {
+            //     //if(!_.startsWith(window.location.protocol,"http"))
+            //     return redditApi(`/api/info.json?jsonp&url=${window.location.href}`)
+            //         .then((o)=>_.get(o, 'data.data.children', []).map(p=>p.data))
+            // };
+            // let test = await getPosts()
+            // console.log(test)
+            //
+            //
+            //
+            // // Reddit API here, getting posts from subreddit
+            // const redditUrl = `https://reddit.com/r/${this.state.subreddit}/${this.state.memeType.toLowerCase()}.json?sort=${this.state.memeType.toLowerCase()}&limit=100`
+            // const data = await redditApi.get(redditUrl            )
+            // // TODO error
+            //
+            // let children = data.data.data.children
+            // // console.log(children)
+            //
+            // if(children.length < this.state.totalRounds){
+            //     //todo error
+            //     console.log("error, not enough memes")
+            // }
+            //
+            // let urls = []
+            // for(let child of children){
+            //     if(child.data.url.includes(".jpg") || child.data.url.includes(".png") || child.data.url.includes(".gif")){ //
+            //         urls.push(child.data.url)
+            //     }
+            // }
+            //
+            // // take the correct amount of memes
+            // urls = urls.slice(0,this.state.totalRounds)
+            // // console.log(urls)
 
 
 
@@ -56,7 +67,7 @@ class Lobby extends React.Component {
             const requestBody = JSON.stringify({
                 subreddit: this.state.subreddit,
                 memeType: this.state.memeType,
-                memeURLs: urls,
+                // memeURLs: urls,
                 totalRounds: this.state.totalRounds,
                 maxSuggestSeconds: this.state.maxSuggestSeconds,
                 maxVoteSeconds: this.state.maxVoteSeconds,
