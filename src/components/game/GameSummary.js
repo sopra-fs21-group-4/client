@@ -31,7 +31,7 @@ class GameSummary extends React.Component {
     }
 
     render() {
-        if (!this.game) {
+        if (!this.state.game) {
             return <Spinner/>
         }
         return <VerticalList
@@ -43,9 +43,9 @@ class GameSummary extends React.Component {
                 textAlign: 'left',
                 width: '100px',
             }}>
-                {this.props.game.name}
+                {this.state.game.name}
             </Title>
-            {this.props.game.rounds.map(round => {
+            {this.state.game.rounds.map(round => {
                 return <GameRoundSummary round={round}/>
             })}
         </VerticalList>

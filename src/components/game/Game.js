@@ -55,7 +55,7 @@ class Game extends React.Component {
       const config = { headers: User.getUserAuthentication() };
 
       const gameResponse = await api.get(url, config);
-      //console.log(gameResponse);
+      console.log(gameResponse);
       this.setState({
         game: gameResponse.data,
         status: gameResponse.status,

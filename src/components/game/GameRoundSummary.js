@@ -41,7 +41,7 @@ class GameRoundSummary extends React.Component {
             <Label>Scores:</Label>
             {players.map(player => {
                 return <div>
-                    <Label>{`${round.suggestion[player]} (${player}): ${round.scores[player]}`}</Label>
+                    <Label>{`${round.suggestions[player]} (${player}): ${round.scores[player]}`}</Label>
                 </div>
             })}
         </VerticalList>
