@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import {ConservativeBox } from "../../views/design/Containers";
 import User from "../shared/models/User";
 import Form from "../general/Form";
-import GetMemes from "../lobby/getMemes";
+
 
 class Lobby extends React.Component {
     constructor() {
@@ -13,7 +13,7 @@ class Lobby extends React.Component {
         // setting default values
         this.state = {
             name: `${User.getAttribute('username')}'s game`,
-            subreddit: 'cats',
+            subreddit: 'memes',
             memeType: 'HOT',
             password: null,
             maxPlayers: 6,
@@ -28,33 +28,11 @@ class Lobby extends React.Component {
         try {
 
 
-            const redditurl = `https://reddit.com/r/${this.state.subreddit}/${this.state.memeType.toLowerCase()}.json?sort=${this.state.memeType.toLowerCase()}&limit=100`
-            const data = await redditApi.get(redditurl)
+
+            // temp values because totalrounds calculated from this... TODO ???
+            const tempURL = Array.from({length: this.state.totalRounds}, (x, i) => i);
 
 
-            let children = data.data.data.children
-            console.log(children)
-
-            // if(children.size() < this.state.totalRounds){
-            //     //todo error
-            // }
-
-            let urls = []
-            for(let child of children){
-                if(child.data.url.includes(".jpg") || child.data.url.includes(".png") || child.data.url.includes(".gif")){ //
-                    urls.push(child.data.url)
-                }
-            }
-
-
-            console.log(urls)
-
-
-        // } catch (error) {
-        //     console.log(error)
-        // }
-        // try {
- 
             // request setup
             const url = `/games/create`;
             const requestBody = JSON.stringify({
@@ -63,7 +41,7 @@ class Lobby extends React.Component {
                 memeType: this.state.memeType,
                 password: this.state.password,
                 maxPlayers: this.state.maxPlayers,
-                memeURLs: urls,
+                memeURLs: tempURL,
                 maxSuggestSeconds: this.state.maxSuggestSeconds,
                 maxVoteSeconds: this.state.maxVoteSeconds,
                 maxAftermathSeconds: this.state.maxAftermathSeconds,

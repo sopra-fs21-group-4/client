@@ -4,6 +4,7 @@ import {Button, InputField, LinkButton, Option, Select, Slider, SliderLabel} fro
 import {FlexBox, MediumForm, VerticalScroller} from "../../views/design/Containers";
 import {Error, Label, Title} from "../../views/design/Text";
 
+
 const Row = styled.tr`
     display: table-row;
 `;
@@ -58,7 +59,27 @@ class Form extends React.Component {
                   <Cell style={{paddingTop:'0'}}><Error style={{margin:'0'}}> {`*${this.nextRequired().label} required.`} </Error></Cell>
                 </Row>
                 : null}
+            {this.props['withApplyButton'] && this.props["isGamemaster"]? <Row>
+                  <Cell>
+                    <Button
+                        width='100%'
+                        onClick={this.props['onApply']}
+                        { ...this.props['applyButtonProps'] }
+                    >
+                      {this.props.applyButtonText? this.props.applyButtonText : 'Apply'}
+                    </Button>
+                  </Cell>
 
+                    {this.props["settingsUpdated"]?
+                        <Cell>
+                          <Label>Settings updated</Label>
+                        </Cell>
+                      :<Cell>
+                          <Label>settings not applied</Label>
+                      </Cell>}
+
+
+                </Row> : null}
             <Row>
               <Cell>
                 {this.props['withoutCancelButton']? null :
@@ -91,6 +112,7 @@ class Form extends React.Component {
             {/*  {this.props.submitButtonText? this.props.submitButtonText : 'Submit'}*/}
             {/*</Button>*/}
           </table>
+
         </MediumForm>
     );
   }

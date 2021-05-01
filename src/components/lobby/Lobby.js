@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import {HorizontalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
 import Form from "../general/Form";
+import {redditApi} from "../../helpers/redditApi";
 
 class Lobby extends React.Component {
     constructor(props) {
@@ -17,16 +18,45 @@ class Lobby extends React.Component {
             maxSuggestSeconds:this.props.game['maxSuggestSeconds'],
             maxVoteSeconds:this.props.game['maxVoteSeconds'],
             maxAftermathSeconds: this.props.game['maxAftermathSeconds'],
+            settingsUpdated: false,
         };
     }
 
     async updateSettings() {
         try {
+
+            // Reddit API here, getting posts from subreddit
+            const redditUrl = `https://reddit.com/r/${this.state.subreddit}/${this.state.memeType.toLowerCase()}.json?sort=${this.state.memeType.toLowerCase()}&limit=100`
+            const data = await redditApi.get(redditUrl)
+            // TODO error
+
+            let children = data.data.data.children
+            // console.log(children)
+
+            if(children.length < this.state.totalRounds){
+                //todo error
+                console.log("error, not enough memes")
+            }
+
+            let urls = []
+            for(let child of children){
+                if(child.data.url.includes(".jpg") || child.data.url.includes(".png") || child.data.url.includes(".gif")){ //
+                    urls.push(child.data.url)
+                }
+            }
+
+            // take the correct amount of memes
+            urls = urls.slice(0,this.state.totalRounds)
+            // console.log(urls)
+
+
+
             // request setup
             const url = `/games/${this.props.match.params['gameId']}/update`;
             const requestBody = JSON.stringify({
                 subreddit: this.state.subreddit,
                 memeType: this.state.memeType,
+                memeURLs: urls,
                 totalRounds: this.state.totalRounds,
                 maxSuggestSeconds: this.state.maxSuggestSeconds,
                 maxVoteSeconds: this.state.maxVoteSeconds,
@@ -38,6 +68,8 @@ class Lobby extends React.Component {
             const response = await api.put(url, requestBody, config);
             console.log(response);
 
+            this.setState({["settingsUpdated"]:true});
+
         } catch (error) {
             alert(`Something went wrong on updating the game settings: \n${handleError(error)}`);
         }
@@ -45,6 +77,13 @@ class Lobby extends React.Component {
 
     async sendReady() {
         try {
+
+            // check for applied settings
+            if(!this.state.settingsUpdated&&this.isGameMaster()&&!this.isReady()){
+                alert("please apply settings first")
+                return
+            }
+
             // request setup
             const url = `/games/${this.props.match.params['gameId']}/ready`;
             const requestBody = this.isReady()? 'false' : 'true';
@@ -85,6 +124,12 @@ class Lobby extends React.Component {
         return playerState == 'READY' || playerState == 'GM_READY';
     }
 
+    async update() {
+        if(!this.isGameMaster()){
+            // TODO update settings for all joined users when gamemaster updates them
+        }
+    }
+
     render() {
         // TODO game settings: update visuals (and states?) in the frontend
         // TODO better proportions for UserList (maybe also absolute position?)
@@ -103,7 +148,7 @@ class Lobby extends React.Component {
 
     handleInputChange(key, value) {
         this.setState({[key]: value})
-        this.updateSettings()
+        this.setState({["settingsUpdated"]:false})
     }
 
     gameSettings() {
@@ -146,8 +191,15 @@ class Lobby extends React.Component {
             onSubmit={() => this.sendReady()}
             cancelButtonText='Leave'
             onCancel={() => this.leave()}
-            //onStart={() => this.}
-            //startButtonText='Start the game'
+
+
+
+            withApplyButton={true}
+            settingsUpdated={this.state.settingsUpdated}
+            isGamemaster={this.isGameMaster()}
+            applyButtonText='apply settings'
+            onApply={() => this.updateSettings()}
+
         />
     }
 

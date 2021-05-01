@@ -25,6 +25,7 @@ class Game extends React.Component {
 
   async tryJoin() {
     try {
+
       // request setup
       const url = `/games/${this.props.match.params.gameId}/join`;
       const config = {
@@ -34,7 +35,7 @@ class Game extends React.Component {
         }
       };
       const response = await api.put(url, "", config);
-      console.log(response);
+      //console.log(response);
 
       this.setState({
         game: response.data,
@@ -43,6 +44,7 @@ class Game extends React.Component {
     } catch (error) {
       // the component will react accordingly when we update the status
       this.setState({status: error.response.status});
+      alert("Invalid password, try again")
     }
   }
 
@@ -53,13 +55,13 @@ class Game extends React.Component {
       const config = { headers: User.getUserAuthentication() };
 
       const gameResponse = await api.get(url, config);
-      console.log(gameResponse);
+      //console.log(gameResponse);
       this.setState({
         game: gameResponse.data,
         status: gameResponse.status,
       });
       const players = await api.get(`/users`, { headers:{ userIds: this.state.game.players } });
-      console.log(players.data);
+      //console.log(players.data);
       this.setState({players: players.data});
     } catch (error) {
       // the component will react accordingly when we update the status
@@ -86,6 +88,7 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
+      this.tryJoin();
     this.props.updateLoop.addClient(this);
   }
 
