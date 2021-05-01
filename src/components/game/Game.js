@@ -216,7 +216,7 @@ class Game extends React.Component {
   currentGameStateUI() {
     // TODO return right game UI dependent on game state
     switch (this.state.game.gameState) {
-      case 'LOBBY':     return (<Lobby game={this.state.game} />);
+      case 'LOBBY':     return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
       case 'STARTING':  return <ConservativeBox><Spinner/></ConservativeBox>;  // TODO loading screen
       case 'PAUSED':
       case 'RUNNING':   return <GameRound game={this.state.game} players={this.state.players} />;

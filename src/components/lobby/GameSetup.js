@@ -82,7 +82,7 @@ class Lobby extends React.Component {
                         { label: 'Meme Type', key: 'memeType', type: 'Select',
                             options: [
                                 {name:'Hot',value:'HOT'},
-                                {name:'Random',value:'RANDOM'},
+                                {name:'New',value:'NEW'},
                                 {name:'Rising',value:'RISING'},
                                 {name:'Top',value:'TOP'}],
                             props:{} },

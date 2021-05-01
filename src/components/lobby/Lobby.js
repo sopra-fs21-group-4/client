@@ -22,6 +22,14 @@ class Lobby extends React.Component {
         };
     }
 
+    async componentDidMount() {
+        this.props.updateLoop.addClient(this);
+    }
+
+    async componentWillUnmount() {
+        this.props.updateLoop.removeClient(this);
+    }
+
     async updateSettings() {
         try {
 
@@ -67,7 +75,6 @@ class Lobby extends React.Component {
             const requestBody = JSON.stringify({
                 subreddit: this.state.subreddit,
                 memeType: this.state.memeType,
-                // memeURLs: urls,
                 totalRounds: this.state.totalRounds,
                 maxSuggestSeconds: this.state.maxSuggestSeconds,
                 maxVoteSeconds: this.state.maxVoteSeconds,
@@ -137,7 +144,15 @@ class Lobby extends React.Component {
 
     async update() {
         if(!this.isGameMaster()){
-            // TODO update settings for all joined users when gamemaster updates them
+            // TODO update settings for all joined users when gamemaster updates them TEST
+            this.setState({
+                subreddit: this.props.game['subreddit'],
+                memeType: this.props.game['memeType'],
+                totalRounds: this.props.game['totalRounds'],
+                maxSuggestSeconds:this.props.game['maxSuggestSeconds'],
+                maxVoteSeconds:this.props.game['maxVoteSeconds'],
+                maxAftermathSeconds: this.props.game['maxAftermathSeconds'],
+            });
         }
     }
 
@@ -172,7 +187,7 @@ class Lobby extends React.Component {
         const memeType = { label: 'Meme Type', key: 'memeType', type: 'Select',
             options: [
                 {name:'Hot',value:'HOT'},
-                {name:'Random',value:'RANDOM'},
+                {name:'New',value:'NEW'},
                 {name:'Rising',value:'RISING'},
                 {name:'Top',value:'TOP'}],
             props:{defaultValue: this.props.game['memeType'], disabled: !this.isGameMaster()} };
