@@ -116,15 +116,7 @@ class AppRouter extends React.Component {
                     </GuestGuard>
                 )}
             />
-            <Route
-                exact
-                path="/RoundSummary"
-                render={() => (
 
-                        <GameSummary  /> //updateLoop={this.props.updateLoop} this was inside
-
-                )}
-            />
 
             <Route path="/" exact render={() => <Redirect to={"/dashboard"} />} />
         </Switch>
