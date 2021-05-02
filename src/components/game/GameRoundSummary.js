@@ -26,7 +26,7 @@ class GameRoundSummary extends React.Component {
                 {this.props.round.title}
             </Label>
 
-            <img height='150px' src={this.props.round.memeURL} />
+            <img height='400px' src={this.props.round.memeURL} />
 
             <VerticalScroller style={{paddingLeft: '30px', width: '400px'}}>
                 {this.suggestionList()}

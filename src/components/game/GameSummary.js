@@ -2,7 +2,7 @@ import React from 'react';
 import { api, handleError } from '../../helpers/api';
 import { Spinner } from '../../views/design/Spinner';
 import { withRouter } from 'react-router-dom';
-import { VerticalList } from "../../views/design/Containers";
+import {VerticalList, VerticalScroller} from "../../views/design/Containers";
 import {Title} from "../../views/design/Text";
 import User from "../shared/models/User";
 import GameRoundSummary from "../game/GameRoundSummary";
@@ -85,9 +85,11 @@ class GameSummary extends React.Component {
             }}>
                 {this.state.game.name}
             </Title>
-            {this.state.game.rounds.map(round => {
-                return <GameRoundSummary round={round}/>
-            })}
+            <VerticalScroller>
+                {this.state.game.rounds.map(round => {
+                    return <GameRoundSummary round={round}/>
+                })}
+            </VerticalScroller>
             <ButtonLogin
                 role="button"
 

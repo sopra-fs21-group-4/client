@@ -47,7 +47,7 @@ export const LinkButton = styled.button`
   font-weight: 700;
   font-size: 13px;
   color: #8888ff;
-  background: #ffffffff;
+  background: #00000000;
   border: none;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
