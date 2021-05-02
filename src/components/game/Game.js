@@ -83,6 +83,8 @@ class Game extends React.Component {
         break;
       case 404: // 404: NOT_FOUND
         break;
+        case 423: //423: BANNED
+            break;
       default: this.tryJoin();
     }
   }
@@ -99,6 +101,7 @@ class Game extends React.Component {
   render() {
     switch(this.state.status) {
       case 200: // 200: OK
+
         return (
             <HorizontalBox
                 style={{
@@ -109,6 +112,7 @@ class Game extends React.Component {
                   width: '100%',
                 }}
             >
+
               {this.currentGameStateUI()}
               <ExpandableVBox
                 style={{
@@ -185,7 +189,8 @@ class Game extends React.Component {
         );
       case 404: // 404: NOT_FOUND
         return (
-            <GameSummary/>
+            <GameSummary />
+
             // <Label>
             //   This game doesn't seem to exist.
             // </Label>
@@ -195,6 +200,7 @@ class Game extends React.Component {
             <Label>
               This game is over. What are you still doing here?
             </Label>
+
         );
       case 422: // 422: UNPROCESSABLE_ENTITY
         return (
@@ -207,6 +213,7 @@ class Game extends React.Component {
             <Label>
               You have been banned from this game.
             </Label>
+
         );
 
       default: return null;
