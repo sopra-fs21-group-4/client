@@ -230,15 +230,14 @@ class Login extends React.Component {
             </ButtonRegister>
               </ButtonContainer>
           </Form>
-
         <Modal show={this.state.showImage} handleClose={this.hideModal}>
 
 
           <div style={{display: this.state.showImage ? "block" : "none"}}>
-        <img className={title.bestmemes} src={doge} alt={"such meme"} />
+            <img className={title.bestmemes} src={doge} alt={"such meme"} />
 
-      </div>
-      </Modal>
+          </div>
+        </Modal>
       </BaseContainer>
 
     );
