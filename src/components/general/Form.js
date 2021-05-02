@@ -18,6 +18,17 @@ const Cell = styled.td`
     padding-bottom: 5px;
 `;
 
+const SettingsLabel = styled.h2`
+    font-size: 16px;
+    color: #666666;
+    display: table-cell;
+    horizontal-align: center;
+    vertical-align: middle;
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
+`;
+
 class Form extends React.Component {
   constructor(props) {
     super(props);
@@ -37,6 +48,17 @@ class Form extends React.Component {
       if (attribute.required && !this.state[attribute.key]) return attribute;
     }
     return null;
+  }
+
+  componentDidUpdate(props, current_state) {
+    if(!this.props["isGamemaster"] && this.props['withApplyButton']){
+      for(let attr of this.props.attributes){
+        if (current_state[attr.key] !== props.listener.props.game[attr.key]) {
+          this.setState({[attr.key]:props.listener.props.game[attr.key]})
+        }
+      }
+    }
+    return null
   }
 
   render() {
@@ -65,6 +87,7 @@ class Form extends React.Component {
                         width='100%'
                         onClick={this.props['onApply']}
                         { ...this.props['applyButtonProps'] }
+                        disabled={this.props["settingsUpdated"]}
                     >
                       {this.props.applyButtonText? this.props.applyButtonText : 'Apply'}
                     </Button>
@@ -72,10 +95,11 @@ class Form extends React.Component {
 
                     {this.props["settingsUpdated"]?
                         <Cell>
-                          <Label>Settings updated</Label>
+                          <SettingsLabel
+                              style={{text_align: "center"}}>Settings updated</SettingsLabel>
                         </Cell>
                       :<Cell>
-                          <Label>settings not applied</Label>
+                          <SettingsLabel>Settings not applied</SettingsLabel>
                       </Cell>}
 
 
@@ -134,6 +158,7 @@ class Form extends React.Component {
               defaultValue={this.state[attribute.key]}
               onChange={e => {this.handleInputChange(attribute.key, e.target.value)}}
               { ...attribute.props }
+
           />
           <SliderLabel>
             { this.state[attribute.key] }
