@@ -34,6 +34,23 @@ const ButtonLogin = styled.button`
   
 `;
 
+const Scoreboard = styled.div` {
+    background: #333;
+    width: 700px;
+    margin: 70px auto;
+    box-shadow: 0 4px 0px #333;
+    border-radius: 15px;
+
+}`
+
+const Player = styled.div` {
+    display: flex;
+    font-size: 1.2em;
+    border-bottom: solid 2px #444;
+    letter-spacing: 2px;
+}`
+
+
 class GameSummary extends React.Component {
 
 
@@ -58,15 +75,16 @@ class GameSummary extends React.Component {
     }
     aftermathInteractive() {
         let game = this.props.game;
+
         let players = this.props.players.slice();
         players.sort((a,b) => {return game.scores[b.userId] - game.scores[a.userId]});
         return <BaseContainer>Scores:
             {players.map(player => {
 
                 let score = game.scores[player.userId];
-                return <div >
-                    <Label> {player.username}: {score}</Label>
-                </div>
+                return <Scoreboard>
+                    <Player> {player.username}: {score}</Player>
+                </Scoreboard>
             })}
         </BaseContainer>
     }
