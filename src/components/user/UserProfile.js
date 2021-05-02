@@ -6,6 +6,7 @@ import { Button } from '../../views/design/Interaction';
 import { withRouter } from 'react-router-dom';
 import styled from "styled-components";
 import Modal from "../login/Modal";
+import User from "../shared/models/User";
 
 
 const Container = styled.div`
@@ -128,27 +129,27 @@ class UserProfile extends React.Component {
 
     }
 
-        showModal = () => {
-            this.setState({ show: true });
-        };
+    showModal = () => {
+        this.setState({ show: true });
+    };
 
-        hideModal = () => {
-            this.setState({ show: false });
-        };
+    hideModal = () => {
+        this.setState({ show: false });
+    };
 
 
 
-        handleUsernameChange(key, value) {
-            // Example: if the key is username, this statement is the equivalent to the following one:
-            // this.setState({'username': value});
-            this.setState({ [key]: value });
-        }
+    handleUsernameChange(key, value) {
+        // Example: if the key is username, this statement is the equivalent to the following one:
+        // this.setState({'username': value});
+        this.setState({ [key]: value });
+    }
 
-        handlePasswordChange(key, value) {
-            // Example: if the key is username, this statement is the equivalent to the following one:
-            // this.setState({'username': value});
-            this.setState({ [key]: value });
-        }
+    handlePasswordChange(key, value) {
+        // Example: if the key is username, this statement is the equivalent to the following one:
+        // this.setState({'username': value});
+        this.setState({ [key]: value });
+    }
 
     handleEmailChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
@@ -160,50 +161,34 @@ class UserProfile extends React.Component {
         this.props.history.push('/');
     }
     async updateProfile() {
-            var everyThingsFine = true;
-        const requestBody = JSON.stringify({
-            username: this.state.newUsername,
-            password: this.state.newPassword,
-            email: this.state.newEmail
-        });
-        
-        this.state.userId = Number(this.state.userId)
-       
-        try{ const response = await api.put('/user/'+this.state.userId, requestBody);}
+
+        try {
+            const url = '/user';
+            const requestBody = JSON.stringify({
+                username: this.state.newUsername,
+                password: this.state.newPassword,
+                email: this.state.newEmail
+            });
+            const config = {headers: User.getUserAuthentication()};
+            const response = await api.put(url, requestBody, config);
+            console.log(response);
+            new User(response.data).putToSessionStorage();
+            this.props.history.push(`/users/${User.getAttribute('username')}`);
+        }
         catch (error) {
             alert(`Something went wrong: \n${handleError(error)}`);
-            everyThingsFine = false;
         }
 
-
-       if(this.state.newUsername != null && everyThingsFine){
-           sessionStorage.setItem('username', this.state.newUsername)
-       }
-       this.props.history.push('/');
-
+        this.hideModal();
+        this.setState({user: await User.fetchSingle('username', this.props.match.params.username)});
     }
 
     async componentDidMount() {
-        try {
-
-            // request setup
-            const url = `/user`;
-            const config = {headers:{username: this.props.match.params.username}};
-
-            // send request
-            const response = await api.get(url, config);
-
-
-            this.setState({ user: response.data });
-            this.setState({ userId: response.data.userId })
-
-            console.log(response);
-        } catch (error) {
-            alert(`Something went wrong while fetching user: \n${handleError(error)}`);
-        }
+        this.setState({user: await User.fetchSingle('username', this.props.match.params.username)});
     }
 
     render() {
+        if (!this.state.user) return <Spinner/>
         return (
             <BaseContainer>
                 <Container>
@@ -212,7 +197,7 @@ class UserProfile extends React.Component {
 
                             <Title>{this.props.match.params.username}'s profile</Title>
                             {
-                                (sessionStorage.getItem("userId") == this.state.userId)? (
+                                (User.getAttribute("userId") == this.state.user.userId)? (
 
                                     <Button
                                         margin="auto"
@@ -266,7 +251,6 @@ class UserProfile extends React.Component {
                     </div>
                     <Modal show={this.state.show} handleClose={this.hideModal}>
                         <Form>
-
 
                             <label>
                                 Change Username:

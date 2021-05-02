@@ -27,12 +27,6 @@ class Lobby extends React.Component {
     async createGame() {
         try {
 
-
-
-            // temp values because totalrounds calculated from this... TODO ???
-            const tempURL = Array.from({length: this.state.totalRounds}, (x, i) => i);
-
-
             // request setup
             const url = `/games/create`;
             const requestBody = JSON.stringify({
@@ -41,7 +35,7 @@ class Lobby extends React.Component {
                 memeType: this.state.memeType,
                 password: this.state.password,
                 maxPlayers: this.state.maxPlayers,
-                memeURLs: tempURL,
+                totalRounds: this.state.totalRounds,
                 maxSuggestSeconds: this.state.maxSuggestSeconds,
                 maxVoteSeconds: this.state.maxVoteSeconds,
                 maxAftermathSeconds: this.state.maxAftermathSeconds,

@@ -46,18 +46,13 @@ class User {
   }
 
   /**
-   * fetches either a single user or an array of users from the backend
-   * @param value single username/userId or array of usernames/userIds
+   * fetches either a single user from the backend
+   * @param value username/userId
    * @param key 'username' or 'userId'
    * @returns {Promise<User|*>} User instance(s) from backend
    */
-  static async fetch(key, value) {
+  static async fetchSingle(key, value) {
     if (!value) return value;
-    // arrays will be mapped
-    if (value.length) {
-      return value.map(entry => User.fetch(entry))
-    }
-    // single users will be fetched
     try {
       const response = await api.get(`/user`, { headers:{ [key]: value } });
       console.log(response);
@@ -66,6 +61,17 @@ class User {
       alert(`Something went wrong while fetching user ${value}: \n${handleError(error)}`);
     }
 
+  }
+
+  /**
+   * fetches a list of users from the backend
+   * @param value list of usernames/userIds
+   * @param key 'username' or 'userId'
+   * @returns {Promise<User|*>} User instance(s) from backend
+   */
+  static async fetchList(key, value) {
+    if (!value) return value;
+    return value.map(entry => User.fetch(entry))
   }
 
 }

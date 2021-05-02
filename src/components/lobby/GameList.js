@@ -51,7 +51,10 @@ class GameList extends React.Component {
 
     } catch (error) {
       // TODO memes?
-      alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
+      if (error.response && error.response.data.message == 'invalid userId') {
+        User.removeFromSessionStorage();
+        this.props.history.push('/');
+      } else alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
     }
   }
 

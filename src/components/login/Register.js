@@ -249,7 +249,7 @@ class Register extends React.Component {
                             </ButtonBack>
 
                             <ButtonRegister
-                                width = '50%' disabled={!this.state.username || !this.state.password1 || !this.state.password2 || !this.state.email || (this.state.password1 != this.state.password2)}
+                                width = '50%' disabled={!this.state.username || !this.state.password1 || !this.state.password2 || (this.state.password1 != this.state.password2)}
                                 onClick={ () => {
 
                                 this.register();
