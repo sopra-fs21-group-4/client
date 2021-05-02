@@ -166,6 +166,7 @@ class Lobby extends React.Component {
     }
 
     render() {
+        // TODO game settings: update visuals (and states?) in the frontend
         // TODO better proportions for UserList (maybe also absolute position?)
 
         return (
