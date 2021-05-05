@@ -31,10 +31,11 @@ export const VerticalScroller = styled.div`
 export const MediumForm = styled.div`
     max-width: 600px;
     width: 100%;
-    height: 100%;
     margin: 0 auto;
     justify-content: center;
     display: grid;
+    border-radius: 20px;
+    background: #ffffffdd;
 `;
 
 export const FlexBox = styled.div`

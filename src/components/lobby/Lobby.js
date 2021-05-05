@@ -8,7 +8,7 @@ import {Info, Label, Title} from "../../views/design/Text";
 import styled from "styled-components";
 import {Button} from "../../views/design/Interaction";
 import title from "../../views/design/title.module.css";
-import doge from "../../views/design/Memes/doge.jpg";
+import doge from "../../image/memes/doge.jpg";
 import Modal from "../login/Modal";
 
 

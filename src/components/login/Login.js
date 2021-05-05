@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Interaction';
 import Header from "../navbar/NavigationBar";
 import title from '../../views/design/title.module.css'
-import doge from "../../views/design/Memes/doge.jpg"
+import doge from "../../image/memes/doge.jpg"
 import Modal from "../login/Modal"
 
 const FormContainer = styled.div`

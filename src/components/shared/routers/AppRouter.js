@@ -13,6 +13,7 @@ import Game from "../../game/Game";
 import GameSetup from "../../lobby/GameSetup";
 import GameList from "../../lobby/GameList";
 import GameSummary from "../../lobby/GameSummary";
+import User from "../models/User";
 
 
 /**
@@ -42,7 +43,7 @@ class AppRouter extends React.Component {
             />
             <Route
                 exact
-                path={"/create-game"}
+                path={"/game-create"}
                 render={() =>
                     <UserGuard>
                         <GameSetup updateLoop={this.props.updateLoop} />
@@ -116,6 +117,11 @@ class AppRouter extends React.Component {
                     </GuestGuard>
                 )}
             />
+
+            <Route path="/logout" exact render={() => {
+                User.removeFromSessionStorage();
+                return <Redirect to={"/dashboard"}/>
+            }} />
 
 
             <Route path="/" exact render={() => <Redirect to={"/dashboard"} />} />

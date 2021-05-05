@@ -8,6 +8,7 @@ import GameInfoItem from "./GameInfoItem";
 import {Label, Title} from "../../views/design/Text";
 import {HorizontalBox, MediumForm, VerticalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
+import wallpaper from "../../image/wallpaper/meme-collage.jpg";
 
 const LobbyButton = styled.button`
   &:hover {
@@ -80,7 +81,7 @@ class GameList extends React.Component {
 
       <HorizontalBox>
         <td style={{width: '100%'}} ><Label> Start your own game: </Label></td>
-        <td><Button style={{width: '35px'}} onClick={ () => {this.props.history.push('/create-game');}}>
+        <td><Button style={{width: '35px'}} onClick={ () => {this.props.history.push('/game-create');}}>
           +
         </Button></td>
       </HorizontalBox>
