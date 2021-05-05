@@ -6,7 +6,7 @@ import Login from "../../login/Login";
 import Register from "../../login/Register";
 import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
-import PageBar from "../../../views/pagebar/PageBar";
+import PageBar from "../../navbar/NavigationBar";
 import UserProfile from "../../user/UserProfile";
 import Lobby from "../../lobby/LobbyOld";
 import Game from "../../game/Game";

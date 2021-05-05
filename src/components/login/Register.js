@@ -225,6 +225,7 @@ class Register extends React.Component {
                         />
 
                         <InputField
+                            // type='password'
                             placeholder="Password"
                             onChange={e => {
                                 this.handleInputChange('password1', e.target.value);
@@ -232,6 +233,7 @@ class Register extends React.Component {
                         />
 
                         <InputField
+                            // type='password'
                             placeholder="Reenter password"
                             onChange={e => {
                                 this.handleInputChange('password2', e.target.value);

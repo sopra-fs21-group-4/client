@@ -5,7 +5,7 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Interaction';
-import Header from "../../views/pagebar/PageBar";
+import Header from "../navbar/NavigationBar";
 import title from '../../views/design/title.module.css'
 import doge from "../../views/design/Memes/doge.jpg"
 import Modal from "../login/Modal"
@@ -204,11 +204,11 @@ class Login extends React.Component {
             />
 
             <InputField
-                //type={'password'}
-              placeholder="Password"
-              onChange={e => {
-                this.handleInputChange('password', e.target.value);
-              }}
+                // type='password'
+                placeholder="Password"
+                onChange={e => {
+                    this.handleInputChange('password', e.target.value);
+                }}
             />
               <ButtonContainer>
               <ButtonLogin
