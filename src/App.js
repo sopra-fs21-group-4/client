@@ -10,7 +10,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      updateLoop: new UpdateLoop(200),
+      updateLoop: new UpdateLoop(1000),
     };
   }
 
