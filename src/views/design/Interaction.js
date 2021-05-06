@@ -164,4 +164,23 @@ export const SmallRoundImageButton = styled.button`
     border: none;
     cursor: ${props => (props.disabled ? "default" : "pointer")};
     opacity: ${props => (props.disabled ? 0.4 : 1)};
+    &:hover {
+        transform: scale(1.2,1.2);
+    }
+    transition: all 0.25s ease;
+`;
+
+export const ImageButton = styled.button`
+    padding: 0;
+    background-image: ${props => props.image};
+    background-color: ${props => props.image? 'transparent' : 'white'};
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: auto;
+    font-weight: bold;
+    color: #000;
+    border: none;
+    cursor: ${props => (props.disabled ? "default" : "pointer")};
+    opacity: ${props => (props.disabled ? 0.4 : 1)};
 `;

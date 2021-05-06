@@ -29,13 +29,13 @@ export const VerticalScroller = styled.div`
 `;
 
 export const MediumForm = styled.div`
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
     margin: 0 auto;
     justify-content: center;
     display: grid;
     border-radius: 20px;
-    background: #ffffffdd;
+    background: #11aaeedd;
     margin-top: 30px;
     margin-bottom: 30px;
     padding-bottom: 30px;

@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { api, handleError } from '../../helpers/api';
 import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Interaction';
+import {Button, SmallRoundImageButton} from '../../views/design/Interaction';
 import { withRouter } from 'react-router-dom';
 import GameInfoItem from "./GameInfoItem";
 import {Label, Title} from "../../views/design/Text";
 import {HorizontalBox, MediumForm, VerticalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
-import wallpaper from "../../image/wallpaper/meme-collage.jpg";
+import createGameIcon from "../../image/icons/game-add.png";
 
 const LobbyButton = styled.button`
   &:hover {
@@ -83,10 +83,19 @@ class GameList extends React.Component {
       <Title> Do you even meme? </Title>
 
       <HorizontalBox>
-        <td style={{width: '100%'}} ><Label> Start your own game: </Label></td>
-        <td><Button style={{width: '35px'}} onClick={ () => {this.props.history.push('/game-create');}}>
-          +
-        </Button></td>
+        <td style={{width: '100%'}} >
+          <div style={{
+            paddingTop: '2vh',
+            paddingBottom: '2vh'
+          }}>
+            <Label> Start your own game: </Label>
+          </div></td>
+        <td>
+          <Label>
+            <SmallRoundImageButton image={`url(${createGameIcon})`} onClick={ () => {this.props.history.push('/game-create');}}>
+            </SmallRoundImageButton>
+          </Label>
+        </td>
       </HorizontalBox>
 
       <Label>

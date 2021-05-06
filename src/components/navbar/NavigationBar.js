@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import {InvisibleButton, RoundImageButton, SmallRoundImageButton} from "../../views/design/Interaction";
+import {ImageButton, InvisibleButton, RoundImageButton, SmallRoundImageButton} from "../../views/design/Interaction";
 import {withRouter} from "react-router-dom";
+import HoverableBox from "../../views/design/HoverableBox";
 import User from "../shared/models/User";
 import chatAddIcon from "../../image/icons/chat-add.png"
 import friendsIcon from "../../image/icons/friends.png"
@@ -33,7 +34,7 @@ import avatar7 from "../../image/avatars/avatar7.png"
 import avatar8 from "../../image/avatars/avatar8.png"
 import avatar9 from "../../image/avatars/avatar9.png"
 import avatar10 from "../../image/avatars/avatar10.png"
-import HoverableBox from "../../views/design/HoverableBox";
+import logo from "../../image/logo/doyouevenmeme.png"
 
 
 /**
@@ -79,21 +80,25 @@ class NavigationBar extends React.Component {
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'left',
-                    width: '30%',
+                    width: '44.8vh',
+                    height: 'inherit',
+                    marginLeft: '4vh',
                 }}>
-                    <InvisibleButton
+                    <ImageButton
                         style={{marginLeft: "50px"}}
                         onClick={() => {this.props.history.push('/');}}
+                        image={`url(${logo})`}
+                        style={{width: 'inherit', height: 'inherit'}}
                     >
-                        <Title> Do you even meme? </Title>
-                    </InvisibleButton>
+                        {/*<Title> Do you even meme? </Title>*/}
+                    </ImageButton>
                 </div>
 
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row-reverse',
                     alignItems: 'right',
-                    width: '70%',
+                    width: '100%',
                     transition: 'all 0.3s ease',
                 }}>
                     {this.getNavigationBarContent()}

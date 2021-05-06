@@ -83,11 +83,11 @@ class GameRound extends React.Component {
                 textAlign: 'left',
                 paddingLeft: '100px',
             }}>
-                {this.props.game.currentRoundTitle}
+                {this.props.game.currentRound.title}
             </Title>
             <br/>
             <HorizontalBox style={{justifyContent: 'left'}}>
-                <img width='400px' src={this.props.game.currentMemeURL} />
+                <img width='400px' src={this.props.game.currentRound.memeURL} />
                 <VerticalScroller style={{paddingLeft: '30px', width: '400px'}}>
                     <Label>{`${this.currentActivity()}`}</Label>
                     <br/>
@@ -100,7 +100,7 @@ class GameRound extends React.Component {
     }
 
     currentActivity() {
-        switch (this.props.game.currentRoundPhase) {
+        switch (this.props.game.currentRound.roundPhase) {
             case 'STARTING':    return'prepare!';
             case 'SUGGEST':     return 'suggest a title!';
             case 'VOTE':        return 'vote!';
@@ -111,7 +111,7 @@ class GameRound extends React.Component {
 
     currentRoundPhaseInteractive() {
         let game = this.props.game;
-        switch (game.currentRoundPhase) {
+        switch (game.currentRound.roundPhase) {
             case 'STARTING':    return null;
             case 'SUGGEST':     return this.suggestionInteractive();
             case 'VOTE':        return this.voteInteractive();
@@ -121,7 +121,7 @@ class GameRound extends React.Component {
     }
 
     suggestionInteractive() {
-        let currentSuggestion = this.props.game.currentSuggestions[User.getAttribute('userId')];
+        let currentSuggestion = this.props.game.currentRound.suggestions[User.getAttribute('userId')];
         return <VerticalList >
             <Label>{currentSuggestion? "Suggestion: " + currentSuggestion : 'What title would you suggest?'}</Label>
             <div>
@@ -139,12 +139,12 @@ class GameRound extends React.Component {
     voteInteractive() {
         return <VerticalList>
             {(this.props.players.map(player => {
-                return (this.props.game.currentSuggestions[player.userId]? <VoteButton
+                return (this.props.game.currentRound.suggestions[player.userId]? <VoteButton
                     disabled={player.userId == User.getAttribute('userId')}
                     onClick={e => this.vote(player)}
-                    style={{background: (this.props.game.currentVotes[User.getAttribute('userId')] == player.userId)? '#a59aed' : '#9aeced'}}
+                    style={{background: (this.props.game.currentRound.votes[User.getAttribute('userId')] == player.userId)? '#a59aed' : '#9aeced'}}
                 >
-                    {`${this.props.game.currentSuggestions[player.userId]}`}</VoteButton>
+                    {`${this.props.game.currentRound.suggestions[player.userId]}`}</VoteButton>
                 : null);
             })).sort(function(a,b){
                 if(!(a&&b)){return 1}
@@ -157,12 +157,12 @@ class GameRound extends React.Component {
     aftermathInteractive() {
         let game = this.props.game;
         let players = this.props.players.slice();
-        players.sort((a,b) => {return game.currentScores[b.userId] - game.currentScores[a.userId]});
+        players.sort((a,b) => {return game.currentRound.scores[b.userId] - game.currentRound.scores[a.userId]});
         return <VerticalList>
             <Label>Scores:</Label>
             {players.map(player => {
-                let suggestion = game.currentSuggestions[player.userId];
-                let score = game.currentScores[player.userId];
+                let suggestion = game.currentRound.suggestions[player.userId];
+                let score = game.currentRound.scores[player.userId];
                 return <div style={{
                     paddingBottom:'15px'
                 }}>
