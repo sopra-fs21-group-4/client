@@ -106,11 +106,13 @@ class NavigationBar extends React.Component {
         // TODO user should be fetched from sessionStorage
         let myUser = {
             id: 1,
-            username: 'HelloKittyLover64',
+            username: sessionStorage.getItem('username'),
             avatar: avatar0,
             currentGameId: 2,
             friends: [3,4,5,6,7],
             chats: [8,9]
+
+
         }
         // TODO delete when no longer needed
         let avatars = [avatar1,avatar2,avatar3,avatar4,avatar5,avatar6,avatar7,avatar8,avatar9,avatar10];
@@ -124,7 +126,7 @@ class NavigationBar extends React.Component {
         else return [
             this.menu("myUser", myUser.avatar, [
                 {image: userLogoutIcon, onClick: () => this.props.history.push('/logout')},
-                {image: userEditIcon, onClick: () => this.props.history.push('/user-edit')},
+                {image: userEditIcon, onClick: () => this.props.history.push("/users/"+myUser.username)},
                 {image: myUser.avatar, onClick: () => this.props.history.push('/user/'+myUser.username)},
             ]),
             (myUser.currentGameId?

@@ -123,6 +123,11 @@ class AppRouter extends React.Component {
                 return <Redirect to={"/dashboard"}/>
             }} />
 
+            <Route path="/user-edit" exact render={() => {
+
+                return <UserProfile/>
+            }} />
+
 
             <Route path="/" exact render={() => <Redirect to={"/dashboard"} />} />
         </Switch>

@@ -11,6 +11,74 @@ import title from "../../views/design/title.module.css";
 import doge from "../../image/memes/doge.jpg";
 import Modal from "../login/Modal";
 
+const ButtonReady = styled.button`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 10px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  font-family: Roboto;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-left: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
+`;
+
+const ButtonEdit = styled.button`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 10px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  font-family: Roboto;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-right: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
+`;
+
+const ButtonLeave = styled.button`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 10px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  font-family: Roboto;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-right: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
+`;
 
 
 export const Cell = styled.div`
@@ -227,23 +295,32 @@ class Lobby extends React.Component {
             </tr>
             <tr>
                 <Cell>
-                    <Button
+                    <ButtonEdit
                         width='100%'
                         onClick={() => this.setState({edit: true})}
                         disabled={!this.isGameMaster()}
                     >
                         Edit
-                    </Button>
+                    </ButtonEdit>
                 </Cell>
                 <Cell>
-                    <Button
+                    <ButtonReady
                         width='100%'
                         onClick={() => this.sendReady()}
                     >
                         {this.isReady() ? "Hold on.." : "I'm ready"}
-                    </Button>
+                    </ButtonReady>
                 </Cell>
+
             </tr>
+            <Cell>
+                <ButtonLeave
+                    width='100%'
+                    onClick={() => this.leave()}
+                >
+                    Leave Lobby
+                </ButtonLeave>
+            </Cell>
         </table>
     }
 

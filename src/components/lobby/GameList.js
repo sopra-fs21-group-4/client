@@ -74,7 +74,10 @@ class GameList extends React.Component {
   render() {
     return (
     <MediumForm style={{
+      marginTop: '20px',
       paddingTop: '30px',
+      paddingBottom: '30px',
+
     }}>
 
       <Title> Do you even meme? </Title>
