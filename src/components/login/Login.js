@@ -28,11 +28,12 @@ const Form = styled.div`
   height: 375px;
   font-size: 16px;
   font-weight: 300;
-  
+  padding-top: 5px;
+  padding-bottom: 50px;
   padding-left: 37px;
   padding-right: 37px;
   border-radius: 5px;
-  background: white;
+  background: #ffffffdd;
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 

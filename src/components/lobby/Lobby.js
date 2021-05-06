@@ -1,7 +1,7 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
-import {VerticalBox} from "../../views/design/Containers";
+import {MediumForm, VerticalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
 import Form from "../general/Form";
 import {Info, Label, Title} from "../../views/design/Text";
@@ -238,13 +238,15 @@ class Lobby extends React.Component {
         // TODO better proportions for UserList (maybe also absolute position?)
 
         return (
+            <MediumForm
+            >
             <VerticalBox>
                 <Title> { this.props.game.name } </Title> <br/>
-
 
                 {this.state.edit? this.gameSettingsForm() : this.gameSettingsTable()}
 
             </VerticalBox>
+            </MediumForm>
         );
     }
 

@@ -127,12 +127,12 @@ class NavigationBar extends React.Component {
             this.menu("myUser", myUser.avatar, [
                 {image: userLogoutIcon, onClick: () => this.props.history.push('/logout')},
                 {image: userEditIcon, onClick: () => this.props.history.push("/users/"+myUser.username)},
-                {image: myUser.avatar, onClick: () => this.props.history.push('/user/'+myUser.username)},
+                {image: myUser.avatar, onClick: () => this.props.history.push('/users/'+myUser.username)},
             ]),
             (myUser.currentGameId?
                 this.menu("myGame", gameOkIcon, [
                     {image: gamePlayIcon, onClick: () => this.props.history.push('/game')},
-                    {image: gameLeaveIcon, onClick: () => this.props.history.push('/game-leave')},
+                    {image: gameLeaveIcon, onClick: () => this.props.history.push('/leave-game')},
                     {image: gameArchiveIcon, onClick: () => this.props.history.push('/game-archive')},
                 ]) :
                 this.menu("myGame", gameIcon, [

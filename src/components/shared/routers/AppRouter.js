@@ -118,6 +118,17 @@ class AppRouter extends React.Component {
                 )}
             />
 
+            // TODO leave game should be possible via this route
+            <Route
+                exact
+                path="/leave-game"
+                render={() => (
+                    <GuestGuard>
+                        <Register updateLoop={this.props.updateLoop} />
+                    </GuestGuard>
+                )}
+            />
+
             <Route path="/logout" exact render={() => {
                 User.removeFromSessionStorage();
                 return <Redirect to={"/dashboard"}/>

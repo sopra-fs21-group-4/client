@@ -36,6 +36,11 @@ export const MediumForm = styled.div`
     display: grid;
     border-radius: 20px;
     background: #ffffffdd;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    
+
 `;
 
 export const FlexBox = styled.div`
