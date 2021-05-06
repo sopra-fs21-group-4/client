@@ -13,6 +13,7 @@ import Game from "../../game/Game";
 import GameSetup from "../../lobby/GameSetup";
 import GameList from "../../lobby/GameList";
 import GameSummary from "../../lobby/GameSummary";
+import FriendList from "../../friends/FriendList";
 
 
 /**
@@ -38,6 +39,15 @@ class AppRouter extends React.Component {
                     <UserGuard>
                         <GameList updateLoop={this.props.updateLoop} />
                     </UserGuard>
+                }
+            />
+            <Route
+                exact
+                path={"/friends"}
+                render={() =>
+                    // <UserGuard>
+                        <FriendList updateLoop={this.props.updateLoop} />
+                    // </UserGuard>
                 }
             />
             <Route

@@ -43,13 +43,39 @@ export const FlexBox = styled.div`
   justify-content: right;
 `;
 
-export const Leaderboard = styled.div`
+
+export const TestHorizont = styled.div`
+    width: inherit;
+    height: 700px;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    
+    
+`;
 
 
+export const List = styled.div`
+
+background-color: #F3F3F3;
+border: 1px solid #DDD;
 
 
 `;
 
+export const ListEle = styled.div`
+    padding: 8px;
+    
+`;
+
+
+
+export const labeldiv = styled.div`
+    
+    display: flex,
+    align-items: center,
+    justify-content: center,
+`;
 
 
 
