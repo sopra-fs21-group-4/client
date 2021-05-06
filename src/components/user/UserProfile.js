@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import styled from "styled-components";
 import Modal from "../login/Modal";
 import User from "../shared/models/User";
+import {MediumForm} from "../../views/design/Containers";
 
 
 const Container = styled.div`
@@ -177,6 +178,7 @@ class UserProfile extends React.Component {
         }
         catch (error) {
             alert(`Something went wrong: \n${handleError(error)}`);
+            this.props.history.push(`/users/${User.getAttribute('username')}`);
         }
 
         this.hideModal();
@@ -191,7 +193,12 @@ class UserProfile extends React.Component {
         if (!this.state.user) return <Spinner/>
         return (
             <BaseContainer>
-                <Container>
+                <MediumForm style={{
+                    marginTop: '20px',
+                    paddingTop: '30px',
+                    paddingBottom: '30px',
+
+                }}>
                     <div>
                         <HeaderContainer>
 
@@ -298,7 +305,7 @@ class UserProfile extends React.Component {
 
                         </Form>
                     </Modal>
-                </Container>
+                </MediumForm>
 
 
 

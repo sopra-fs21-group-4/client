@@ -197,9 +197,14 @@ class Game extends React.Component {
         );
       case 410: // 410: GONE
         return (
+            <div>
             <Label>
               This game is over. What are you still doing here?
             </Label>
+                <Button onClick={() => {
+                    this.props.history.push('/')
+                }} />
+            </div>
 
         );
       case 422: // 422: UNPROCESSABLE_ENTITY

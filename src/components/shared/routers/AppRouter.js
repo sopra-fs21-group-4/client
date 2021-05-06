@@ -6,7 +6,7 @@ import Login from "../../login/Login";
 import Register from "../../login/Register";
 import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
-import PageBar from "../../../views/pagebar/PageBar";
+import PageBar from "../../navbar/NavigationBar";
 import UserProfile from "../../user/UserProfile";
 import Lobby from "../../lobby/LobbyOld";
 import Game from "../../game/Game";
@@ -14,6 +14,8 @@ import GameSetup from "../../lobby/GameSetup";
 import GameList from "../../lobby/GameList";
 import GameSummary from "../../lobby/GameSummary";
 import FriendList from "../../friends/FriendList";
+import User from "../models/User";
+
 
 
 /**
@@ -52,7 +54,9 @@ class AppRouter extends React.Component {
             />
             <Route
                 exact
-                path={"/create-game"}
+                //path={"/create-game"}
+
+                path={"/game-create"}
                 render={() =>
                     <UserGuard>
                         <GameSetup updateLoop={this.props.updateLoop} />
@@ -126,6 +130,27 @@ class AppRouter extends React.Component {
                     </GuestGuard>
                 )}
             />
+
+            // TODO leave game should be possible via this route
+            <Route
+                exact
+                path="/leave-game"
+                render={() => (
+                    <GuestGuard>
+                        <Register updateLoop={this.props.updateLoop} />
+                    </GuestGuard>
+                )}
+            />
+
+            <Route path="/logout" exact render={() => {
+                User.removeFromSessionStorage();
+                return <Redirect to={"/dashboard"}/>
+            }} />
+
+            <Route path="/user-edit" exact render={() => {
+
+                return <UserProfile/>
+            }} />
 
 
             <Route path="/" exact render={() => <Redirect to={"/dashboard"} />} />

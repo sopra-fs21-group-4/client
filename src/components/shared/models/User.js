@@ -63,6 +63,9 @@ class User {
 
   }
 
+
+
+
   /**
    * fetches a list of users from the backend
    * @param value list of usernames/userIds

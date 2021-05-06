@@ -18,6 +18,7 @@ class GameRoundSummary extends React.Component {
             style={{
                 paddingLeft: '10%',
                 paddingRight: '10%',
+                margin: '30px',
             }}>
             <Label style={{
                 textAlign: 'left',
@@ -26,7 +27,7 @@ class GameRoundSummary extends React.Component {
                 {this.props.round.title}
             </Label>
 
-            <img height='150px' src={this.props.round.memeURL} />
+            <img height='300px' src={this.props.round.memeURL} />
 
             <VerticalScroller style={{paddingLeft: '30px', width: '400px'}}>
                 {this.suggestionList()}

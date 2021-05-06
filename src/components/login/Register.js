@@ -6,8 +6,8 @@ import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Interaction';
 import title from '../../views/design/title.module.css'
-import fuu from '../../../src/views/design/Memes/fuu.jpg'
-import doge from "../../views/design/Memes/doge.jpg";
+import fuu from '../../image/memes/fuu.jpg'
+import doge from "../../image/memes/doge.jpg";
 import Modal from "./Modal";
 
 const FormContainer = styled.div`
@@ -225,6 +225,7 @@ class Register extends React.Component {
                         />
 
                         <InputField
+                            // type='password'
                             placeholder="Password"
                             onChange={e => {
                                 this.handleInputChange('password1', e.target.value);
@@ -232,6 +233,7 @@ class Register extends React.Component {
                         />
 
                         <InputField
+                            // type='password'
                             placeholder="Reenter password"
                             onChange={e => {
                                 this.handleInputChange('password2', e.target.value);

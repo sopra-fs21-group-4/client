@@ -47,7 +47,7 @@ export const LinkButton = styled.button`
   font-weight: 700;
   font-size: 13px;
   color: #8888ff;
-  background: #ffffffff;
+  background: #00000000;
   border: none;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
@@ -127,4 +127,60 @@ export const Select = styled.select`
 
 export const Option = styled.option`
     
+`;
+
+export const RoundImageButton = styled.button`
+    width: 6vh;
+    height: 6vh;
+    padding: 0;
+    background-image: ${props => props.image};
+    background-color: ${props => props.image? 'transparent' : 'white'};
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: auto;
+    font-weight: bold;
+    color: #000;
+    border-radius: 50%;
+    border: none;
+    cursor: ${props => (props.disabled ? "default" : "pointer")};
+    opacity: ${props => (props.disabled ? 0.4 : 1)};
+`;
+
+export const SmallRoundImageButton = styled.button`
+    width: 5vh;
+    height: 5vh;
+    padding: 0;
+    margin: 0.5vh;
+    background-image: ${props => props.image};
+    background-color: ${props => props.image? 'transparent' : 'white'};
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: auto;
+    font-weight: bold;
+    color: #000;
+    border-radius: 50%;
+    border: none;
+    cursor: ${props => (props.disabled ? "default" : "pointer")};
+    opacity: ${props => (props.disabled ? 0.4 : 1)};
+    &:hover {
+        transform: scale(1.2,1.2);
+    }
+    transition: all 0.25s ease;
+`;
+
+export const ImageButton = styled.button`
+    padding: 0;
+    background-image: ${props => props.image};
+    background-color: ${props => props.image? 'transparent' : 'white'};
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: auto;
+    font-weight: bold;
+    color: #000;
+    border: none;
+    cursor: ${props => (props.disabled ? "default" : "pointer")};
+    opacity: ${props => (props.disabled ? 0.4 : 1)};
 `;

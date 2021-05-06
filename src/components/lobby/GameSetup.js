@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import {ConservativeBox } from "../../views/design/Containers";
 import User from "../shared/models/User";
 import Form from "../general/Form";
+import {Spinner} from "../../views/design/Spinner";
 
 
 class Lobby extends React.Component {
@@ -21,12 +22,13 @@ class Lobby extends React.Component {
             maxSuggestSeconds: 25,
             maxVoteSeconds: 20,
             maxAftermathSeconds: 10,
+            creating: false,
         };
     }
 
     async createGame() {
+        this.setState({creating: true});
         try {
-
             // request setup
             const url = `/games/create`;
             const requestBody = JSON.stringify({
@@ -50,6 +52,7 @@ class Lobby extends React.Component {
         } catch (error) {
             alert(`Something went wrong creating the game: \n${handleError(error)}`);
         }
+        this.setState({creating: false});
     }
 
     handleInputChange(key, value) {
@@ -57,7 +60,7 @@ class Lobby extends React.Component {
     }
 
     render() {
-        return (
+        return this.state.creating? <Spinner/> : (
             <ConservativeBox>
                 <Form
                     title='Game Setup'

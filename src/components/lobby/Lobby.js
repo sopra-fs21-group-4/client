@@ -1,10 +1,93 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
-import {HorizontalBox} from "../../views/design/Containers";
+import {MediumForm, VerticalBox} from "../../views/design/Containers";
 import User from "../shared/models/User";
 import Form from "../general/Form";
+import {Info, Label, Title} from "../../views/design/Text";
+import styled from "styled-components";
+import {Button} from "../../views/design/Interaction";
+import title from "../../views/design/title.module.css";
+import doge from "../../image/memes/doge.jpg";
+import Modal from "../login/Modal";
 
+const ButtonReady = styled.button`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 10px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  font-family: Roboto;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-left: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
+`;
+
+const ButtonEdit = styled.button`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 10px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  font-family: Roboto;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-right: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
+`;
+
+const ButtonLeave = styled.button`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 10px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  font-family: Roboto;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-right: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
+`;
+
+
+export const Cell = styled.div`
+    width: 50%;
+    padding-bottom: 5px;
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+`;
 
 class Lobby extends React.Component {
     constructor(props) {
@@ -12,12 +95,12 @@ class Lobby extends React.Component {
         this.state = {
             generalCollapsed: true,
             timersCollapsed: true,
-            subreddit: this.props.game['subreddit'],
-            memeType: this.props.game['memeType'],
-            totalRounds: this.props.game['totalRounds'],
-            maxSuggestSeconds:this.props.game['maxSuggestSeconds'],
-            maxVoteSeconds:this.props.game['maxVoteSeconds'],
-            maxAftermathSeconds: this.props.game['maxAftermathSeconds'],
+            subreddit: this.props.game.gameSettings['subreddit'],
+            memeType: this.props.game.gameSettings['memeType'],
+            totalRounds: this.props.game.gameSettings['totalRounds'],
+            maxSuggestSeconds:this.props.game.gameSettings['maxSuggestSeconds'],
+            maxVoteSeconds:this.props.game.gameSettings['maxVoteSeconds'],
+            maxAftermathSeconds: this.props.game.gameSettings['maxAftermathSeconds'],
             settingsUpdated: false,
         };
     }
@@ -59,12 +142,6 @@ class Lobby extends React.Component {
 
     async sendReady() {
         try {
-
-            // check for applied settings
-            if(!this.state.settingsUpdated&&this.isGameMaster()&&!this.isReady()){
-                alert("please apply settings first")
-                return
-            }
 
             // request setup
             const url = `/games/${this.props.match.params['gameId']}/ready`;
@@ -110,12 +187,12 @@ class Lobby extends React.Component {
         if(!this.isGameMaster()){
             // TODO update slider position for all users
             this.setState({
-                subreddit: this.props.game['subreddit'],
-                memeType: this.props.game['memeType'],
-                totalRounds: this.props.game['totalRounds'],
-                maxSuggestSeconds:this.props.game['maxSuggestSeconds'],
-                maxVoteSeconds:this.props.game['maxVoteSeconds'],
-                maxAftermathSeconds: this.props.game['maxAftermathSeconds'],
+                subreddit: this.props.game.gameSettings['subreddit'],
+                memeType: this.props.game.gameSettings['memeType'],
+                totalRounds: this.props.game.gameSettings['totalRounds'],
+                maxSuggestSeconds:this.props.game.gameSettings['maxSuggestSeconds'],
+                maxVoteSeconds:this.props.game.gameSettings['maxVoteSeconds'],
+                maxAftermathSeconds: this.props.game.gameSettings['maxAftermathSeconds'],
             });
         }
     }
@@ -125,14 +202,15 @@ class Lobby extends React.Component {
         // TODO better proportions for UserList (maybe also absolute position?)
 
         return (
-            <HorizontalBox>
-                <div>
-                    {this.gameSettings()}
+            <MediumForm
+            >
+            <VerticalBox>
+                <Title> { this.props.game.gameSettings.name } </Title> <br/>
 
-                </div>
-                {/* ready button */}
+                {this.state.edit? this.gameSettingsForm() : this.gameSettingsTable()}
 
-            </HorizontalBox>
+            </VerticalBox>
+            </MediumForm>
         );
     }
 
@@ -141,12 +219,90 @@ class Lobby extends React.Component {
         this.setState({["settingsUpdated"]:false})
     }
 
-    gameSettings() {
+    gameSettingsTable() {
+        return <table style={{
+            width: '300px'
+        }}>
+            <tr>
+                <Cell><Label>Subreddit:</Label></Cell>
+                <Cell><Info>{this.props.game.gameSettings.subreddit}</Info></Cell>
+            </tr>
+            <tr>
+                <Cell><Label>Meme Type:</Label></Cell>
+                <Cell><Info>{this.props.game.gameSettings.memeType}</Info></Cell>
+            </tr>
+            <tr>
+                <Cell><Label>Memes found:</Label></Cell>
+                <Cell><Info>{this.props.game.gameSettings.memesFound}</Info></Cell>
+            </tr>
+            <tr>
+                <Cell><Label>No. Rounds:</Label></Cell>
+                <Cell><Info>{this.props.game.gameSettings.totalRounds}</Info></Cell>
+            </tr>
+            <tr>
+                <Cell><Label>Player Limit:</Label></Cell>
+                <Cell><Info>{this.props.game.gameSettings.maxPlayers}</Info></Cell>
+            </tr>
+            <tr>
+                <Cell><Label>Naming Time:</Label></Cell>
+                <Cell><Info>{this.props.game.gameSettings.maxSuggestSeconds}</Info></Cell>
+            </tr>
+            <tr>
+                <Cell><Label>Voting Time:</Label></Cell>
+                <Cell><Info>{this.props.game.gameSettings.maxVoteSeconds}</Info></Cell>
+            </tr>
+            <tr>
+                <Cell><Label>Results Time:</Label></Cell>
+                <Cell><Info>{this.props.game.gameSettings.maxAftermathSeconds}</Info></Cell>
+            </tr>
+            <tr>
+                <Cell><Label>Waiting until:</Label></Cell>
+                <Cell><Info>{this.getWaitingIssue()}</Info></Cell>
+            </tr>
+            <tr>
+                <Cell>
+                    <ButtonEdit
+                        width='100%'
+                        onClick={() => this.setState({edit: true})}
+                        disabled={!this.isGameMaster()}
+                    >
+                        Edit
+                    </ButtonEdit>
+                </Cell>
+                <Cell>
+                    <ButtonReady
+                        width='100%'
+                        onClick={() => this.sendReady()}
+                    >
+                        {this.isReady() ? "Hold on.." : "I'm ready"}
+                    </ButtonReady>
+                </Cell>
+
+            </tr>
+            <Cell>
+                <ButtonLeave
+                    width='100%'
+                    onClick={() => this.leave()}
+                >
+                    Leave Lobby
+                </ButtonLeave>
+            </Cell>
+        </table>
+    }
+
+    getWaitingIssue() {
+        let game = this.props.game;
+        if (game.players.length < 3) return `more players join`;
+        if (game.memesFound < game.gameSettings.totalRounds) return `r/${game.gameSettings.subreddit} gets richer`;
+        else return 'all players are ready';
+    }
+
+    gameSettingsForm() {
 
         // const general = { label: 'General', key: 'general', type: 'Group' };
 
         const subreddit = { label: 'Subreddit', key: 'subreddit', type: 'Input',
-            props:{defaultValue: this.props.game['subreddit'], disabled: !this.isGameMaster()} };
+            props:{defaultValue: this.props.game.gameSettings['subreddit'], disabled: !this.isGameMaster()} };
 
         const memeType = { label: 'Meme Type', key: 'memeType', type: 'Select',
             options: [
@@ -154,7 +310,7 @@ class Lobby extends React.Component {
                 {name:'New',value:'NEW'},
                 {name:'Rising',value:'RISING'},
                 {name:'Top',value:'TOP'}],
-            props:{defaultValue: this.props.game['memeType'], disabled: !this.isGameMaster()} };
+            props:{defaultValue: this.props.game.gameSettings['memeType'], disabled: !this.isGameMaster()} };
 
         const totalRounds = { label: 'Number of Rounds', key: 'totalRounds', type: 'Range',
             props:{ min:1, max:30, defaultValue: 5, disabled: !this.isGameMaster() } };
@@ -171,24 +327,18 @@ class Lobby extends React.Component {
             props:{ min:3, max:30, disabled: !this.isGameMaster() } };
 
         return <Form
-            title='Game Settings'
             attributes={[subreddit, memeType, totalRounds, timers, namingTime, votingTime, resultsTime]}
             listener={this}
             initialState={{
                 timersCollapsed: true,
                 ...this.state}}
-            submitButtonText={this.isReady()? "Hold on.." : "I'm ready"}
-            onSubmit={() => this.sendReady()}
-            cancelButtonText='Leave'
-            onCancel={() => this.leave()}
-
-
-
-            withApplyButton={true}
+            submitButtonText='save'
+            onSubmit={() => {
+                this.updateSettings();
+                this.setState({edit: false});
+            }}
+            onCancel={() => this.setState({edit: false})}
             settingsUpdated={this.state.settingsUpdated}
-            isGamemaster={this.isGameMaster()}
-            applyButtonText='apply settings'
-            onApply={() => this.updateSettings()}
 
         />
     }
