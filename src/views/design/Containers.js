@@ -61,27 +61,29 @@ export const TestHorizont = styled.div`
 `;
 
 
-export const List = styled.div`
-
-background-color: #F3F3F3;
-border: 1px solid #DDD;
 
 
-`;
+export const BackgroundDiv = styled.div`
 
-export const ListEle = styled.div`
-    padding: 8px;
+    margin: 0 auto;
+        margin-top: 30px;
+    margin-bottom: 30px;
     
-`;
-
-
-
-export const labeldiv = styled.div`
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
     
-    display: flex,
-    align-items: center,
-    justify-content: center,
+    border-radius: 20px;
+    background: #11aaeef2;
+
+    padding: 60px;
+    padding-top: 30px;
 `;
+
+
+
+
+
 
 
 

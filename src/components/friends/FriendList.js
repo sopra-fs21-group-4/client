@@ -5,63 +5,46 @@ import {Spinner} from '../../views/design/Spinner';
 import {Button, InputField} from '../../views/design/Interaction';
 import {withRouter} from 'react-router-dom';
 import {Label, Title} from "../../views/design/Text";
-import {
-    HorizontalBox,
-    MediumForm,
-    VerticalBox,
-    TestHorizont,
-    List,
-    ListEle,
-    ListTitle
-} from "../../views/design/Containers";
 import User from "../shared/models/User";
+import {BackgroundDiv, FlexBox, MediumForm} from "../../views/design/Containers";
 
 
 const Cell = styled.div`
     padding: 0.5rem;
 `;
 
+const List = styled.div`
+
+background-color: #F3F3F3;
+border: 1px solid #DDD;
+`;
+
 const titleStyle = {display: 'flex', alignItems: 'flex-end', padding: '0.5rem 0', fontSize: '25px'};
+
 
 class FriendList extends React.Component {
     constructor() {
         super();
         this.state = {
             me: null,
-            friendName: null,
+            friends: null,
+            incomingRequestsUsers: null,
+            outgoingRequestsUsers: null,
+            addFriendName: null,
         };
     }
 
 
-    async update() {
-        try {
-
-            // request setup
-            const url = `/me`;
-            const config = {headers: User.getUserAuthentication()};
-            // send request
-            const response = await api.get(url, config);
-            console.log(response);
-            this.setState({me: response.data});
-
-        } catch (error) {
-            if (error.response && error.response.data.message == 'invalid userId') {
-                User.removeFromSessionStorage();
-                this.props.history.push('/');
-            } else alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
-        }
-    }
-
-
     // TODO change id of friend for all 3 functions
-    async sendFriendRequest(friendName) {
+    async sendFriendRequest(friendId) {
         try {
             const url = `/friends/send`;
             const config = {
                 headers: User.getUserAuthentication()
             }
-            const response = await api.put(url, friendName, config);
-            console.log(response);
+            const response = await api.put(url, friendId, config);
+            // console.log(response);
+            this.updateFriends()
 
         } catch (error) {
             if (error.response && error.response.data.message == 'invalid userId') {
@@ -71,14 +54,15 @@ class FriendList extends React.Component {
         }
     }
 
-    async acceptFriendRequest(friendName) {
+    async acceptFriendRequest(friendId) {
         try {
             const url = `/friends/accept`;
             const config = {
                 headers: User.getUserAuthentication()
             }
-            const response = await api.put(url, friendName, config);
-            console.log(response);
+            const response = await api.put(url, friendId, config);
+            // console.log(response);
+            this.updateFriends()
 
         } catch (error) {
             if (error.response && error.response.data.message == 'invalid userId') {
@@ -88,14 +72,15 @@ class FriendList extends React.Component {
         }
     }
 
-    async rejectFriendRequest(friendName) {
+    async rejectFriendRequest(friendId) {
         try {
             const url = `/friends/reject`;
             const config = {
                 headers: User.getUserAuthentication()
             }
-            const response = await api.put(url, friendName, config);
-            console.log(response);
+            const response = await api.put(url, friendId, config);
+            // console.log(response);
+            this.updateFriends()
 
         } catch (error) {
             if (error.response && error.response.data.message == 'invalid userId') {
@@ -105,14 +90,15 @@ class FriendList extends React.Component {
         }
     }
 
-    async removeFriendRequest(friendName) {
+    async removeFriendRequest(friendId) {
         try {
             const url = `/friends/remove`;
             const config = {
                 headers: User.getUserAuthentication()
             }
-            const response = await api.put(url, friendName, config);
-            console.log(response);
+            const response = await api.put(url, friendId, config);
+            // console.log(response);
+            this.updateFriends()
 
         } catch (error) {
             if (error.response && error.response.data.message == 'invalid userId') {
@@ -124,13 +110,69 @@ class FriendList extends React.Component {
 
 
     async componentDidMount() {
-        this.props.updateLoop.addClient(this);
+        this.updateFriends()
     }
 
+    async updateFriends() {
 
-    async componentWillUnmount() {
-        this.props.updateLoop.removeClient(this);
+        try {
+            this.setState({friends: null})
+            this.setState({incomingRequestsUsers: null})
+            this.setState({outgoingRequestsUsers: null})
+
+            // request setup
+            const url = `/user`;
+            const config = {headers: User.getUserAuthentication()};
+            // send request
+            const response = await api.get(url, config);
+            console.log(response);
+            this.setState({me: response.data});
+
+
+            const url2 = `/users`;
+
+
+            if (response.data.friends.length != 0) {
+                // request setup
+                const friendsIds = response.data.friends
+                const config2 = {headers: {userIds: friendsIds}};
+                // send request
+                const response2 = await api.get(url2, config2);
+                console.log(response2);
+                this.setState({friends: response2.data});
+            }
+
+            if (response.data.incomingFriendRequests.length != 0) {
+                // request setup
+                const incomingIds = response.data.incomingFriendRequests
+                const config3 = {headers: {userIds: incomingIds}};
+                // send request
+                const response3 = await api.get(url2, config3);
+                console.log(response3);
+                this.setState({incomingRequestsUsers: response3.data});
+            }
+            if (response.data.outgoingFriendRequests.length != 0) {
+                // request setup
+                const outoingIds = response.data.outgoingFriendRequests
+                const config4 = {headers: {userIds: outoingIds}};
+                // send request
+                const response4 = await api.get(url2, config4);
+                console.log(response);
+                this.setState({outgoingRequestsUsers: response4.data});
+            }
+
+
+        } catch (error) {
+            if (error.response && error.response.data.message == 'invalid userId') {
+                User.removeFromSessionStorage();
+                this.props.history.push('/');
+            } else alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
+        }
     }
+
+    // async componentWillUnmount() {
+    //     this.props.updateLoop.removeClient(this);
+    // }
 
     handleInputChange(key, value) {
         this.setState({[key]: value});
@@ -140,121 +182,130 @@ class FriendList extends React.Component {
     render() {
 
         return (
-
-            <div>
-                <div style={{height: "700px", display: "flex", justifyContent: 'center'}}>
-
-
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "400px",
-                        height: "100%",
-                        marginRight: "0.5rem"
-                    }}>
-                        <div
-                            style={titleStyle}>
-                            Friends
-                        </div>
-                        <List style={{flexGrow: "1"}}>
+            <div style={{display: "flex", justifyContent: 'center'}}>
+                <BackgroundDiv style={{paddingBottom: '30px'}}>
+                    <div style={{height: "700px", display: "flex", justifyContent: 'center'}}>
 
 
-                            {this.state.me ? Array.from(this.state.me["friends"]).map(friend => {
-                                return <div style={{display: 'flex', alignItems: "center"}}>
-                                    <Cell style={{flexGrow: '3'}}>{friend["username"]}</Cell>
-                                    <Cell style={{flexGrow: '1'}}>{friend["status"]}</Cell>
-                                    <Cell style={{
-                                        flexGrow: '3',
-                                        display: 'flex',
-                                        justifyContent: "flex-end"
-                                    }}>{friend["currentGameId"] ? null : <Button>Join</Button>}</Cell>
-                                </div>;
-                            }) : null}
-
-                        </List>
-                    </div>
-
-
-                    <div style={{display: "flex", flexDirection: "column", width: "400px", height: "100%"}}>
-
-                        <div style={{display: "flex", flexDirection: "column", flexBasis: "50%"}}>
-                            <div style={titleStyle}>
-                                Incoming Friend Requests
+                        <div style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            width: "400px",
+                            height: "100%",
+                            marginRight: "0.5rem"
+                        }}>
+                            <div
+                                style={titleStyle}>
+                                <Title style={{marginTop: "5px", marginBottom: '5px', fontSize: '32px'}}>Friends</Title>
                             </div>
                             <List style={{flexGrow: "1"}}>
-                                {this.state.me ? Array.from(this.state.me["incomingFriendRequests"]).map(friend => {
-                                    return <div>
 
-                                        <h3>{friend["username"]}</h3>
-                                        <h3>{friend["status"]}</h3>
-                                        <Button onClick={() => {
-                                            this.acceptFriendRequest(friend["username"]);
-                                        }}>Accept</Button>
-                                        <Button onClick={() => {
-                                            this.rejectFriendRequest(friend["username"]);
-                                        }}>Reject</Button>
-                                    </div>;
-                                }) : null}
-                            </List>
-                        </div>
 
-                        <div style={{display: "flex", flexDirection: "column", flexBasis: "50%"}}>
-                            <div style={{...titleStyle, ...{marginTop: "0.5rem"}}}>
-                                Outgoing Friend Requests
-                            </div>
-
-                            <List style={{flexGrow: "1"}}>
-                                {this.state.me ? Array.from(this.state.me["outgoingFriendRequests"]).map(friend => {
+                                {this.state.friends ? Array.from(this.state.friends).map(friend => {
                                     return <div style={{display: 'flex', alignItems: "center"}}>
-
-                                        <Cell>{friend["username"]}</Cell>
-                                        <Cell>{friend["status"]}</Cell>
-                                        <Cell><Button onClick={() => {
-                                            this.removeFriendRequest(friend["username"]);
-                                        }}>remove</Button>
-                                        </Cell>
+                                        <Cell style={{flexGrow: '3'}}>{friend["username"]}</Cell>
+                                        <Cell style={{flexGrow: '1'}}>{friend["status"]}</Cell>
+                                        <Cell style={{
+                                            flexGrow: '3',
+                                            display: 'flex',
+                                            justifyContent: "flex-end"
+                                        }}>{friend["currentGameId"] ? null : <Button>Join</Button>}</Cell>
                                     </div>;
                                 }) : null}
+
                             </List>
+                        </div>
+
+
+                        <div style={{display: "flex", flexDirection: "column", width: "400px", height: "100%"}}>
+
+                            <div style={{display: "flex", flexDirection: "column", flexBasis: "50%"}}>
+                                <div style={titleStyle}>
+                                    <Title style={{marginTop: "5px", marginBottom: '5px', fontSize: '32px'}}>Incoming
+                                        Friend Requests</Title>
+
+                                </div>
+                                <List style={{flexGrow: "1"}}>
+                                    {this.state.incomingRequestsUsers ? Array.from(this.state.incomingRequestsUsers).map(friend => {
+                                        return <div style={{display: 'flex', alignItems: "center"}}>
+
+                                            <Cell style={{flexGrow: '3'}}>{friend["username"]}</Cell>
+                                            <Cell style={{flexGrow: '1'}}>{friend["status"]}</Cell>
+                                            <Cell style={{
+                                                flexGrow: '3',
+                                                display: 'flex',
+                                                justifyContent: "flex-end"
+                                            }}>
+                                                <Button onClick={() => {
+                                                    this.acceptFriendRequest(friend["userId"]);
+                                                }}
+                                                        style={{marginRight: "0.5rem"}}
+                                                >
+                                                    Accept
+                                                </Button>
+                                                <Button onClick={() => {
+                                                    this.rejectFriendRequest(friend["userId"]);
+                                                }}>
+                                                    Reject
+                                                </Button>
+                                            </Cell>
+                                        </div>;
+                                    }) : null}
+                                </List>
+                            </div>
+
+                            <div style={{display: "flex", flexDirection: "column", flexBasis: "50%"}}>
+                                <div style={{...titleStyle, ...{marginTop: "0.5rem"}}}>
+                                    <Title style={{marginTop: "5px", marginBottom: '5px', fontSize: '32px'}}>Outgoing
+                                        Friend Requests</Title>
+                                </div>
+
+                                <List style={{flexGrow: "1"}}>
+                                    {this.state.outgoingRequestsUsers ? Array.from(this.state.outgoingRequestsUsers).map(friend => {
+                                        return <div style={{display: 'flex', alignItems: "center"}}>
+
+                                            <Cell style={{flexGrow: '3'}}>{friend["username"]}</Cell>
+                                            <Cell style={{flexGrow: '1'}}>{friend["status"]}</Cell>
+                                            <Cell style={{
+                                                flexGrow: '3',
+                                                display: 'flex',
+                                                justifyContent: "flex-end"
+                                            }}><Button onClick={() => {
+                                                this.removeFriendRequest(friend["userId"]);
+                                            }}>remove</Button>
+                                            </Cell>
+                                        </div>;
+                                    }) : null}
+                                </List>
+                            </div>
+
+
                         </div>
 
 
                     </div>
 
 
-                </div>
+                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '2vh'}}>
+                        <Title style={{marginTop: "5px", marginBottom: '5px', fontSize: '32px', flexGrow: '1'}}>Add new
+                            Friend:</Title>
+                        <InputField value={this.state.addFriendName}
+                                    onChange={e => {
+                                        this.handleInputChange("friendName", e.target.value);
+                                    }}
+                                    style={{flexGrow: '1', width: 'auto', backgroundColor: "#21212144"}}>
+                        </InputField>
+                        <div style={{flexGrow: '5', justifyContent: 'center', paddingLeft: '30px'}}>
+                            <Button
+                                onClick={() => {
+                                    this.sendFriendRequest(this.state.addFriendName);
+                                }}
+                            >Add New Friend</Button>
+                        </div>
+                    </div>
 
 
-                <div>
-                    <input
-                        value={this.state.friendName}
-                        onChange={e => {
-                            this.handleInputChange("friendName", e.target.value);
-                            console.log(this.state.friendName)
-                        }}>
-
-                    </input>
-                    <button
-                        onClick={() => {
-                            this.sendFriendRequest(this.state.friendName);
-                        }}>
-                        send
-                    </button>
-                    <button
-                        onClick={() => {
-                            this.acceptFriendRequest(this.state.friendName);
-                        }}>
-                        accept
-                    </button>
-                    <button
-                        onClick={() => {
-                            console.log(this.state.me["friends"]);
-                        }}>
-                        accept
-                    </button>
-                </div>
-
-
+                </BackgroundDiv>
             </div>
         );
     }

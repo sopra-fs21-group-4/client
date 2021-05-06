@@ -66,9 +66,13 @@ export const InputField = styled.input`
     width: 100%;
     height: 35px;
     border: none;
-    background: #21212114;
+    background: #033dfcaf;
     border-radius: 4px;
     padding-left: 15px;
+    
+     ::-webkit-input-placeholder {
+    color: white;
+  }
 `;
 
 InputField.defaultProps = {
@@ -81,8 +85,8 @@ export const Slider = styled.input`
     height: 35px;
     background: #00000000;
     
-    &::-webkit-slider-runnable-track {height: .35em; background: #21212114; border: none; border-radius: 3px;}
-    &::-moz-range-track {height: .35em; background: #21212114; border: none; border-radius: 3px;}
+    &::-webkit-slider-runnable-track {height: .35em; background: #033dfcaf; border: none; border-radius: 3px;}
+    &::-moz-range-track {height: .35em; background: #033dfcaf; border: none; border-radius: 3px;}
     
     &::-webkit-slider-thumb {appearance: none; height: 15px; width: 15px; border-radius: 50%; margin-top: -5px; 
     background: ${props => (props.disabled ? '#888' : '#bf3eff')};}
@@ -111,7 +115,7 @@ export const Select = styled.select`
     width: 100%;
     height: 35px;
     border: none;
-    background: #21212114;
+    background: #033dfcaf;
     border-radius: 4px;
     padding-left: 15px;
     appearance: none;
