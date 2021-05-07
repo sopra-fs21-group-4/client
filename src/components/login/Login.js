@@ -1,111 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
-import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
-import { Button } from '../../views/design/Interaction';
-import Header from "../navbar/NavigationBar";
 import title from '../../views/design/title.module.css'
 import doge from "../../image/memes/doge.jpg"
 import Modal from "../login/Modal"
 
-const FormContainer = styled.div`
-  margin-top: 2em;
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  min-height: 300px;
-  justify-content: center;
-  
-`;
-
-const Form = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 32%;
-  height: 375px;
-  font-size: 16px;
-  font-weight: 300;
-  padding-top: 5px;
-  padding-bottom: 50px;
-  padding-left: 37px;
-  padding-right: 37px;
-  border-radius: 5px;
-  background: #ffffffdd;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-`;
-
-const ButtonRegister = styled.button`
- &:hover {
-    transform: translateY(-2px);
-  }
-  padding: 10px;
-  font-weight: 700;
-  
-  font-size: 15px;
-  font-family: Roboto;
-  text-align: center;
-  color: rgba(255, 255, 255, 1);
-  width: ${props => props.width || null};
-  height: 35px;
-  border: none;
-  border-radius: 2px;
-  margin-left: 15px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(191,62,255);
-  transition: all 0.3s ease;
-  
-`;
-
-const InputField = styled.input`
-  &::placeholder {
-    color: rgba(105,105,105, 1.0);
-    font-size: 14px
-  }
-  height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: none;
-  border-radius: 2px;
-  margin-bottom: 10px;
-  background: rgba(211, 211, 211, 0.5);
-  color: black;
-`;
-
-const ButtonLogin = styled.button`
- &:hover {
-    transform: translateY(-2px);
-  }
-  padding: 10px;
-  font-weight: 700;
-  
-  font-size: 15px;
-  font-family: Roboto;
-  text-align: center;
-  color: rgba(255, 255, 255, 1);
-  width: ${props => props.width || null};
-  height: 35px;
-  border: none;
-  border-radius: 2px;
-  margin-right: 15px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(191,62,255);
-  transition: all 0.3s ease;
-  
-`;
-
-
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  
-`;
+// Styling Imports:
+import {BackgroundDiv, BackgroundDivLighter} from "../../views/design/Containers";
+import {Label, Title} from "../../views/design/Text";
+import {Button, InputField1} from '../../views/design/Interaction';
 
 /**
  * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
@@ -191,28 +95,30 @@ class Login extends React.Component {
 
   render() {
     return (
-
-      <BaseContainer>
-        <div className={title.title}> Do you even meme? </div>
-        <div className={title.sopragroupname}> SoPra Group-04</div>
-          <Form>
-            <div className={title.create}> Login to your account:</div>
-            <InputField
+        <div style={{display: "flex", justifyContent: 'center'}}>
+      <BackgroundDiv>
+        <Title > Do you even meme? </Title>
+        <Title style={{fontSize:'30px'}}> SoPra Group-04</Title>
+          <BackgroundDivLighter >
+            <div style={{width:'350px', height:'50px'}}>
+              <Label>Login to your account:</Label>
+            </div>
+            <InputField1
               placeholder="Username"
               onChange={e => {
                 this.handleInputChange('username', e.target.value);
               }}
             />
 
-            <InputField
+            <InputField1
                 // type='password'
                 placeholder="Password"
                 onChange={e => {
                     this.handleInputChange('password', e.target.value);
                 }}
             />
-              <ButtonContainer>
-              <ButtonLogin
+              <div style={{display:'flex', justifyContent:'center', marginTop:'20px'}}>
+              <Button
                   role="button"
                 disabled={!this.state.username || !this.state.password}
                 width="50%"
@@ -221,16 +127,16 @@ class Login extends React.Component {
                 }}
               >
                 Login
-              </ButtonLogin>
+              </Button>
 
-            <ButtonRegister width = '50%' onClick={ () => {
+            <Button width = '50%' onClick={ () => {
               this.props.history.push('/register')
             }}
             >
             Register
-            </ButtonRegister>
-              </ButtonContainer>
-          </Form>
+            </Button>
+              </div>
+          </BackgroundDivLighter>
         <Modal show={this.state.showImage} handleClose={this.hideModal}>
 
 
@@ -239,8 +145,8 @@ class Login extends React.Component {
 
           </div>
         </Modal>
-      </BaseContainer>
-
+      </BackgroundDiv>
+        </div>
     );
   }
 }

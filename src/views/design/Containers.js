@@ -29,13 +29,13 @@ export const VerticalScroller = styled.div`
 `;
 
 export const MediumForm = styled.div`
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
     margin: 0 auto;
     justify-content: center;
     display: grid;
     border-radius: 20px;
-    background: #ffffffdd;
+    background: #11aaeedd;
     margin-top: 30px;
     margin-bottom: 30px;
     padding-bottom: 30px;
@@ -49,13 +49,65 @@ export const FlexBox = styled.div`
   justify-content: right;
 `;
 
-export const Leaderboard = styled.div`
 
-
-
-
+export const TestHorizont = styled.div`
+    width: inherit;
+    height: 700px;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    
+    
 `;
 
+
+
+
+export const BackgroundDiv = styled.div`
+
+    margin: 0 auto;
+        margin-top: 30px;
+    margin-bottom: 30px;
+    
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    
+    border-radius: 2px;
+    background: #11aaeef2;
+
+    padding: 60px;
+    padding-top: 30px;
+`;
+
+export const BackgroundDivLighter = styled.div`
+
+    margin: 0 auto;
+        margin-top: 30px;
+    margin-bottom: 30px;
+    
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    
+    border-radius: 2px;
+    background: #9ccfff;
+
+    padding: 60px;
+    padding-top: 30px;
+`;
+
+export const BackgroundDivLighterForFriends = styled.div`
+
+    
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    
+    border-radius: 2px;
+    background: #9ccfff;
+
+`;
 
 
 

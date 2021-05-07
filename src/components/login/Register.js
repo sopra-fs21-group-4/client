@@ -1,121 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
-import { BaseContainer } from '../../helpers/layout';
-import { api, handleError } from '../../helpers/api';
+import {api, handleError} from '../../helpers/api';
 import User from '../shared/models/User';
-import { withRouter } from 'react-router-dom';
-import { Button } from '../../views/design/Interaction';
+import {withRouter} from 'react-router-dom';
 import title from '../../views/design/title.module.css'
 import fuu from '../../image/memes/fuu.jpg'
 import doge from "../../image/memes/doge.jpg";
 import Modal from "./Modal";
 
-const FormContainer = styled.div`
-  margin-top: 2em;
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  min-height: 300px;
-  justify-content: center;
-  
-`;
+// Styling Imports:
+import {BackgroundDiv, BackgroundDivLighter} from "../../views/design/Containers";
+import {Label, Title} from "../../views/design/Text";
+import {Button, InputField1} from '../../views/design/Interaction';
 
-
-const ButtonBack = styled.button`
- &:hover {
-    transform: translateY(-2px);
-  }
-  padding: 10px;
-  font-weight: 700;
-  
-  font-size: 15px;
-  font-family: Roboto;
-  text-align: center;
-  color: rgba(255, 255, 255, 1);
-  width: ${props => props.width || null};
-  height: 35px;
-  border: none;
-  border-radius: 2px;
-  margin-right: 15px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(191,62,255);
-  transition: all 0.3s ease;
-  
-`;
-
-const ButtonRegister = styled.button`
- &:hover {
-    transform: translateY(-2px);
-  }
-  padding: 10px;
-  font-weight: 700;
-  
-  font-size: 15px;
-  font-family: Roboto;
-  text-align: center;
-  color: rgba(255, 255, 255, 1);
-  width: ${props => props.width || null};
-  height: 35px;
-  border: none;
-  border-radius: 2px;
-  margin-left: 15px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(191,62,255);
-  transition: all 0.3s ease;
-  
-`;
-
-
-
-const Form = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 32%;
-  height: 375px;
-  font-size: 16px;
-  font-weight: 300;
-  
-  padding-left: 37px;
-  padding-right: 37px;
-  border-radius: 5px;
-  background: white;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-`;
-
-
-
-const InputField = styled.input`
-  &::placeholder {
-    color: rgba(105,105,105, 1.0);
-    font-size: 14px
-  }
-  height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: none;
-  border-radius: 2px;
-  margin-bottom: 10px;
-  background: rgba(211, 211, 211, 0.5);
-  color: black;
-`;
-
-const Label = styled.label`
-  color: white;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  
-  
-  
-`;
 
 /**
  * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
@@ -147,11 +43,11 @@ class Register extends React.Component {
     }
 
     showModal = () => {
-        this.setState({ showImage: true });
+        this.setState({showImage: true});
     };
 
     hideModal = () => {
-        this.setState({ showImage: false });
+        this.setState({showImage: false});
         window.location = `/register`;
     };
 
@@ -185,7 +81,7 @@ class Register extends React.Component {
     handleInputChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
         // this.setState({'username': value});
-        this.setState({ [key]: value });
+        this.setState({[key]: value});
     }
 
     /**
@@ -195,81 +91,85 @@ class Register extends React.Component {
      * You may call setState() immediately in componentDidMount().
      * It will trigger an extra rendering, but it will happen before the browser updates the screen.
      */
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     render() {
         return (
-
-            <BaseContainer>
-
-                    <div className={title.title}> Do you even meme? </div>
-
-                    <div className={title.sopragroupname}> SoPra Group-04</div>
+            <div style={{display: "flex", justifyContent: 'center'}}>
+                <BackgroundDiv>
 
 
-                    <Form>
-                        <div className={title.create}> Create your own account:</div>
-                        <InputField
-                            placeholder="Username"
-                            onChange={e => {
-                                this.handleInputChange('username', e.target.value);
-                            }}
-                        />
+                        <Title > Do you even meme? </Title>
+                        <Title style={{fontSize:'30px'}}> SoPra Group-04</Title>
 
 
-                        <InputField
-                            placeholder="Email"
-                            onChange={e => {
-                                this.handleInputChange('email', e.target.value);
-                            }}
-                        />
-
-                        <InputField
-                            // type='password'
-                            placeholder="Password"
-                            onChange={e => {
-                                this.handleInputChange('password1', e.target.value);
-                            }}
-                        />
-
-                        <InputField
-                            // type='password'
-                            placeholder="Reenter password"
-                            onChange={e => {
-                                this.handleInputChange('password2', e.target.value);
-                            }}
-                        />
-                        <ButtonContainer>
-                            <ButtonBack
-
-                                width="50%"
-                                onClick={() => {
-                                    this.props.history.push('/login');
+                        <BackgroundDivLighter>
+                            <div style={{width:'350px', height:'50px'}}> <Label>Create your own account:</Label></div>
+                            <InputField1
+                                placeholder="Username"
+                                onChange={e => {
+                                    this.handleInputChange('username', e.target.value);
                                 }}
-                            >
-                                Back to login
-                            </ButtonBack>
-
-                            <ButtonRegister
-                                width = '50%' disabled={!this.state.username || !this.state.password1 || !this.state.password2 || (this.state.password1 != this.state.password2)}
-                                onClick={ () => {
-
-                                this.register();
-                            }}
-                            >
-                                Create account
-                            </ButtonRegister>
-                        </ButtonContainer>
-                    </Form>
-                <Modal show={this.state.showImage} handleClose={this.hideModal}>
+                            />
 
 
-                    <div style={{display: this.state.showImage ? "block" : "none"}}>
-                        <img className={title.bestmemes} src={fuu} alt={"such meme"} />
+                            <InputField1
+                                placeholder="Email"
+                                onChange={e => {
+                                    this.handleInputChange('email', e.target.value);
+                                }}
+                            />
 
-                    </div>
-                </Modal>
-            </BaseContainer>
+                            <InputField1
+                                // type='password'
+                                placeholder="Password"
+                                onChange={e => {
+                                    this.handleInputChange('password1', e.target.value);
+                                }}
+                            />
+
+                            <InputField1
+                                // type='password'
+                                placeholder="Reenter password"
+                                onChange={e => {
+                                    this.handleInputChange('password2', e.target.value);
+                                }}
+                            />
+                            <div style={{display:'flex',justifyContent:'center',marginTop:'20px'}}>
+                                <Button
+
+                                    width="50%"
+                                    onClick={() => {
+                                        this.props.history.push('/login');
+                                    }}
+                                >
+                                    Back to login
+                                </Button>
+
+                                <Button
+                                    width='50%'
+                                    disabled={!this.state.username || !this.state.password1 || !this.state.password2 || (this.state.password1 != this.state.password2)}
+                                    onClick={() => {
+
+                                        this.register();
+                                    }}
+                                >
+                                    Create account
+                                </Button>
+                            </div>
+                        </BackgroundDivLighter>
+                        <Modal show={this.state.showImage} handleClose={this.hideModal}>
+
+
+                            <div style={{display: this.state.showImage ? "block" : "none"}}>
+                                <img className={title.bestmemes} src={fuu} alt={"such meme"}/>
+
+                            </div>
+                        </Modal>
+
+                </BackgroundDiv>
+            </div>
         );
     }
 }

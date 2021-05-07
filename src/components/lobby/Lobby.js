@@ -95,12 +95,12 @@ class Lobby extends React.Component {
         this.state = {
             generalCollapsed: true,
             timersCollapsed: true,
-            subreddit: this.props.game['subreddit'],
-            memeType: this.props.game['memeType'],
-            totalRounds: this.props.game['totalRounds'],
-            maxSuggestSeconds:this.props.game['maxSuggestSeconds'],
-            maxVoteSeconds:this.props.game['maxVoteSeconds'],
-            maxAftermathSeconds: this.props.game['maxAftermathSeconds'],
+            subreddit: this.props.game.gameSettings['subreddit'],
+            memeType: this.props.game.gameSettings['memeType'],
+            totalRounds: this.props.game.gameSettings['totalRounds'],
+            maxSuggestSeconds:this.props.game.gameSettings['maxSuggestSeconds'],
+            maxVoteSeconds:this.props.game.gameSettings['maxVoteSeconds'],
+            maxAftermathSeconds: this.props.game.gameSettings['maxAftermathSeconds'],
             settingsUpdated: false,
         };
     }
@@ -115,42 +115,6 @@ class Lobby extends React.Component {
 
     async updateSettings() {
         try {
-
-            // console.log("test")
-            // const getPosts = () => {
-            //     //if(!_.startsWith(window.location.protocol,"http"))
-            //     return redditApi(`/api/info.json?jsonp&url=${window.location.href}`)
-            //         .then((o)=>_.get(o, 'data.data.children', []).map(p=>p.data))
-            // };
-            // let test = await getPosts()
-            // console.log(test)
-            //
-            //
-            //
-            // // Reddit API here, getting posts from subreddit
-            // const redditUrl = `https://reddit.com/r/${this.state.subreddit}/${this.state.memeType.toLowerCase()}.json?sort=${this.state.memeType.toLowerCase()}&limit=100`
-            // const data = await redditApi.get(redditUrl            )
-            // // TODO error
-            //
-            // let children = data.data.data.children
-            // // console.log(children)
-            //
-            // if(children.length < this.state.totalRounds){
-            //     //todo error
-            //     console.log("error, not enough memes")
-            // }
-            //
-            // let urls = []
-            // for(let child of children){
-            //     if(child.data.url.includes(".jpg") || child.data.url.includes(".png") || child.data.url.includes(".gif")){ //
-            //         urls.push(child.data.url)
-            //     }
-            // }
-            //
-            // // take the correct amount of memes
-            // urls = urls.slice(0,this.state.totalRounds)
-            // // console.log(urls)
-
 
 
             // request setup
@@ -221,14 +185,14 @@ class Lobby extends React.Component {
 
     async update() {
         if(!this.isGameMaster()){
-            // TODO update settings for all joined users when gamemaster updates them TEST
+            // TODO update slider position for all users
             this.setState({
-                subreddit: this.props.game['subreddit'],
-                memeType: this.props.game['memeType'],
-                totalRounds: this.props.game['totalRounds'],
-                maxSuggestSeconds:this.props.game['maxSuggestSeconds'],
-                maxVoteSeconds:this.props.game['maxVoteSeconds'],
-                maxAftermathSeconds: this.props.game['maxAftermathSeconds'],
+                subreddit: this.props.game.gameSettings['subreddit'],
+                memeType: this.props.game.gameSettings['memeType'],
+                totalRounds: this.props.game.gameSettings['totalRounds'],
+                maxSuggestSeconds:this.props.game.gameSettings['maxSuggestSeconds'],
+                maxVoteSeconds:this.props.game.gameSettings['maxVoteSeconds'],
+                maxAftermathSeconds: this.props.game.gameSettings['maxAftermathSeconds'],
             });
         }
     }
@@ -241,7 +205,7 @@ class Lobby extends React.Component {
             <MediumForm
             >
             <VerticalBox>
-                <Title> { this.props.game.name } </Title> <br/>
+                <Title> { this.props.game.gameSettings.name } </Title> <br/>
 
                 {this.state.edit? this.gameSettingsForm() : this.gameSettingsTable()}
 
@@ -261,35 +225,35 @@ class Lobby extends React.Component {
         }}>
             <tr>
                 <Cell><Label>Subreddit:</Label></Cell>
-                <Cell><Info>{this.props.game.subreddit}</Info></Cell>
+                <Cell><Info>{this.props.game.gameSettings.subreddit}</Info></Cell>
             </tr>
             <tr>
                 <Cell><Label>Meme Type:</Label></Cell>
-                <Cell><Info>{this.props.game.memeType}</Info></Cell>
+                <Cell><Info>{this.props.game.gameSettings.memeType}</Info></Cell>
             </tr>
             <tr>
                 <Cell><Label>Memes found:</Label></Cell>
-                <Cell><Info>{this.props.game.memesFound.length}</Info></Cell>
+                <Cell><Info>{this.props.game.gameSettings.memesFound}</Info></Cell>
             </tr>
             <tr>
                 <Cell><Label>No. Rounds:</Label></Cell>
-                <Cell><Info>{this.props.game.totalRounds}</Info></Cell>
+                <Cell><Info>{this.props.game.gameSettings.totalRounds}</Info></Cell>
             </tr>
             <tr>
                 <Cell><Label>Player Limit:</Label></Cell>
-                <Cell><Info>{this.props.game.maxPlayers}</Info></Cell>
+                <Cell><Info>{this.props.game.gameSettings.maxPlayers}</Info></Cell>
             </tr>
             <tr>
                 <Cell><Label>Naming Time:</Label></Cell>
-                <Cell><Info>{this.props.game.maxSuggestSeconds}</Info></Cell>
+                <Cell><Info>{this.props.game.gameSettings.maxSuggestSeconds}</Info></Cell>
             </tr>
             <tr>
                 <Cell><Label>Voting Time:</Label></Cell>
-                <Cell><Info>{this.props.game.maxVoteSeconds}</Info></Cell>
+                <Cell><Info>{this.props.game.gameSettings.maxVoteSeconds}</Info></Cell>
             </tr>
             <tr>
                 <Cell><Label>Results Time:</Label></Cell>
-                <Cell><Info>{this.props.game.maxAftermathSeconds}</Info></Cell>
+                <Cell><Info>{this.props.game.gameSettings.maxAftermathSeconds}</Info></Cell>
             </tr>
             <tr>
                 <Cell><Label>Waiting until:</Label></Cell>
@@ -329,7 +293,7 @@ class Lobby extends React.Component {
     getWaitingIssue() {
         let game = this.props.game;
         if (game.players.length < 3) return `more players join`;
-        if (game.memesFound.length < game.totalRounds) return `r/${game.subreddit} gets richer`;
+        if (game.memesFound < game.gameSettings.totalRounds) return `r/${game.gameSettings.subreddit} gets richer`;
         else return 'all players are ready';
     }
 
@@ -338,7 +302,7 @@ class Lobby extends React.Component {
         // const general = { label: 'General', key: 'general', type: 'Group' };
 
         const subreddit = { label: 'Subreddit', key: 'subreddit', type: 'Input',
-            props:{defaultValue: this.props.game['subreddit'], disabled: !this.isGameMaster()} };
+            props:{defaultValue: this.props.game.gameSettings['subreddit'], disabled: !this.isGameMaster()} };
 
         const memeType = { label: 'Meme Type', key: 'memeType', type: 'Select',
             options: [
@@ -346,7 +310,7 @@ class Lobby extends React.Component {
                 {name:'New',value:'NEW'},
                 {name:'Rising',value:'RISING'},
                 {name:'Top',value:'TOP'}],
-            props:{defaultValue: this.props.game['memeType'], disabled: !this.isGameMaster()} };
+            props:{defaultValue: this.props.game.gameSettings['memeType'], disabled: !this.isGameMaster()} };
 
         const totalRounds = { label: 'Number of Rounds', key: 'totalRounds', type: 'Range',
             props:{ min:1, max:30, defaultValue: 5, disabled: !this.isGameMaster() } };
