@@ -83,7 +83,7 @@ class GameRound extends React.Component {
                 textAlign: 'left',
                 paddingLeft: '100px',
             }}>
-                {this.props.game.currentRound.title}
+                <HorizontalBox>{`${this.props.game.currentRound.title} out of  ${this.props.game.gameSettings.totalRounds}`}</HorizontalBox>
             </Title>
             <br/>
             <HorizontalBox style={{justifyContent: 'left'}}>
