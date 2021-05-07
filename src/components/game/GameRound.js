@@ -166,7 +166,7 @@ class GameRound extends React.Component {
                 return <div style={{
                     paddingBottom:'15px'
                 }}>
-                    <Label>{`${suggestion? suggestion : '🅱'} (${player.username}): ${score? score : '0'}`}</Label>
+                    <Label>{`${suggestion? suggestion : 'git gud'} (${player.username}): ${score? score : '0'}`}</Label>
                 </div>
             })}
         </VerticalList>
