@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Button = styled.button`
+export const ButtonOld = styled.button`
   &:hover {
     transform: translateY(-2px);
   }
@@ -18,6 +18,28 @@ export const Button = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: #bf3eff;
   transition: all 0.3s ease;
+`;
+
+export const Button = styled.button`
+ &:hover {
+    transform: translateY(-2px);
+  }
+  padding: 6px;
+  font-weight: 700;
+  
+  font-size: 15px;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  width: ${props => props.width || null};
+  height: 35px;
+  border: none;
+  border-radius: 2px;
+  margin-right: 15px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  background: rgb(191,62,255);
+  transition: all 0.3s ease;
+  
 `;
 
 export const DiscreetButton = styled.button`
@@ -74,6 +96,23 @@ export const InputField = styled.input`
     color: white;
   }
 `;
+
+export const InputField1 = styled.input`
+  &::placeholder {
+    color: rgba(105,105,105, 1.0);
+    font-size: 14px
+  }
+  height: 35px;
+  padding-left: 15px;
+  margin-left: -4px;
+  border: none;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  background: rgba(211, 211, 211, 0.5);
+  color: black;
+`;
+
+
 
 InputField.defaultProps = {
     placeholder: "Enter here..",

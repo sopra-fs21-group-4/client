@@ -68,11 +68,13 @@ class Chat extends React.Component {
 
     render() {
         return (
+
             <VerticalBox
                 style={{
                     position: 'relative',
                     bottom: 0,
                     height: '100%',
+
                 }}
             >
                 <div

@@ -3,7 +3,7 @@ import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import Lobby from "../lobby/Lobby";
 import Chat from "../chat/Chat";
-import {ConservativeBox, HorizontalBox, VerticalBox} from "../../views/design/Containers";
+import {BackgroundDiv, ConservativeBox, HorizontalBox, VerticalBox} from "../../views/design/Containers";
 import { Label, Title } from "../../views/design/Text";
 import {Button, InputField} from "../../views/design/Interaction";
 import User from "../shared/models/User";
@@ -103,14 +103,9 @@ class Game extends React.Component {
       case 200: // 200: OK
 
         return (
-            <HorizontalBox
-                style={{
-                  position:'fixed',
-                  bottom:0,
-                  left:0,
-                  height: '95vh',
-                  width: '100%',
-                }}
+            <div style={{display: "flex", justifyContent: 'center'}}>
+            <BackgroundDiv
+                style={{}}
             >
 
               {this.currentGameStateUI()}
@@ -145,7 +140,8 @@ class Game extends React.Component {
                   />
                 </div>
               </ExpandableVBox>
-            </HorizontalBox>
+            </BackgroundDiv>
+            </div>
         );
       case 401: // 401: UNAUTHORIZED
         return (

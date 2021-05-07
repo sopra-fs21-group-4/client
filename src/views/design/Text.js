@@ -10,12 +10,10 @@ export const Title = styled.h1`
 
 export const Label = styled.h2`
     font-size: 16px;
-    color: #fff;
-    background: #000;
+    color: #000;
     display: table-cell;
     text-align: left;
     vertical-align: middle;
-    width: 100%;
     padding-left: 5px;
     padding-right: 5px;
 `;

@@ -6,20 +6,17 @@ import {Button, InputField} from '../../views/design/Interaction';
 import {withRouter} from 'react-router-dom';
 import {Label, Title} from "../../views/design/Text";
 import User from "../shared/models/User";
-import {BackgroundDiv, FlexBox, MediumForm} from "../../views/design/Containers";
+import {
+    BackgroundDiv,
+    BackgroundDivLighterForFriends,
+} from "../../views/design/Containers";
 
 
 const Cell = styled.div`
     padding: 0.5rem;
 `;
 
-const List = styled.div`
 
-background-color: #F3F3F3;
-border: 1px solid #DDD;
-`;
-
-const titleStyle = {display: 'flex', alignItems: 'flex-end', padding: '0.5rem 0', fontSize: '25px'};
 
 
 class FriendList extends React.Component {
@@ -194,11 +191,10 @@ class FriendList extends React.Component {
                             height: "100%",
                             marginRight: "0.5rem"
                         }}>
-                            <div
-                                style={titleStyle}>
+                            <div>
                                 <Title style={{marginTop: "5px", marginBottom: '5px', fontSize: '32px'}}>Friends</Title>
                             </div>
-                            <List style={{flexGrow: "1"}}>
+                            <BackgroundDivLighterForFriends style={{flexGrow: "1"}}>
 
 
                                 {this.state.friends ? Array.from(this.state.friends).map(friend => {
@@ -213,19 +209,19 @@ class FriendList extends React.Component {
                                     </div>;
                                 }) : null}
 
-                            </List>
+                            </BackgroundDivLighterForFriends>
                         </div>
 
 
                         <div style={{display: "flex", flexDirection: "column", width: "400px", height: "100%"}}>
 
                             <div style={{display: "flex", flexDirection: "column", flexBasis: "50%"}}>
-                                <div style={titleStyle}>
+                                <div>
                                     <Title style={{marginTop: "5px", marginBottom: '5px', fontSize: '32px'}}>Incoming
                                         Friend Requests</Title>
 
                                 </div>
-                                <List style={{flexGrow: "1"}}>
+                                <BackgroundDivLighterForFriends style={{flexGrow: "1"}}>
                                     {this.state.incomingRequestsUsers ? Array.from(this.state.incomingRequestsUsers).map(friend => {
                                         return <div style={{display: 'flex', alignItems: "center"}}>
 
@@ -251,16 +247,16 @@ class FriendList extends React.Component {
                                             </Cell>
                                         </div>;
                                     }) : null}
-                                </List>
+                                </BackgroundDivLighterForFriends>
                             </div>
 
                             <div style={{display: "flex", flexDirection: "column", flexBasis: "50%"}}>
-                                <div style={{...titleStyle, ...{marginTop: "0.5rem"}}}>
+                                <div style={{marginTop: "0.5rem"}}>
                                     <Title style={{marginTop: "5px", marginBottom: '5px', fontSize: '32px'}}>Outgoing
                                         Friend Requests</Title>
                                 </div>
 
-                                <List style={{flexGrow: "1"}}>
+                                <BackgroundDivLighterForFriends style={{flexGrow: "1"}}>
                                     {this.state.outgoingRequestsUsers ? Array.from(this.state.outgoingRequestsUsers).map(friend => {
                                         return <div style={{display: 'flex', alignItems: "center"}}>
 
@@ -276,7 +272,7 @@ class FriendList extends React.Component {
                                             </Cell>
                                         </div>;
                                     }) : null}
-                                </List>
+                                </BackgroundDivLighterForFriends>
                             </div>
 
 

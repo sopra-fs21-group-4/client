@@ -73,17 +73,41 @@ export const BackgroundDiv = styled.div`
     display: flex;
     flex-direction: column;
     
-    border-radius: 20px;
+    border-radius: 2px;
     background: #11aaeef2;
 
     padding: 60px;
     padding-top: 30px;
 `;
 
+export const BackgroundDivLighter = styled.div`
 
+    margin: 0 auto;
+        margin-top: 30px;
+    margin-bottom: 30px;
+    
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    
+    border-radius: 2px;
+    background: #9ccfff;
 
+    padding: 60px;
+    padding-top: 30px;
+`;
 
+export const BackgroundDivLighterForFriends = styled.div`
 
+    
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    
+    border-radius: 2px;
+    background: #9ccfff;
+
+`;
 
 
 
