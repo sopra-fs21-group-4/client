@@ -1,12 +1,13 @@
 import React from 'react';
-import { api, handleError } from '../../helpers/api';
-import { Spinner } from '../../views/design/Spinner';
-import { withRouter } from 'react-router-dom';
-import {VerticalList, VerticalScroller} from "../../views/design/Containers";
+import {api, handleError} from '../../helpers/api';
+import {Spinner} from '../../views/design/Spinner';
+import {withRouter} from 'react-router-dom';
+import {BackgroundDivLighter, VerticalList, VerticalScroller} from "../../views/design/Containers";
 import {Title} from "../../views/design/Text";
 import User from "../shared/models/User";
 import GameRoundSummary from "../game/GameRoundSummary";
 import styled from "styled-components";
+import {Button} from "../../views/design/Interaction";
 
 
 const ButtonLogin = styled.button`
@@ -41,11 +42,12 @@ class GameSummary extends React.Component {
             game: null
         };
     }
+
     async componentDidMount() {
         try {
             // request setup
             const url = `/archive/games/${this.props.match.params.gameId}`;
-            const config = { headers: User.getUserAuthentication() };
+            const config = {headers: User.getUserAuthentication()};
 
             const gameResponse = await api.get(url, config);
             console.log(gameResponse);
@@ -56,6 +58,7 @@ class GameSummary extends React.Component {
             alert(`Something went wrong while fetching game info: \n${handleError(error)}`);
         }
     }
+
     async gotoLobby() {
         try {
             // request setup
@@ -72,36 +75,33 @@ class GameSummary extends React.Component {
             alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
         }
     }
+
     render() {
         if (!this.state.game) {
             return <Spinner/>
         }
         return <VerticalList
-            style={{
-                paddingLeft: '10%',
-                paddingRight: '10%',
-            }}>
-            <Title style={{
-                textAlign: 'left',
-                width: '100px',
-            }}>
-                {this.state.game.name}
-            </Title>
-            <VerticalScroller>
+            style={{}}>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <div style={{display: 'flex', justifyContent: 'center',flexGrow: '1',}}>
+                    <Title>{this.state.game.name}</Title>
+                </div>
+                <Button style={{
+                    flexGrow: '1',
+                    maxWidth: 'fit-content'
+                }}
+                        onClick={() => {
+                            this.gotoLobby();
+                        }}
+                >
+                    Back to Lobby1
+                </Button>
+            </div>
+            <BackgroundDivLighter>
                 {this.state.game.rounds.map(round => {
                     return <GameRoundSummary round={round}/>
                 })}
-            </VerticalScroller>
-            <ButtonLogin
-                role="button"
-
-                width="50%"
-                onClick={() => {
-                    this.gotoLobby();
-                }}
-            >
-                Back to Lobby
-            </ButtonLogin>
+            </BackgroundDivLighter>
         </VerticalList>
     }
 

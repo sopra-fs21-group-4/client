@@ -9,33 +9,11 @@ import {Label, Title} from "../../views/design/Text";
 import {
     BackgroundDiv,
     BackgroundDivLighter,
-    HorizontalBox,
-    MediumForm,
     VerticalBox
 } from "../../views/design/Containers";
 import User from "../shared/models/User";
 import createGameIcon from "../../image/icons/game-add.png";
 
-const LobbyButton = styled.button`
-  &:hover {
-    transform: translateY(-2px);
-  }
-  padding: 6px;
-  margin-bottom: 5px;
-  font-weight: 700;
-  font-size: 13px;
-  text-align: center;
-  color: #8888ff;
-  width: ${props => props.width || null};
-  height: 35px;
-  width: 100%;
-  border: 1px grey;
-  border-radius: 4px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgba(240,240,255,0.8);
-  transition: all 0.3s ease;
-`;
 
 class GameList extends React.Component {
     constructor() {

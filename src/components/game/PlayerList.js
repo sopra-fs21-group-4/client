@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Message from "../../views/Message";
-import {ConservativeBox, FlexBox, VerticalScroller} from "../../views/design/Containers";
+import {VerticalScroller} from "../../views/design/Containers";
 import {Button, DiscreetButton, LinkButton} from "../../views/design/Interaction";
 import {Spinner} from "../../views/design/Spinner";
 import {withRouter} from "react-router-dom";
@@ -77,7 +77,7 @@ class PlayerList extends React.Component {
         let game = this.props.game;
         let players = this.props.players.slice();
         players.sort((a,b) => {return game.scores[b.userId] - game.scores[a.userId]});
-        return <ConservativeBox
+        return <div
             style={{
                 padding: '10px'
             }}
@@ -122,7 +122,7 @@ class PlayerList extends React.Component {
                     })}
                 </table>
             </VerticalScroller>
-        </ConservativeBox>
+        </div>
     }
 
 
