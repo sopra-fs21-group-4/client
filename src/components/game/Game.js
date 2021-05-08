@@ -3,7 +3,7 @@ import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import Lobby from "../lobby/Lobby";
 import Chat from "../chat/Chat";
-import {BackgroundDiv, ConservativeBox, HorizontalBox, VerticalBox} from "../../views/design/Containers";
+import {BackgroundDiv, HorizontalBox, VerticalBox} from "../../views/design/Containers";
 import { Label, Title } from "../../views/design/Text";
 import {Button, InputField} from "../../views/design/Interaction";
 import User from "../shared/models/User";
@@ -103,23 +103,28 @@ class Game extends React.Component {
       case 200: // 200: OK
 
         return (
-            <div style={{display: "flex", justifyContent: 'center'}}>
+            <div style={{width:'calc(100% - 170px)', display: "flex", justifyContent: 'center'}}>
             <BackgroundDiv
                 style={{}}
             >
 
               {this.currentGameStateUI()}
+
+              {/**Chat Starts here*/}
               <ExpandableVBox
                 style={{
                   position:'fixed',
                   bottom:0,
                   right:0,
-                  height: '95vh',
+                    height: '93.5%',
+                    display: 'flex',
+                    flexFlow:'column',
+
                 }}
               >
                 <div
                     style={{
-                      height: '20%',
+
                       background: '#dfebe3',
                     }}
                 >
@@ -130,8 +135,12 @@ class Game extends React.Component {
                 </div>
                 <div
                     style={{
-                      height: '80%',
+
                       background: '#f0f0ff',
+                        display:'flex',
+                        flexDirection:'column',
+                        overflow:'hidden',
+                        flexGrow:'1',
                     }}
                 >
                   <Chat
@@ -225,7 +234,7 @@ class Game extends React.Component {
     // TODO return right game UI dependent on game state
     switch (this.state.game.gameState) {
       case 'LOBBY':     return (<Lobby game={this.state.game} updateLoop={this.props.updateLoop} />);
-      case 'STARTING':  return <ConservativeBox><Spinner/></ConservativeBox>;  // TODO loading screen
+      case 'STARTING':  return <div><Spinner/></div>;  // TODO loading screen
       case 'PAUSED':
       case 'RUNNING':   return <GameRound game={this.state.game} players={this.state.players} />;
       case 'AFTERMATH': return <GameSummary game={this.state.game} players={this.state.players} />;

@@ -45,17 +45,17 @@ class GameInfoItem extends React.Component {
                         display: 'flex',
                         alignItems: 'center',
                     }}>
-                        <div style={{width:'25%'}}><Info>
-                            {`host: ${game['gameMaster']}`}
-                        </Info></div>
-                        <div style={{width:'25%'}}><Info>
+                        {/*<div style={{width:'25%'}}><Info>*/}
+                        {/*    {`host: ${game['gameMaster']}`}*/}
+                        {/*</Info></div>*/}
+                        <div style={{width:'33%'}}><Info>
                             {`rounds: ${game['totalRounds']}`}
                         </Info></div>
-                        <div style={{width:'25%'}}><Info>
+                        <div style={{width:'33%'}}><Info>
                             {`type: ${game['memeType']}`}
                         </Info></div>
-                        <div style={{width:'25%'}}><Info>
-                            {`time: ${game['maxSuggestSeconds']} / ${game['maxVoteSeconds']} / ${game['maxAftermathSeconds']}`}
+                        <div style={{width:'33%'}}><Info>
+                            {`timers: ${game['maxSuggestSeconds']} / ${game['maxVoteSeconds']} / ${game['maxAftermathSeconds']}`}
                         </Info></div>
                     </HorizontalBox>
                 }

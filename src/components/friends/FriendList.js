@@ -287,7 +287,7 @@ class FriendList extends React.Component {
                             Friend:</Title>
                         <InputField value={this.state.addFriendName}
                                     onChange={e => {
-                                        this.handleInputChange("friendName", e.target.value);
+                                        this.handleInputChange("addFriendName", e.target.value);
                                     }}
                                     style={{flexGrow: '1', width: 'auto', backgroundColor: "#21212144"}}>
                         </InputField>
