@@ -10,7 +10,7 @@ import Modal from "./Modal";
 // Styling Imports:
 import {BackgroundDiv, BackgroundDivLighter} from "../../views/design/Containers";
 import {Label, Title} from "../../views/design/Text";
-import {Button, InputField1} from '../../views/design/Interaction';
+import {Button, InputField1, InputFieldLoginRegister} from '../../views/design/Interaction';
 
 
 /**
@@ -106,7 +106,7 @@ class Register extends React.Component {
 
                         <BackgroundDivLighter>
                             <div style={{width:'350px', height:'50px'}}> <Label>Create your own account:</Label></div>
-                            <InputField1
+                            <InputFieldLoginRegister
                                 placeholder="Username"
                                 onChange={e => {
                                     this.handleInputChange('username', e.target.value);
@@ -114,14 +114,14 @@ class Register extends React.Component {
                             />
 
 
-                            <InputField1
+                            <InputFieldLoginRegister
                                 placeholder="Email"
                                 onChange={e => {
                                     this.handleInputChange('email', e.target.value);
                                 }}
                             />
 
-                            <InputField1
+                            <InputFieldLoginRegister
                                 // type='password'
                                 placeholder="Password"
                                 onChange={e => {
@@ -129,7 +129,7 @@ class Register extends React.Component {
                                 }}
                             />
 
-                            <InputField1
+                            <InputFieldLoginRegister
                                 // type='password'
                                 placeholder="Reenter password"
                                 onChange={e => {

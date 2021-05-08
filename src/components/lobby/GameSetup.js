@@ -2,7 +2,6 @@ import React from 'react';
 import { api, handleError } from '../../helpers/api';
 import { redditApi, handleRedditError } from '../../helpers/redditApi';
 import { withRouter } from 'react-router-dom';
-import {ConservativeBox } from "../../views/design/Containers";
 import User from "../shared/models/User";
 import Form from "../general/Form";
 import {Spinner} from "../../views/design/Spinner";
@@ -61,7 +60,7 @@ class Lobby extends React.Component {
 
     render() {
         return this.state.creating? <Spinner/> : (
-            <ConservativeBox>
+            <div>
                 <Form
                     title='Game Setup'
                     listener={this}
@@ -98,7 +97,7 @@ class Lobby extends React.Component {
                             props:{ min:3, max:30 } },
                     ]}
                 />
-            </ConservativeBox>
+            </div>
         );
     }
 

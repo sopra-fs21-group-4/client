@@ -1,83 +1,17 @@
 import React from 'react';
-import { BaseContainer } from '../../helpers/layout';
-import { api, handleError } from '../../helpers/api';
-import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Interaction';
-import { withRouter } from 'react-router-dom';
+import {BaseContainer} from '../../helpers/layout';
+import {api, handleError} from '../../helpers/api';
+import {Spinner} from '../../views/design/Spinner';
+import {Button, InputField1} from '../../views/design/Interaction';
+import {withRouter} from 'react-router-dom';
 import styled from "styled-components";
 import Modal from "../login/Modal";
 import User from "../shared/models/User";
-import {MediumForm} from "../../views/design/Containers";
-
-
-const Container = styled.div`
-    width: 500px;
-    align-items: center;
-`;
-const EditButton = styled.button`
-   &:hover {
-    transform: translateY(-2px);
-  }
-  margin: 40px;
-  padding: 6px;
-  float:left;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 13px;
-  text-align: center;
-  color: rgba(255, 255, 255, 1);
-  width: ${props => props.width || null};
-  height: 35px;
-  border: none;
-  border-radius: 20px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(16, 89, 255);
-  transition: all 0.3s ease;
-`;
+import {BackgroundDiv, BackgroundDivLighter} from "../../views/design/Containers";
+import {Info, Label, Title} from "../../views/design/Text";
 
 
 
-const SaveButton = styled.button`
-  &:hover {
-    transform: translateY(-2px);
-  }
-  margin: 40px;
- 
-  padding: 6px;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 13px;
-  text-align: center;
-  color: rgba(255, 255, 255, 1);
-  width: ${props => props.width || null};
-  height: 35px;
-  border: none;
-  border-radius: 2px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(191,62,255);
-  transition: all 0.3s ease;
-`;
-
-const InputField = styled.input`
-  &::placeholder {
-    color: rgb(105,105,105, 1.0);
-  }
-  margin: 20px;
-  height: 35px;
-  padding-left: 15px;
-  margin-left: 5px;
-  border: none;
-  border-radius: 2px;
-  margin-bottom: 20px;
-  background:  rgba(211, 211, 211, 0.5);;
-  color: black;
-`;
-
-const BackButton = styled(Button)({
-    margin: 'auto',
-})
 
 const Form = styled.div`
   display: flex;
@@ -95,15 +29,7 @@ const Form = styled.div`
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
-const HeaderContainer = styled.div`
-    text-align: left;
-    align-items: center;
-    display: flex;
-`;
 
-const Title = styled.h1`
-    margin-right: 50px;
-`;
 
 const Table = styled.table`
     text-align: left;
@@ -131,36 +57,36 @@ class UserProfile extends React.Component {
     }
 
     showModal = () => {
-        this.setState({ show: true });
+        this.setState({show: true});
     };
 
     hideModal = () => {
-        this.setState({ show: false });
+        this.setState({show: false});
     };
-
 
 
     handleUsernameChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
         // this.setState({'username': value});
-        this.setState({ [key]: value });
+        this.setState({[key]: value});
     }
 
     handlePasswordChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
         // this.setState({'username': value});
-        this.setState({ [key]: value });
+        this.setState({[key]: value});
     }
 
     handleEmailChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
         // this.setState({'username': value});
-        this.setState({ [key]: value });
+        this.setState({[key]: value});
     }
 
-    goBack(){
+    goBack() {
         this.props.history.push('/');
     }
+
     async updateProfile() {
 
         try {
@@ -175,8 +101,7 @@ class UserProfile extends React.Component {
             console.log(response);
             new User(response.data).putToSessionStorage();
             this.props.history.push(`/users/${User.getAttribute('username')}`);
-        }
-        catch (error) {
+        } catch (error) {
             alert(`Something went wrong: \n${handleError(error)}`);
             this.props.history.push(`/users/${User.getAttribute('username')}`);
         }
@@ -193,120 +118,136 @@ class UserProfile extends React.Component {
         if (!this.state.user) return <Spinner/>
         return (
             <BaseContainer>
-                <MediumForm style={{
-                    marginTop: '20px',
-                    paddingTop: '30px',
-                    paddingBottom: '30px',
+                <div style={{display: "flex", justifyContent: 'center'}}>
+                    <BackgroundDiv>
+                        <div>
 
-                }}>
-                    <div>
-                        <HeaderContainer>
 
                             <Title>{this.props.match.params.username}'s profile</Title>
-                            {
-                                (User.getAttribute("userId") == this.state.user.userId)? (
-
-                                    <Button
-                                        margin="auto"
-                                        width="120px"
-                                        onClick={() => {this.showModal();}}
-                                    >
-                                        Edit
-                                    </Button>
-                                ) : (<div/>)
 
 
-                            }
+                            <div>
+                                <BackgroundDivLighter>
+                                    {!this.state.user ? (
+                                        <Spinner/>
+                                    ) : (
+                                        <Table width="100%">
+                                            <tr>
+                                                <th><Label>Id: </Label></th>
+                                                <td><Info>{this.state.user.userId}</Info></td>
+                                            </tr>
+                                            <tr>
+                                                <th><Label>Name: </Label></th>
+                                                <td><Info>{this.state.user.username}</Info></td>
+                                            </tr>
+                                            <tr>
+                                                <th><Label>Email: </Label></th>
+                                                <td><Info>{this.state.user.email}</Info></td>
+                                            </tr>
+                                            <tr>
+                                                <th><Label>Status: </Label></th>
+                                                <td><Info>{this.state.user.status}</Info></td>
+                                            </tr>
+                                            <tr>
+                                                <th><Label>Current Lobby: </Label></th>
+                                                <td><Info>{this.state.user.currentGameId}</Info></td>
+                                            </tr>
+                                        </Table>
+                                    )}
+                                    <div style={{display: 'flex'}}
+                                    >{
+                                        (User.getAttribute("userId") == this.state.user.userId) ? (
 
-                            <BackButton
+                                            <Button
+                                                margin="auto"
+                                                width="120px"
+                                                onClick={() => {
+                                                    this.showModal();
+                                                }}
+                                            >
+                                                Edit
+                                            </Button>
+                                        ) : (<div/>)
 
-                                width="120px"
-                                onClick={() => {this.goBack();}}
-                            >
-                                Back
-                            </BackButton>
-                        </HeaderContainer>
 
-                        <div>
-                            {!this.state.user ? (
-                                <Spinner />
-                            ) : (
-                                <Table width="100%">
-                                    <tr>
-                                        <th>Id: </th>
-                                        <td>{this.state.user.userId}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Name: </th>
-                                        <td>{this.state.user.username}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Email: </th>
-                                        <td>{this.state.user.email}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Status: </th>
-                                        <td>{this.state.user.status}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Current Lobby: </th>
-                                        <td>{this.state.user.currentGameId}</td>
-                                    </tr>
-                                </Table>
-                            )}
+                                    }
+
+                                        <Button
+
+                                            width="120px"
+                                            onClick={() => {
+                                                this.goBack();
+                                            }}
+                                        >
+                                            Back
+                                        </Button>
+                                    </div>
+                                </BackgroundDivLighter>
+                            </div>
                         </div>
-                    </div>
-                    <Modal show={this.state.show} handleClose={this.hideModal}>
-                        <Form>
 
-                            <label>
-                                Change Username:
-
-                                <InputField
-                                    placeholder="Enter here.."
-                                    onChange={e => {
-                                        this.handleUsernameChange('newUsername', e.target.value);
-                                    }}
-                                />
-
-
-                            </label>
-
-                        <label>
-                            Change Email:
-
-                            <InputField
-                                placeholder="Enter here.."
-                                onChange={e => {
-                                    this.handleEmailChange('newEmail', e.target.value);
-                                }}
-                            />
+                        <Modal show={this.state.show} handleClose={this.hideModal}>
+                            <div style={{display: "flex", justifyContent: 'center'}}>
+                                <BackgroundDivLighter>
+                                    <Label>
+                                        Change Username:
+                                    </Label>
+                                        <InputField1
+                                            style={{marginTop: '10px'}}
+                                            placeholder="Enter here.."
+                                            onChange={e => {
+                                                this.handleUsernameChange('newUsername', e.target.value);
+                                            }}
+                                        />
 
 
-                        </label>
-                            <label>
-                                Change Password:
-
-                                <InputField
-                                    placeholder="Enter here.."
-                                    onChange={e => {
-                                        this.handlePasswordChange('newPassword', e.target.value);
-                                    }}
-                                />
-                            </label>
 
 
-                            <SaveButton
-                                disabled={!this.state.newUsername && !this.state.newPassword && !this.state.newEmail}
-                                width={'10%'}
-                                onClick={() => {
-                                    this.updateProfile();
-                                }}> Save </SaveButton>
+                                    <Label>
+                                        Change Email:
+                                    </Label>
+                                        <InputField1
+                                            style={{marginTop: '10px'}}
+                                            placeholder="Enter here.."
+                                            onChange={e => {
+                                                this.handleEmailChange('newEmail', e.target.value);
+                                            }}
+                                        />
 
-                        </Form>
-                    </Modal>
-                </MediumForm>
 
+
+                                    <Label>
+                                        Change Password:
+                                    </Label>
+                                        <InputField1
+                                            style={{marginTop: '10px'}}
+                                            placeholder="Enter here.."
+                                            onChange={e => {
+                                                this.handlePasswordChange('newPassword', e.target.value);
+                                            }}
+                                        />
+
+
+                                    <div
+                                        style={{marginTop:'30px',display:'flex', justifyContent:'center'}}>
+                                    <Button
+                                        style={{flexGrow:'1'}}
+                                        disabled={!this.state.newUsername && !this.state.newPassword && !this.state.newEmail}
+                                        onClick={() => {
+                                            this.updateProfile();
+                                        }}> Save </Button>
+                                    <Button
+                                        style={{flexGrow:'1'}}
+                                        onClick={() => {
+                                            this.hideModal();
+                                        }}> Close </Button>
+                                    </div>
+                                </BackgroundDivLighter>
+                            </div>
+                        </Modal>
+
+                    </BackgroundDiv>
+                </div>
 
 
             </BaseContainer>

@@ -1,7 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Button, InputField, LinkButton, Option, Select, Slider, SliderLabel} from '../../views/design/Interaction';
-import {FlexBox, MediumForm, VerticalScroller} from "../../views/design/Containers";
+import {
+  Button,
+  InputField1,
+  LinkButton,
+  Option,
+  Select,
+  Slider,
+  SliderLabel
+} from '../../views/design/Interaction';
+import {
+  BackgroundDiv,
+  BackgroundDivLighter,
+  FlexBox,
+} from "../../views/design/Containers";
 import {Error, Label, Title} from "../../views/design/Text";
 
 
@@ -10,24 +22,15 @@ const Row = styled.tr`
 `;
 
 const Cell = styled.td`
-    height: 100%;
+    
     display: table-cell;
+    height: 100%;
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 5px;
     padding-bottom: 5px;
 `;
 
-const SettingsLabel = styled.h2`
-    font-size: 16px;
-    color: #666666;
-    display: table-cell;
-    horizontal-align: center;
-    vertical-align: middle;
-    text-align: center;
-    padding-left: 20px;
-    padding-right: 20px;
-`;
 
 class Form extends React.Component {
   constructor(props) {
@@ -63,9 +66,10 @@ class Form extends React.Component {
 
   render() {
     return (
-        <MediumForm>
-          {this.props.title? <Title> { this.props.title } </Title> : null}
+        <div style={{display: "flex", justifyContent: 'center'}}>
 
+          {this.props.title? <Title> { this.props.title } </Title> : null}
+          <BackgroundDivLighter >
           <table>
 
             {!this.props.attributes? null : this.props.attributes.map(attribute => {
@@ -82,29 +86,7 @@ class Form extends React.Component {
                   <Cell style={{paddingTop:'0'}}><Error style={{margin:'0'}}> {`*${this.nextRequired().label} required.`} </Error></Cell>
                 </Row>
                 : null}
-            {this.props['withApplyButton'] && this.props["isGamemaster"]? <Row>
-                  <Cell>
-                    <Button
-                        width='100%'
-                        onClick={this.props['onApply']}
-                        { ...this.props['applyButtonProps'] }
-                        disabled={this.props["settingsUpdated"]}
-                    >
-                      {this.props.applyButtonText? this.props.applyButtonText : 'Apply'}
-                    </Button>
-                  </Cell>
 
-                    {this.props["settingsUpdated"]?
-                        <Cell>
-                          <SettingsLabel
-                              style={{text_align: "center"}}>Settings updated</SettingsLabel>
-                        </Cell>
-                      :<Cell>
-                          <SettingsLabel>Settings not applied</SettingsLabel>
-                      </Cell>}
-
-
-                </Row> : null}
             <Row>
               <Cell>
                 {this.props['withoutCancelButton']? null :
@@ -129,15 +111,16 @@ class Form extends React.Component {
               </Cell>
             </Row>
           </table>
+          </BackgroundDivLighter>
 
-        </MediumForm>
+        </div>
     );
   }
 
   inputComponent(attribute) {
     switch(attribute.type) {
       case 'Input':
-        return <InputField
+        return <InputField1
             id={ attribute.key }
             value={this.state[attribute.key]}
             onChange={e => {this.handleInputChange(attribute.key, e.target.value)}}
@@ -146,14 +129,14 @@ class Form extends React.Component {
 
       case 'Range':
         return <FlexBox>
-          <Slider
+          <Slider style={{marginLeft:'10px'}}
               id={ attribute.key }
               defaultValue={this.state[attribute.key]}
               onChange={e => {this.handleInputChange(attribute.key, e.target.value)}}
               { ...attribute.props }
 
           />
-          <SliderLabel>
+          <SliderLabel style={{marginRight:"10px"}}>
             { this.state[attribute.key] }
           </SliderLabel>
         </FlexBox>;

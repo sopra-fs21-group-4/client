@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Spinner } from '../../views/design/Spinner';
 import { withRouter } from 'react-router-dom';
 import {
-    ConservativeBox,
+    BackgroundDivLighter,
     HorizontalBox, VerticalBox,
     VerticalList,
     VerticalScroller
@@ -15,6 +15,8 @@ import parseEmoji from "../../helpers/Emoji";
 import InputField from "../general/InputField";
 
 
+const colorSelected = '#b5007c';
+const colorUnselected = 'rgb(50,62,200)';
 
 const VoteButton = styled.button`
   &:hover {
@@ -32,7 +34,7 @@ const VoteButton = styled.button`
   border-radius: 20px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: #yellow;
+  background: rgb(191,62,255);
   transition: all 0.3s ease;
 `;
 
@@ -73,11 +75,10 @@ class GameRound extends React.Component {
         if (!this.props.game || !this.props.players) {
             return <Spinner/>
         }
-        return <VerticalBox
-            style={{
-                paddingLeft: '10%',
-                paddingRight: '10%',
-            }}
+        return <div>
+
+       <VerticalBox
+
         >
             <Title style={{
                 textAlign: 'left',
@@ -85,18 +86,23 @@ class GameRound extends React.Component {
             }}>
                 {this.props.game.currentRound.title}
             </Title>
-            <br/>
+
             <HorizontalBox style={{justifyContent: 'left'}}>
                 <img width='400px' src={this.props.game.currentRound.memeURL} />
-                <VerticalScroller style={{paddingLeft: '30px', width: '400px'}}>
+                <BackgroundDivLighter
+                style={{marginLeft:'20px',width:'500px'}}>
+                <div >
                     <Label>{`${this.currentActivity()}`}</Label>
                     <br/>
                     <Info>{`time remaining: ${Math.round(this.props.game.currentCountdown / 1000)}`}</Info>
                     <br/>
                     {this.currentRoundPhaseInteractive()}
-                </VerticalScroller>
+                </div>
+                </BackgroundDivLighter>
             </HorizontalBox>
         </VerticalBox>
+
+        </div>
     }
 
     currentActivity() {
@@ -142,7 +148,7 @@ class GameRound extends React.Component {
                 return (this.props.game.currentRound.suggestions[player.userId]? <VoteButton
                     disabled={player.userId == User.getAttribute('userId')}
                     onClick={e => this.vote(player)}
-                    style={{background: (this.props.game.currentRound.votes[User.getAttribute('userId')] == player.userId)? '#a59aed' : '#9aeced'}}
+                    style={{background: (this.props.game.currentRound.votes[User.getAttribute('userId')] == player.userId)? colorSelected : colorUnselected}}
                 >
                     {`${this.props.game.currentRound.suggestions[player.userId]}`}</VoteButton>
                 : null);

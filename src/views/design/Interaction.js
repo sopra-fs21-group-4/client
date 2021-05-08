@@ -1,24 +1,5 @@
 import styled from "styled-components";
 
-export const ButtonOld = styled.button`
-  &:hover {
-    transform: translateY(-2px);
-  }
-  padding: 6px;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 13px;
-  text-align: center;
-  color: #ffffff;
-  width: ${props => props.width || null};
-  height: 35px;
-  border: none;
-  border-radius: 20px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: #bf3eff;
-  transition: all 0.3s ease;
-`;
 
 export const Button = styled.button`
  &:hover {
@@ -34,12 +15,11 @@ export const Button = styled.button`
   height: 35px;
   border: none;
   border-radius: 2px;
-  margin-right: 15px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: rgb(191,62,255);
   transition: all 0.3s ease;
-  
+  margin: 10px;
 `;
 
 export const DiscreetButton = styled.button`
@@ -67,7 +47,7 @@ export const LinkButton = styled.button`
     color: #55ee00;
   }
   font-weight: 700;
-  font-size: 13px;
+  font-size: 16px;
   color: #8888ff;
   background: #00000000;
   border: none;
@@ -104,15 +84,27 @@ export const InputField1 = styled.input`
   }
   height: 35px;
   padding-left: 15px;
-  margin-left: -4px;
   border: none;
   border-radius: 2px;
-  margin-bottom: 10px;
+
   background: rgba(211, 211, 211, 0.5);
   color: black;
 `;
 
-
+export const InputFieldLoginRegister = styled.input`
+  &::placeholder {
+    color: rgba(105,105,105, 1.0);
+    font-size: 14px
+  }
+  height: 35px;
+  padding-left: 15px;
+  border: none;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  background: rgba(211, 211, 211, 0.5);
+  color: black;
+`;
 
 InputField.defaultProps = {
     placeholder: "Enter here..",
@@ -123,6 +115,7 @@ export const Slider = styled.input`
     width: 100%;
     height: 35px;
     background: #00000000;
+    
     
     &::-webkit-slider-runnable-track {height: .35em; background: #033dfcaf; border: none; border-radius: 3px;}
     &::-moz-range-track {height: .35em; background: #033dfcaf; border: none; border-radius: 3px;}
@@ -146,7 +139,7 @@ export const SliderLabel = styled.div`
     text-align: right;
     font-size: 14px;
     font-weight: bold;
-    color: #666;
+    color: #111;
 `;
 
 // TODO image copyrights?
@@ -154,8 +147,8 @@ export const Select = styled.select`
     width: 100%;
     height: 35px;
     border: none;
-    background: #033dfcaf;
-    border-radius: 4px;
+    background: rgba(211, 211, 211, 0.5);
+    border-radius: 1px;
     padding-left: 15px;
     appearance: none;
     background-image: url('https://www.skillstep.pt/i/apex_ui/img/ui/select-arrow.svg');    // TODO copyrights?

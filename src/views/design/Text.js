@@ -20,8 +20,8 @@ export const Label = styled.h2`
 
 export const Info = styled.p`
     font-size: 16px;
-    color: #fff;
-    background: #000;
+    color: #111;
+
     display: table-cell;
     text-align: left;
     vertical-align: middle;

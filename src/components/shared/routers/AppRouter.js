@@ -1,7 +1,7 @@
 import React from "react";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import { UserGuard } from "../routeProtectors/UserGuard";
-import { GuestGuard } from "../routeProtectors/GuestGuard";
+import {UserGuard} from "../routeProtectors/UserGuard";
+import {GuestGuard} from "../routeProtectors/GuestGuard";
 import Login from "../../login/Login";
 import Register from "../../login/Register";
 import Chat from "../../chat/Chat";
@@ -12,10 +12,8 @@ import Lobby from "../../lobby/LobbyOld";
 import Game from "../../game/Game";
 import GameSetup from "../../lobby/GameSetup";
 import GameList from "../../lobby/GameList";
-import GameSummary from "../../lobby/GameSummary";
 import FriendList from "../../friends/FriendList";
 import User from "../models/User";
-
 
 
 /**
@@ -28,137 +26,140 @@ import User from "../models/User";
  * Documentation about routing in React: https://reacttraining.com/react-router/web/guides/quick-start
  */
 class AppRouter extends React.Component {
-  render() {
+    render() {
 
-    return (
-      <BrowserRouter>
-          <PageBar updateLoop={this.props.updateLoop} />
-        <Switch>
-            <Route
-                exact
-                path={"/dashboard"}
-                render={() =>
-                    <UserGuard>
-                        <GameList updateLoop={this.props.updateLoop} />
-                    </UserGuard>
-                }
-            />
-            <Route
-                exact
-                path={"/friends"}
-                render={() =>
-                    // <UserGuard>
-                        <FriendList updateLoop={this.props.updateLoop} />
-                    // </UserGuard>
-                }
-            />
-            <Route
-                exact
-                path={"/game-create"}
-                render={() =>
-                    <UserGuard>
-                        <GameSetup updateLoop={this.props.updateLoop} />
-                    </UserGuard>
-                }
-            />
-            <Route
-                exact
-                path={"/lobby/:lobbyId"}
-                render={() =>
-                    <UserGuard>
-                        <Lobby updateLoop={this.props.updateLoop} />
-                    </UserGuard>
-                }
-            />
-            <Route
-                exact
-                path={"/game/:gameId"}
-                render={() =>
-                    <UserGuard>
-                        <Game updateLoop={this.props.updateLoop} />
-                    </UserGuard>
-                }
-            />
-            <Route
-                exact
-                path={"/chat"}
-                render={() => (
-                    <UserGuard>
-                        <ChatCreator updateLoop={this.props.updateLoop} />
-                    </UserGuard>
-                )}
-            />
-            <Route
-                exact
-                path={"/chat/:chatId"}
-                render={() => (
-                    <UserGuard>
-                        <Chat updateLoop={this.props.updateLoop} />
-                    </UserGuard>
-                )}
-            />
-
-
-
-            <Route
-                exact
-                path={"/users/:username"}
-                render={() => (
-                    <UserGuard>
-                        <UserProfile updateLoop={this.props.updateLoop} />
-                    </UserGuard>
-                )}
-            />
-            <Route
-                exact
-                path="/login"
-                render={() => (
-                    <GuestGuard>
-                        <Login updateLoop={this.props.updateLoop} />
-                    </GuestGuard>
-                )}
-            />
-
-            <Route
-                exact
-                path="/register"
-                render={() => (
-                    <GuestGuard>
-                        <Register updateLoop={this.props.updateLoop} />
-                    </GuestGuard>
-                )}
-            />
-
-            // TODO leave game should be possible via this route
-            <Route
-                exact
-                path="/leave-game"
-                render={() => (
-                    <GuestGuard>
-                        <Register updateLoop={this.props.updateLoop} />
-                    </GuestGuard>
-                )}
-            />
-
-            <Route path="/logout" exact render={() => {
-                User.removeFromSessionStorage();
-                return <Redirect to={"/dashboard"}/>
-            }} />
-
-            <Route path="/user-edit" exact render={() => {
-
-                return <UserProfile/>
-            }} />
+        return (
+            <BrowserRouter>
+                <PageBar updateLoop={this.props.updateLoop}/>
+                <div
+                    style={{paddingTop: "6.5%"}}>
+                    <Switch>
+                        <Route
+                            exact
+                            path={"/dashboard"}
+                            render={() =>
+                                <UserGuard>
+                                    <GameList updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            }
+                        />
+                        <Route
+                            exact
+                            path={"/friends"}
+                            render={() =>
+                                <UserGuard>
+                                    <FriendList updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            }
+                        />
+                        <Route
+                            exact
+                            path={"/game-create"}
+                            render={() =>
+                                <UserGuard>
+                                    <GameSetup updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            }
+                        />
+                        <Route
+                            exact
+                            path={"/lobby/:lobbyId"}
+                            render={() =>
+                                <UserGuard>
+                                    <Lobby updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            }
+                        />
+                        <Route
+                            exact
+                            path={"/game/:gameId"}
+                            render={() =>
+                                <UserGuard>
+                                    <Game updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            }
+                        />
+                        <Route
+                            exact
+                            path={"/chat"}
+                            render={() => (
+                                <UserGuard>
+                                    <ChatCreator updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            )}
+                        />
+                        <Route
+                            exact
+                            path={"/chat/:chatId"}
+                            render={() => (
+                                <UserGuard>
+                                    <Chat updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            )}
+                        />
 
 
-            <Route path="/" exact render={() => <Redirect to={"/dashboard"} />} />
-        </Switch>
-      </BrowserRouter>
-    );
-  }
+                        <Route
+                            exact
+                            path={"/users/:username"}
+                            render={() => (
+                                <UserGuard>
+                                    <UserProfile updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/login"
+                            render={() => (
+                                <GuestGuard>
+                                    <Login updateLoop={this.props.updateLoop}/>
+                                </GuestGuard>
+                            )}
+                        />
 
-  function
+                        <Route
+                            exact
+                            path="/register"
+                            render={() => (
+                                <GuestGuard>
+                                    <Register updateLoop={this.props.updateLoop}/>
+                                </GuestGuard>
+                            )}
+                        />
+
+                        // TODO leave game should be possible via this route
+                        <Route
+                            exact
+                            path="/leave-game"
+                            render={() => (
+                                <GuestGuard>
+                                    <Register updateLoop={this.props.updateLoop}/>
+                                </GuestGuard>
+                            )}
+                        />
+
+                        <Route path="/logout" exact render={() => {
+                            User.removeFromSessionStorage();
+                            return <Redirect to={"/dashboard"}/>
+                        }}/>
+
+                        <Route path="/user-edit" exact render={() => {
+
+                            return <UserProfile/>
+                        }}/>
+
+
+                        <Route path="/" exact render={() => <Redirect to={"/dashboard"}/>}/>
+                    </Switch>
+                </div>
+            </BrowserRouter>
+        );
+    }
+
+    function
 }
+
 /*
 * Don't forget to export your component!
  */

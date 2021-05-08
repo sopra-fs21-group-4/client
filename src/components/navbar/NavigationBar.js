@@ -44,20 +44,16 @@ import logo from "../../image/logo/doyouevenmeme.png"
  * https://www.styled-components.com/
  */
 const Container = styled.div`
-  height: 7vh;
+  height: 6.5%;
   width: 100%;
   background: linear-gradient(90deg, #1ae 30%, #af9bd1 70%);
   // background: rgba(6, 196, 255, 0.2);
   display: flex;
   align-items: center;
+  position: fixed;
 `;
 
 
-const Title = styled.h1`
-  font-size: 32px;
-  color: #fff;
-  text-align: left;
-`;
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
  * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
@@ -75,20 +71,22 @@ class NavigationBar extends React.Component {
 
     render() {
         return (
-            <Container>
+            <Container
+
+            >
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'left',
-                    width: '44.8vh',
-                    height: 'inherit',
-                    marginLeft: '4vh',
+                    height:'100%',
+                    width:'70vh',
+
                 }}>
                     <ImageButton
-                        style={{marginLeft: "50px"}}
+
                         onClick={() => {this.props.history.push('/');}}
                         image={`url(${logo})`}
-                        style={{width: 'inherit', height: 'inherit'}}
+                        style={{marginLeft: "30px",width: '100%', height: '100%'}}
                     >
                         {/*<Title> Do you even meme? </Title>*/}
                     </ImageButton>
