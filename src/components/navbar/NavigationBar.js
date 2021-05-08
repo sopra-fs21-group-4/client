@@ -1,6 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import {ImageButton, InvisibleButton, RoundImageButton, SmallRoundImageButton} from "../../views/design/Interaction";
+import {
+    Button,
+    ImageButton,
+    InvisibleButton,
+    RoundImageButton,
+    SmallRoundImageButton
+} from "../../views/design/Interaction";
 import {withRouter} from "react-router-dom";
 import HoverableBox from "../../views/design/HoverableBox";
 import User from "../shared/models/User";
@@ -35,6 +41,10 @@ import avatar8 from "../../image/avatars/avatar8.png"
 import avatar9 from "../../image/avatars/avatar9.png"
 import avatar10 from "../../image/avatars/avatar10.png"
 import logo from "../../image/logo/doyouevenmeme.png"
+import {api, handleError} from "../../helpers/api";
+import title from "../../views/design/title.module.css";
+import bruh from "../../image/memes/bruh girl.jpg";
+import Modal from "../login/Modal";
 
 
 /**
@@ -65,9 +75,48 @@ const Container = styled.div`
 class NavigationBar extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { };
+        this.state = {
+            GameId: null,
+            user: null,
+            showImage: false,
+        };
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
     }
 
+    showModal = () => {
+        this.setState({showImage: true});
+    };
+
+    hideModal = () => {
+        this.setState({showImage: false});
+        this.props.history.push('/')
+    };
+
+    async leave() {
+        try {
+            // request setup
+
+            var username = sessionStorage.getItem('username')
+
+            this.setState({user: await User.fetchSingle('username', username)});
+
+            console.log(this.state.user)
+
+            const url = `/games/${this.state.user.currentGameId}/leave`;
+            const requestBody = "";
+            const config = {headers: User.getUserAuthentication()};
+
+            // send request
+            const response = await api.put(url, requestBody, config);
+            console.log(response);
+            this.props.history.push('/')
+
+        } catch (error) {
+            this.showModal();
+            alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
+        }
+    }
 
     render() {
         return (
@@ -101,6 +150,19 @@ class NavigationBar extends React.Component {
                 }}>
                     {this.getNavigationBarContent()}
                 </div>
+
+                <Modal show={this.state.showImage} handleClose={this.hideModal}>
+
+
+                    <div style={{display: this.state.showImage ? "block" : "none"}}>
+                        <img className={title.bestmemes} src={bruh} />
+                        <Button
+                            onClick={() => {
+                                this.props.history.push('/dashboard')
+                            }}
+                        > clickcklick</Button>
+                    </div>
+                </Modal>
             </Container>
         );
     }
@@ -135,7 +197,7 @@ class NavigationBar extends React.Component {
             (myUser.currentGameId?
                 this.menu("myGame", gameOkIcon, [
                     {image: gamePlayIcon, onClick: () => this.props.history.push('/game')},
-                    {image: gameLeaveIcon, onClick: () => this.props.history.push('/leave-game')},
+                    {image: gameLeaveIcon, onClick: () => this.leave()},
                     {image: gameArchiveIcon, onClick: () => this.props.history.push('/game-archive')},
                 ]) :
                 this.menu("myGame", gameIcon, [

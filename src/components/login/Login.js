@@ -140,7 +140,7 @@ class Login extends React.Component {
                             </Button>
                         </div>
                     </BackgroundDivLighter>
-                    <Modal show={this.state.showImage} handleClose={this.hideModal}>
+                    <Modal show={this.state.showImage} >
 
 
                         <div style={{display: this.state.showImage ? "block" : "none"}}>
