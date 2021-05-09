@@ -102,6 +102,7 @@ class NavigationBar extends React.Component {
             this.setState({user: await User.fetchSingle('username', username)});
 
             console.log(this.state.user)
+            console.log(this.state.user.currentGameId)
 
             const url = `/games/${this.state.user.currentGameId}/leave`;
             const requestBody = "";
@@ -114,7 +115,7 @@ class NavigationBar extends React.Component {
 
         } catch (error) {
             this.showModal();
-            alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
+            //alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
         }
     }
 
@@ -157,10 +158,19 @@ class NavigationBar extends React.Component {
                     <div style={{display: this.state.showImage ? "block" : "none"}}>
                         <img className={title.bestmemes} src={bruh} />
                         <Button
-                            onClick={() => {
-                                this.props.history.push('/dashboard')
+                            style={{
+                                marginTop: "15px",
+                                marginLeft: "48%",
+                                marginRight: "50%"
+
+
                             }}
-                        > clickcklick</Button>
+
+
+                            onClick={() => {
+                                window.location.reload();
+                            }}
+                        > Back</Button>
                     </div>
                 </Modal>
             </Container>

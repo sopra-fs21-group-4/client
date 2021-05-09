@@ -164,6 +164,20 @@ class Register extends React.Component {
 
                             <div style={{display: this.state.showImage ? "block" : "none"}}>
                                 <img className={title.bestmemes} src={fuu} alt={"such meme"}/>
+                                <Button
+                                    style={{
+                                        marginTop: "15px",
+                                        marginLeft: "48%",
+                                        marginRight: "50%"
+
+
+                                    }}
+
+
+                                    onClick={() => {
+                                        window.location.reload();
+                                    }}
+                                > Back</Button>
 
                             </div>
                         </Modal>

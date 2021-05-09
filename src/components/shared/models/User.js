@@ -56,6 +56,7 @@ class User {
     try {
       const response = await api.get(`/user`, { headers:{ [key]: value } });
       console.log(response);
+
       return new User(response.data);
     } catch (error) {
       alert(`Something went wrong while fetching user ${value}: \n${handleError(error)}`);
