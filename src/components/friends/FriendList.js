@@ -17,8 +17,6 @@ const Cell = styled.div`
 `;
 
 
-
-
 class FriendList extends React.Component {
     constructor() {
         super();
@@ -32,10 +30,9 @@ class FriendList extends React.Component {
     }
 
 
-    // TODO change id of friend for all 3 functions
     async sendFriendRequest(friendId) {
         try {
-            const url = `/friends/send`;
+            const url = `/friends/sendRequest`;
             const config = {
                 headers: User.getUserAuthentication()
             }
@@ -47,13 +44,13 @@ class FriendList extends React.Component {
             if (error.response && error.response.data.message == 'invalid userId') {
                 User.removeFromSessionStorage();
                 this.props.history.push('/');
-            } else alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
+            } else alert(`Something went wrong sending a request: \n${error.response.data.message}`);
         }
     }
 
     async acceptFriendRequest(friendId) {
         try {
-            const url = `/friends/accept`;
+            const url = `/friends/acceptRequest`;
             const config = {
                 headers: User.getUserAuthentication()
             }
@@ -65,13 +62,13 @@ class FriendList extends React.Component {
             if (error.response && error.response.data.message == 'invalid userId') {
                 User.removeFromSessionStorage();
                 this.props.history.push('/');
-            } else alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
+            } else alert(`Something went wrong accepting a request: \n${error.response.data.message}`);
         }
     }
 
     async rejectFriendRequest(friendId) {
         try {
-            const url = `/friends/reject`;
+            const url = `/friends/rejectRequest`;
             const config = {
                 headers: User.getUserAuthentication()
             }
@@ -83,13 +80,13 @@ class FriendList extends React.Component {
             if (error.response && error.response.data.message == 'invalid userId') {
                 User.removeFromSessionStorage();
                 this.props.history.push('/');
-            } else alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
+            } else alert(`Something went wrong rejecting a request: \n${error.response.data.message}`);
         }
     }
 
     async removeFriendRequest(friendId) {
         try {
-            const url = `/friends/remove`;
+            const url = `/friends/removeRequest`;
             const config = {
                 headers: User.getUserAuthentication()
             }
@@ -101,10 +98,27 @@ class FriendList extends React.Component {
             if (error.response && error.response.data.message == 'invalid userId') {
                 User.removeFromSessionStorage();
                 this.props.history.push('/');
-            } else alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
+            } else alert(`Something went wrong removing a request: \n${error.response.data.message}`);
         }
     }
 
+    async removeFriend(friendId) {
+        try {
+            const url = `/friends/removeFriend`;
+            const config = {
+                headers: User.getUserAuthentication()
+            }
+            const response = await api.put(url, friendId, config);
+            // console.log(response);
+            this.updateFriends()
+
+        } catch (error) {
+            if (error.response && error.response.data.message == 'invalid userId') {
+                User.removeFromSessionStorage();
+                this.props.history.push('/');
+            } else alert(`Something went wrong removing a friend: \n${error.response.data.message}`);
+        }
+    }
 
     async componentDidMount() {
         this.updateFriends()
@@ -163,7 +177,7 @@ class FriendList extends React.Component {
             if (error.response && error.response.data.message == 'invalid userId') {
                 User.removeFromSessionStorage();
                 this.props.history.push('/');
-            } else alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
+            } else alert(`Something went wrong while updating the users: \n${handleError(error)}`);
         }
     }
 
@@ -205,7 +219,21 @@ class FriendList extends React.Component {
                                             flexGrow: '3',
                                             display: 'flex',
                                             justifyContent: "flex-end"
-                                        }}>{friend["currentGameId"] ? null : <Button>Join</Button>}</Cell>
+                                        }}>{friend["currentGameId"] ? null :
+                                            <Button onClick={() => {
+                                                ;
+                                            }}
+                                            >Join</Button>}</Cell>
+                                        <Cell style={{
+                                            flexGrow: '3',
+                                            display: 'flex',
+                                            justifyContent: "flex-end"
+                                        }}>
+                                            <Button onClick={() => {
+                                                this.removeFriend(friend["userId"]);
+                                            }}
+                                            >Remove</Button>
+                                        </Cell>
                                     </div>;
                                 }) : null}
 
@@ -289,6 +317,7 @@ class FriendList extends React.Component {
                                     onChange={e => {
                                         this.handleInputChange("addFriendName", e.target.value);
                                     }}
+                                    placeholder={'Enter username here...'}
                                     style={{flexGrow: '1', width: 'auto', backgroundColor: "#21212144"}}>
                         </InputField>
                         <div style={{flexGrow: '5', justifyContent: 'center', paddingLeft: '30px'}}>
