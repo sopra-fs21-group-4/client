@@ -3,7 +3,7 @@ import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import Lobby from "../lobby/Lobby";
 import Chat from "../chat/Chat";
-import {BackgroundDiv, HorizontalBox, VerticalBox} from "../../views/design/Containers";
+import {BackgroundDiv, BackgroundDivLighter, HorizontalBox, VerticalBox} from "../../views/design/Containers";
 import { Label, Title } from "../../views/design/Text";
 import {Button, InputField} from "../../views/design/Interaction";
 import User from "../shared/models/User";
@@ -44,7 +44,7 @@ class Game extends React.Component {
     } catch (error) {
       // the component will react accordingly when we update the status
       this.setState({status: error.response.status});
-      alert("Invalid password, try again")
+      alert("Invalid password")
     }
   }
 
@@ -154,21 +154,16 @@ class Game extends React.Component {
         );
       case 401: // 401: UNAUTHORIZED
         return (
-          <VerticalBox
-          style={{
-            paddingLeft: '10%',
-              paddingRight: '10%',
-          }}
-          >
-            <Label
+          <div
+              style={{display: "flex", justifyContent: 'center'}}
+          ><BackgroundDiv>
+            <Title
                 style={{
-                    fontSize: '20px',
-                    height: '80px',
-                    textAlign: 'left',
-                    paddingLeft: '10px',
+                    fontSize: '30px',
                 }}>
                 This lobby seems to be password protected.
-            </Label>
+            </Title>
+              <BackgroundDivLighter>
               <div style={{ margin: "10px",}}>
                 <Label>
                     Please enter the password:
@@ -189,8 +184,9 @@ class Game extends React.Component {
                 }}
                 onClick={e => this.tryJoin()}
             >  Join  </Button>
-
-          </VerticalBox>
+              </BackgroundDivLighter>
+          </BackgroundDiv>
+          </div>
         );
       case 404: // 404: NOT_FOUND
         return (
