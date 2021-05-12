@@ -38,6 +38,23 @@ To establish a connection between the front- and backend REST is used.
 
   See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+# Screenshots
+Below you can see how a lobby can be set up and then will displayed on the Dashboard.
+<div><img src="https://marock.li/cloud-storage/sopra.gif" width="250" allign="center"/></div>
+
+When visiting our project the user is prompted with a login/registration screen.
+
+![login](https://marock.li/cloud-storage/login.png)
+
+After the login the user is prompted with the dashboard. Where the user sees current open games and can create a new game.
+
+![login](https://marock.li/cloud-storage/dashboard.png)
+![login](https://marock.li/cloud-storage/lobby.png)
+![login](https://marock.li/cloud-storage/submitting.png)
+![login](https://marock.li/cloud-storage/voting.png)
+![login](https://marock.li/cloud-storage/results.png)
+
+
 # Roadmap
 1. extend the resources where memes could be collected for the game
 2. making sure that no meme is displayed to a player twice
@@ -49,6 +66,8 @@ The authors of this project are:
 [Florian Herzog](https://github.com/Stud-FH), [Aljoscha Schnider](https://github.com/plexinio), [Max-Zurbriggen](https://github.com/Max-Zurbriggen), [Cyrill Hidber](https://github.com/Aece96), [Philipp Marock](https://github.com/Sahibabdul)
 
 ## Acknowledgments
+We would like to thank our tutors for providing us with a starting point and continued support. 
+Further we would like to thank our friends for testing our game and providing us with ideas for improvement.
 
 # License
 
