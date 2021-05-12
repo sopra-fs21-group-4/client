@@ -75,6 +75,7 @@ class GameRound extends React.Component {
         if (!this.props.game || !this.props.players) {
             return <Spinner/>
         }
+        let countdown = this.props.game.advanceTargetTime - Date.now()
         return <div>
 
        <VerticalBox
@@ -94,7 +95,7 @@ class GameRound extends React.Component {
                 <div >
                     <Label>{`${this.currentActivity()}`}</Label>
                     <br/>
-                    <Info>{`time remaining: ${Math.round(this.props.game.currentCountdown / 1000)}`}</Info>
+                    <Info>{`time remaining: ${Math.round(countdown / 1000)}`}</Info>
                     <br/>
                     {this.currentRoundPhaseInteractive()}
                 </div>
