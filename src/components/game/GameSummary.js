@@ -39,6 +39,10 @@ const ButtonLogin = styled.button`
 class GameSummary extends React.Component {
     constructor(params) {
         super(params);
+        this.state = {
+            game: null,
+
+        };
     }
 
     async componentDidMount() {
@@ -76,10 +80,16 @@ class GameSummary extends React.Component {
         }
     }
 
+    ranking(i){
+        i = i+1;
+        return i;
+    }
+
     render() {
         if (!this.props.game || !this.props.players) {
             return <Spinner/>
         }
+        let i = 0;
         let game = this.props.game;
         let players = this.props.players.slice();
         players.sort((a,b) => {return game.scores[b.userId] - game.scores[a.userId]});
@@ -103,18 +113,28 @@ class GameSummary extends React.Component {
                     Back to Lobby
                 </Button>
             </div>
-            <table style={{background: 'blue'}}>
-                {players.map(player => {
+            <BackgroundDivLighter style={{padding: '20px'}}>
+            <table style={{background: '#9ccfff'}} title={'loser'}>
+                <tr>
+                <td >
+                    <Info> Ranking:</Info> </td> <td>
+                    <Label>Player:</Label>
+                </td>
+                <td><Info>Score:</Info></td>
+                </tr>
+                {players.map((player, index) => {
                     return (
                         <tr>
-                        <td><Label>{player.username}</Label></td>
+                        <td >
+                            <Info> {index+1}.</Info> </td> <td>
+                            <Label>   {player.username}</Label></td>
                         <td><Info>{game.scores[player.userId]}</Info></td>
                         </tr>
                 )})}
 
 
             </table>
-
+            </BackgroundDivLighter>
             <BackgroundDivLighter>
                 {this.state.game.rounds.map(round => {
                     return <GameRoundSummary round={round}/>
