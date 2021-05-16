@@ -17,6 +17,11 @@ The client is written in JavaScript using React.
 
 To establish a connection between the front- and backend REST is used. 
 # High-Level Components
+The [GameList](https://github.com/sopra-fs21-group-4/client/blob/master/src/components/lobby/GameList.js) and [GameInfoItem](https://github.com/sopra-fs21-group-4/client/blob/master/src/components/lobby/GameInfoItem.js) display all currently open lobbies. To implement this we used REST-Requests to update the list. 
+When a User clicks on a open lobby the user then gets forwarded to the game. Where they then either have to enter the lobby password or if no password was set they just enter the lobby.
+
+# TODO  2 more high level components
+
 
 # Launch and Development
 
@@ -39,19 +44,34 @@ To establish a connection between the front- and backend REST is used.
   See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 # Screenshots
+## Lobby creation
 Below you can see how a lobby can be set up and then will displayed on the Dashboard.
 <div><img src="https://marock.li/cloud-storage/sopra.gif" width="250" allign="center"/></div>
 
+## Login
 When visiting our project the user is prompted with a login/registration screen.
 
 ![login](https://marock.li/cloud-storage/login.png)
 
-After the login the user is prompted with the dashboard. Where the user sees current open games and can create a new game.
+## Dashboard
+After the login the user is prompted with the dashboard. Where the user sees the currently open games and can create his own new game.
 
 ![login](https://marock.li/cloud-storage/dashboard.png)
+
+## Lobby
+When in game and waiting for players the Game master sees the below screen. Here he can edit the settings, chat with the other players, set their own status to ready or not ready and ban Players that he doesnt want in his game. 
+
+The game then can only start, when at least 3 Players and at most the maximum amount of Players are in the Lobby. If this condidition is met every player needs to be ready then the game will automatically start. 
 ![login](https://marock.li/cloud-storage/lobby.png)
+
+## In Game
+During the game there are three different phases to the game.
+1. The suggestion phase where every Players is prompted with the same meme. They then have a certain amount of time to think of a title and enter/submit it. If a player does not submit a title they will get points deducted for not entering a title.
 ![login](https://marock.li/cloud-storage/submitting.png)
+2. After the time has run out all players can then vote for the titles that were submited. A player can never vote for their own title. If a player does not vote or can not vote for a other title the player will also get point deducted.
 ![login](https://marock.li/cloud-storage/voting.png)
+3. When the time has run out the points given will be calculated and displayed. 
+After the time has run out the next round will start or if the last round just happened the Game Summurary will be displayed. 
 ![login](https://marock.li/cloud-storage/results.png)
 
 
