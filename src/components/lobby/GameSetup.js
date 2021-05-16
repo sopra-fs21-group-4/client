@@ -5,8 +5,6 @@ import { withRouter } from 'react-router-dom';
 import User from "../shared/models/User";
 import Form from "../general/Form";
 import {Spinner} from "../../views/design/Spinner";
-import {BackgroundDiv} from "../../views/design/Containers";
-import {Title} from "../../views/design/Text";
 
 
 class Lobby extends React.Component {
@@ -62,11 +60,9 @@ class Lobby extends React.Component {
 
     render() {
         return this.state.creating? <Spinner/> : (
-            <div style={{display: "flex", justifyContent: 'center'}}>
-                <BackgroundDiv>
-                    <Title>Game Setup</Title>
+            <div>
                 <Form
-                    // title='a'
+                    title='Game Setup'
                     listener={this}
                     onCancel={() => { this.props.history.push('/') }}
                     onSubmit={() => { this.createGame() }}
@@ -101,7 +97,6 @@ class Lobby extends React.Component {
                             props:{ min:3, max:30 } },
                     ]}
                 />
-                </BackgroundDiv>
             </div>
         );
     }

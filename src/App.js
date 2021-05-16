@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import AppRouter from "./components/shared/routers/AppRouter";
 import UpdateLoop from "./components/shared/UpdateLoop";
-import wallpaper from "./image/wallpaper/meme-collage-colorful.jpg"
+import wallpaper from "./image/wallpaper/meme-collage-mono-light.jpg"
 
 /**
  * Happy coding!
@@ -29,7 +29,7 @@ class App extends Component {
                     backgroundSize: 'cover',
                     imageRendering: 'auto',
                     minHeight: '100vh',
-                    // width: '100vw',
+                    width: '100vw',
 
                 }}>
                 <AppRouter updateLoop={this.state.updateLoop}/>
