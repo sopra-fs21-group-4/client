@@ -216,16 +216,19 @@ class FriendList extends React.Component {
                                         <Cell style={{flexGrow: '3'}}>{friend["username"]}</Cell>
                                         <Cell style={{flexGrow: '1'}}>{friend["status"]}</Cell>
                                         <Cell style={{
-                                            flexGrow: '3',
+                                            flexGrow: '1',
                                             display: 'flex',
                                             justifyContent: "flex-end"
-                                        }}>{friend["currentGameId"] ? null :
+                                        }}>{friend["currentGameId"] ?
                                             <Button onClick={() => {
-                                                ;
+                                                console.log(friend)
+
+                                                this.props.history.push(`/game/${friend["currentGameId"]}`);
                                             }}
-                                            >Join</Button>}</Cell>
+                                            >Join</Button> : null}
+                                        </Cell>
                                         <Cell style={{
-                                            flexGrow: '3',
+                                            flexGrow: '1',
                                             display: 'flex',
                                             justifyContent: "flex-end"
                                         }}>

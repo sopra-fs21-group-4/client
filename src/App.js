@@ -29,7 +29,7 @@ class App extends Component {
                     backgroundSize: 'cover',
                     imageRendering: 'auto',
                     minHeight: '100vh',
-                    width: '100vw',
+                    // width: '100vw',
 
                 }}>
                 <AppRouter updateLoop={this.state.updateLoop}/>

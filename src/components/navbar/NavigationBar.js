@@ -224,16 +224,19 @@ class NavigationBar extends React.Component {
                 }
                 return {image: chat.avatar, onClick: () => sessionStorage.setItem('currentChat', chatId)}
             }))),
-            this.menu("myFriends", friendsIcon, [
-                {image: userSearchIcon, onClick: () => this.props.history.push('/user-find')},
-            ].concat(myUser.friends.map(userId => {
+            this.menu("myFriends", friendsIcon,
+
+                (myUser.friends.map(userId => {
                 // TODO fetch user from localStorage
                 let user = {
                     username: 'friend#'+userId,
                     avatar: avatars[userId],
                 }
                 return {image: user.avatar, onClick: () => this.props.history.push('/user/'+user.username)}
-            }))),
+            })).concat({image: userSearchIcon, onClick: () => this.props.history.push('/friends')})
+
+
+            ),
         ];
     }
 
@@ -253,6 +256,7 @@ class NavigationBar extends React.Component {
                 options.map(option => <SmallRoundImageButton
                     image={`url(${option.image})`}
                     onClick={option.onClick}
+
                 />) :
                 <RoundImageButton
                     image={`url(${image})`}
