@@ -31,7 +31,7 @@ class GameList extends React.Component {
             const config = {headers: User.getUserAuthentication()};
             // send request
             const response = await api.get(url, config);
-            console.log(response);
+            // console.log(response);
             this.setState({games: response.data});
 
         } catch (error) {
