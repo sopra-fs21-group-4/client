@@ -122,7 +122,7 @@ class NavigationBar extends React.Component {
     render() {
         return (
             <Container
-
+                style={{zIndex:'100'}}
             >
                 <div style={{
                     display: 'flex',

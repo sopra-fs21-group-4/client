@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {api, handleError} from '../../helpers/api';
 import {Spinner} from '../../views/design/Spinner';
-import {Button, InputField} from '../../views/design/Interaction';
+import {Button, ImageButton, InputField, RoundImageButton, SmallRoundImageButton} from '../../views/design/Interaction';
 import {withRouter} from 'react-router-dom';
 import {Label, Title} from "../../views/design/Text";
 import User from "../shared/models/User";
@@ -10,7 +10,8 @@ import {
     BackgroundDiv,
     BackgroundDivLighterForFriends,
 } from "../../views/design/Containers";
-
+import refresh_icon from "../../image/icons/refresh_arrow.png"
+import logo from "../../image/logo/doyouevenmeme.png";
 
 const Cell = styled.div`
     padding: 0.5rem;
@@ -195,6 +196,21 @@ class FriendList extends React.Component {
         return (
             <div style={{display: "flex", justifyContent: 'center'}}>
                 <BackgroundDiv style={{paddingBottom: '30px'}}>
+                    <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+                        <div style={{position: 'absolute', marginTop: '-25px', marginRight: '-55px'}}>
+
+
+                            <SmallRoundImageButton
+                                style={{backgroundColor: 'rgb(191,62,255)'}}
+                                onClick={() => {
+                                    window.location.reload(false);;
+                                }}
+                                image={`url(${refresh_icon})`}
+
+                            ></SmallRoundImageButton>
+                        </div>
+                    </div>
+
                     <div style={{height: "700px", display: "flex", justifyContent: 'center'}}>
 
 
@@ -205,8 +221,10 @@ class FriendList extends React.Component {
                             height: "100%",
                             marginRight: "0.5rem"
                         }}>
+
                             <div>
                                 <Title style={{marginTop: "5px", marginBottom: '5px', fontSize: '32px'}}>Friends</Title>
+
                             </div>
                             <BackgroundDivLighterForFriends style={{flexGrow: "1"}}>
 
