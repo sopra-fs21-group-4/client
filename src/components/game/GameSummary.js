@@ -80,13 +80,9 @@ class GameSummary extends React.Component {
         }
     }
 
-    ranking(i){
-        i = i+1;
-        return i;
-    }
 
     render() {
-        if (!this.props.game || !this.props.players) {
+        if (!this.state.game || !this.props.players) {
             return <Spinner/>
         }
         let i = 0;
