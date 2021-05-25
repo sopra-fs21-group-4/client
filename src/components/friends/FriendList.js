@@ -27,6 +27,7 @@ class FriendList extends React.Component {
             incomingRequestsUsers: null,
             outgoingRequestsUsers: null,
             addFriendName: null,
+            games: null,
         };
     }
 
@@ -152,6 +153,23 @@ class FriendList extends React.Component {
                 const response2 = await api.get(url2, config2);
                 console.log(response2);
                 this.setState({friends: response2.data});
+
+                // getting games
+                const config = {headers: User.getUserAuthentication()};
+                const gameresponse = await api.get('/games', config);
+                console.log(gameresponse);
+
+                let games = new Array();
+                for(let i=0, iLen=Object.keys(gameresponse.data).length; i<iLen; i++){
+                    let obj = gameresponse.data[i]
+                    if (obj.gameState == "LOBBY"){
+                        games.push((obj.gameId))
+                    }
+                }
+
+
+                this.setState({games: games});
+                console.log(this.state.games);
             }
 
             if (response.data.incomingFriendRequests.length != 0) {
@@ -237,7 +255,7 @@ class FriendList extends React.Component {
                                             flexGrow: '1',
                                             display: 'flex',
                                             justifyContent: "flex-end"
-                                        }}>{friend["currentGameId"] ?
+                                        }}>{friend["currentGameId"] && this.state.games && this.state.games.includes(friend["currentGameId"])?
                                             <Button onClick={() => {
                                                 console.log(friend)
 
