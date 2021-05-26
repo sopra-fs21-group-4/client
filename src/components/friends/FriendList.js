@@ -207,7 +207,9 @@ class FriendList extends React.Component {
     handleInputChange(key, value) {
         this.setState({[key]: value});
     }
-
+    goBack() {
+        this.props.history.push('/');
+    }
 
     render() {
 
@@ -365,6 +367,13 @@ class FriendList extends React.Component {
                                     this.sendFriendRequest(this.state.addFriendName);
                                 }}
                             >Add New Friend</Button>
+                        </div>
+                        <div style={{flexGrow: '5', justifyContent: 'center', paddingLeft: '30px',}}>
+                            <Button
+                                onClick={() => {
+                                    this.goBack();
+                                }}
+                            >Back</Button>
                         </div>
                     </div>
 
