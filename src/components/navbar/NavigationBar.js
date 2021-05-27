@@ -124,8 +124,8 @@ class NavigationBar extends React.Component {
     }
 
     render() {
-          if (!this.state.username)
-             return <Spinner/>
+          // if (!this.state.username)
+          //    return <Spinner/>
 
         return (
             <Container
@@ -185,7 +185,7 @@ class NavigationBar extends React.Component {
     }
 
     async componentDidMount() {
-        //var username = sessionStorage.getItem('username');
+
 
         var username = sessionStorage.getItem('username');
         const response = await api.get(`/user`, { headers:{ ['username']: username } });
