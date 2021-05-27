@@ -148,7 +148,7 @@ class AppRouter extends React.Component {
                             )}
                         />
 
-
+                        // TODO leave game should be possible via this route
                         <Route
                             exact
                             path="/leave-game"

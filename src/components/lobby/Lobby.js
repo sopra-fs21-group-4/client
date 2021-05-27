@@ -100,7 +100,6 @@ class Lobby extends React.Component {
             console.log(response);
             this.props.history.push('/')
 
-
         } catch (error) {
             alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
         }
@@ -132,7 +131,7 @@ class Lobby extends React.Component {
     render() {
         // TODO game settings: update visuals (and states?) in the frontend
         // TODO better proportions for UserList (maybe also absolute position?)
-//        window.location.reload();
+
         return (
             <div>
                 <Title> {this.props.game.gameSettings.name} </Title>

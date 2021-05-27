@@ -45,8 +45,6 @@ import {api, handleError} from "../../helpers/api";
 import title from "../../views/design/title.module.css";
 import bruh from "../../image/memes/bruh girl.jpg";
 import Modal from "../login/Modal";
-import {Spinner} from "../../views/design/Spinner";
-import Data from "../shared/models/Data";
 
 
 /**
@@ -79,9 +77,8 @@ class NavigationBar extends React.Component {
         super(props);
         this.state = {
             GameId: null,
-            username: null,
+            user: null,
             showImage: false,
-            reset: false,
         };
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
@@ -114,7 +111,6 @@ class NavigationBar extends React.Component {
             // send request
             const response = await api.put(url, requestBody, config);
             console.log(response);
-
             this.props.history.push('/')
 
         } catch (error) {
@@ -124,9 +120,6 @@ class NavigationBar extends React.Component {
     }
 
     render() {
-          // if (!this.state.username)
-          //    return <Spinner/>
-
         return (
             <Container
                 style={{zIndex:'100'}}
@@ -184,66 +177,66 @@ class NavigationBar extends React.Component {
         );
     }
 
-    async componentDidMount() {
-
-
-        var username = sessionStorage.getItem('username');
-        const response = await api.get(`/user`, { headers:{ ['username']: username } });
-        console.log(response);
-
-        this.setState({GameId: response.data.currentGameId});
-        console.log(this.state.GameId);
-       this.setState({username: response.data.username});
-        console.log(this.state.username);
-
-
-    }
-
-     getNavigationBarContent() {
+    getNavigationBarContent() {
         // TODO user should be fetched from sessionStorage
-        // let myUser = {
-        //     id: sessionStorage.getItem('userId'),
-        //     username: sessionStorage.getItem('username'),
-        //     avatar: avatar0,
-        //     currentGameId: 2,
-        //     friends: [3,4,5,6,7],
-        //     chats: [8,9]
-        //
-        //
-        // }
+        let myUser = {
+            id: 1,
+            username: sessionStorage.getItem('username'),
+            avatar: avatar0,
+            currentGameId: 2,
+            friends: [3,4,5,6,7],
+            chats: [8,9]
 
 
-
-        //this.setState({GameId: response.data.currentGameId});
-        //this.setState({username: response.data.username});
-
+        }
+        // TODO delete when no longer needed
+        let avatars = [avatar1,avatar2,avatar3,avatar4,avatar5,avatar6,avatar7,avatar8,avatar9,avatar10];
 
         if (!User.isPresentInSessionStorage()) return [
             this.menu("login", userIcon, [
                 {image: userLoginIcon, onClick: () => () => this.props.history.push('/login')},
-                {image: userAddIcon, onClick: () => () => this.props.history.push('/register')},
+                {image: userAddIcon, link: '/register'},
                 ])
         ];
         else return [
-            this.menu("myUser", avatar0, [
+            this.menu("myUser", myUser.avatar, [
                 {image: userLogoutIcon, onClick: () => this.props.history.push('/logout')},
-                {image: userEditIcon, onClick: () => this.props.history.push("/users/"+this.state.username)},
-                {image: userSearchIcon, onClick: () => this.props.history.push('/friends')},
-                {image: avatar0, onClick: () => this.props.history.push('/users/'+this.state.username)},
-
+                {image: userEditIcon, onClick: () => this.props.history.push("/users/"+myUser.username)},
+                {image: myUser.avatar, onClick: () => this.props.history.push('/users/'+myUser.username)},
             ]),
-
-
-                this.menu("myGame", gameIcon, [
-
-                    {image: gameAddIcon, onClick: () => this.props.history.push('/game-create')},
+            (myUser.currentGameId?
+                this.menu("myGame", gameOkIcon, [
                     {image: gamePlayIcon, onClick: () => this.props.history.push('/game')},
                     {image: gameLeaveIcon, onClick: () => this.leave()},
                     {image: gameArchiveIcon, onClick: () => this.props.history.push('/game-archive')},
+                ]) :
+                this.menu("myGame", gameIcon, [
+                    {image: gameSearchIcon, onClick: () => this.props.history.push('/game-list')},
+                    {image: gameAddIcon, onClick: () => this.props.history.push('/game-create')},
+                    {image: gameArchiveIcon, onClick: () => this.props.history.push('/game-archive')},
+                ])),
+            this.menu("myChats", chatIcon, [
+                {image: chatAddIcon, onClick: () => this.props.history.push('/chat-create')},
+            ].concat(myUser.chats.map(chatId => {
+                // TODO fetch chat from localStorage
+                let chat = {
+                    avatar: avatars[chatId],
+                }
+                return {image: chat.avatar, onClick: () => sessionStorage.setItem('currentChat', chatId)}
+            }))),
+            this.menu("myFriends", friendsIcon,
 
-                ]),
+                (myUser.friends.map(userId => {
+                // TODO fetch user from localStorage
+                let user = {
+                    username: 'friend#'+userId,
+                    avatar: avatars[userId],
+                }
+                return {image: user.avatar, onClick: () => this.props.history.push('/user/'+user.username)}
+            })).concat({image: userSearchIcon, onClick: () => this.props.history.push('/friends')})
 
 
+            ),
         ];
     }
 
