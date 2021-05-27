@@ -106,11 +106,13 @@ class GameArchive extends React.Component {
             <BackgroundDiv>
                 <Title>GameArchive</Title>
                 <BackgroundDivLighter
-                    style={{width: '600px', display: 'flex', flexDirection: "row", paddingBottom: '30px'}}
+                    style={{width: '450px', display: 'flex', flexDirection: "column", paddingBottom: '30px'}}
                 >
                     {
                         (this.state.pastGames) ?
-                            <div>
+                            <div
+                                style={{display: "flex", justifyContent: 'center'}}
+                            >
                                 {this.state.pastGames.map(game => {
                                     return <Button
                                         onClick={() => {
@@ -128,14 +130,16 @@ class GameArchive extends React.Component {
                                 </Label>
                             </div>
                     }
-
-                    <Button onClick={() => {
-                        this.props.history.push('/')
-                    }}
+                    <div
+                        style={{display: "flex", justifyContent: 'center'}}
                     >
-                        Back to Lobby
-                    </Button>
-
+                        <Button onClick={() => {
+                            this.props.history.push('/')
+                        }}
+                        >
+                            Back to Lobby
+                        </Button>
+                    </div>
                 </BackgroundDivLighter>
 
             </BackgroundDiv>
