@@ -57,7 +57,7 @@ class GameSummary extends React.Component {
                 game: gameResponse.data,
             });
         } catch (error) {
-            alert(`Something went wrong while fetching game info: \n${handleError(error)}`);
+            alert(`Something went wrong while fetching games info: \n${handleError(error)}`);
         }
     }
 

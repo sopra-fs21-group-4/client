@@ -55,6 +55,10 @@ class GameList extends React.Component {
         this.props.updateLoop.removeClient(this);
     }
 
+    async gameArchive(){
+        this.props.history.push(`archive`);
+    }
+
     render() {
         return (
             <div style={{display: "flex", justifyContent: 'center'}}>
@@ -93,6 +97,17 @@ class GameList extends React.Component {
                         </VerticalBox>
                     </BackgroundDivLighter>
 
+                    <BackgroundDivLighter style={{width: '600px'}}>
+                        <Button
+                            width="100%"
+                            onClick={() => {
+                            this.gameArchive();
+                            }}
+                        >
+                            GameArchive
+                        </Button>
+                    </BackgroundDivLighter>
+                    
                 </BackgroundDiv>
             </div>
         );

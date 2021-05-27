@@ -15,6 +15,7 @@ import GameList from "../../lobby/GameList";
 import FriendList from "../../friends/FriendList";
 import User from "../models/User";
 import UserProfile2 from "../../user/UserProfile2";
+import GameArchive from "../../lobby/GameArchive";
 
 
 /**
@@ -41,6 +42,15 @@ class AppRouter extends React.Component {
                             render={() =>
                                 <UserGuard>
                                     <GameList updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            }
+                        />
+                        <Route
+                            exact
+                            path={"/archive"}
+                            render={() =>
+                                <UserGuard>
+                                    <GameArchive />
                                 </UserGuard>
                             }
                         />

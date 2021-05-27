@@ -11,6 +11,7 @@ class User {
     this.token = null;
     this.status = null;
     this.email = null;
+    this.pastGames = null; 
     Object.assign(this, data);
   }
 
