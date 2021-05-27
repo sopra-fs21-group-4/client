@@ -2,7 +2,13 @@ import React from 'react';
 import { api, handleError } from '../../helpers/api';
 import { Spinner } from '../../views/design/Spinner';
 import { withRouter } from 'react-router-dom';
-import { BackgroundDivLighter, FlexBox, VerticalList, VerticalScroller } from "../../views/design/Containers";
+import {
+    BackgroundDiv,
+    BackgroundDivLighter,
+    FlexBox,
+    VerticalList,
+    VerticalScroller
+} from "../../views/design/Containers";
 import { Info, Label, Title } from "../../views/design/Text";
 import User from "../shared/models/User";
 import GameRoundSummary from "../game/GameRoundSummary";
@@ -98,7 +104,8 @@ class GameArchive extends React.Component {
 
     render() {
         if (this.state.pastGames) {
-            return <VerticalList
+            return <BackgroundDiv>
+            <VerticalList
                 style={{}}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <div style={{ display: 'flex', justifyContent: 'center', flexGrow: '1', }}><Title>GameArchive</Title></div>
@@ -120,7 +127,10 @@ class GameArchive extends React.Component {
                             maxWidth: 'fit-content'
                         }}
                             onClick={() => {
-                                return <GameSummary game={game} players={null} />;
+                                // return <GameSummary game={game} players={null} />;
+                                console.log(game)
+                                this.props.history.push(`/game/${game.gameId}`)
+
                             }}
                         >
                             Go to Game
@@ -128,8 +138,10 @@ class GameArchive extends React.Component {
                     })}
                 </BackgroundDivLighter>
             </VerticalList>
+            </BackgroundDiv>
         } else {
-            return <VerticalList
+            return <BackgroundDiv>
+            <VerticalList
                 style={{}}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <div style={{ display: 'flex', justifyContent: 'center', flexGrow: '1', }}><Title>GameArchive</Title></div>
@@ -150,6 +162,8 @@ class GameArchive extends React.Component {
 
                 </BackgroundDivLighter>
             </VerticalList>
+            </BackgroundDiv>
+
         }
     }
 
