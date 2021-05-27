@@ -111,7 +111,7 @@ class UserProfile extends React.Component {
     }
 
     async componentDidMount() {
-        this.setState({user: await User.fetchSingle('username', this.props.match.params.username)});
+        this.setState({user: await User.fetchSingle('username', sessionStorage.getItem('username'))});
     }
 
     render() {
@@ -123,7 +123,7 @@ class UserProfile extends React.Component {
                         <div>
 
 
-                            <Title>{this.props.match.params.username}'s profile</Title>
+                            <Title>{sessionStorage.getItem('username')}'s profile</Title>
 
 
                             <div>
