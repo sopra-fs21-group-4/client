@@ -66,7 +66,7 @@ class GameArchive extends React.Component {
 
         try {
             if (this.state.user.pastGames) {
-                this.state.user.pastGames.forEach(this.state=>this.getGame);
+                this.state.user.pastGames.forEach(game => this.getGame(game));
             } else {
                 this.state.pastGames = null;
             }
@@ -78,16 +78,19 @@ class GameArchive extends React.Component {
         }
     }
 
-    async getGame(value, index, array) {
+    async getGame(value) {
         try {
             // request setup
             const config = { headers: User.getUserAuthentication() };
             const url = `/archive/games/${value}`;
             const gameResponse = await api.get(url, config);
             console.log(gameResponse);
+
             var buffer1 = gameResponse.data;
-            this.state.pastGames.push(buffer1);
-            //this.setState({ pastGames: buffer })
+            var buffer = this.state.pastGames;
+            buffer.push(buffer1)
+
+            this.setState({ pastGames: buffer })
         } catch (error) {
             alert(`Something went wrong while fetching a certain game info: \n${handleError(error)}`);
         }
