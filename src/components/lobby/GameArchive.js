@@ -1,7 +1,7 @@
 import React from 'react';
-import { api, handleError } from '../../helpers/api';
-import { Spinner } from '../../views/design/Spinner';
-import { withRouter } from 'react-router-dom';
+import {api, handleError} from '../../helpers/api';
+import {Spinner} from '../../views/design/Spinner';
+import {withRouter} from 'react-router-dom';
 import {
     BackgroundDiv,
     BackgroundDivLighter,
@@ -9,12 +9,12 @@ import {
     VerticalList,
     VerticalScroller
 } from "../../views/design/Containers";
-import { Info, Label, Title } from "../../views/design/Text";
+import {Info, Label, Title} from "../../views/design/Text";
 import User from "../shared/models/User";
 import GameRoundSummary from "../game/GameRoundSummary";
 import styled from "styled-components";
-import { Button } from "../../views/design/Interaction";
-import { BaseContainer } from "../../helpers/layout";
+import {Button} from "../../views/design/Interaction";
+import {BaseContainer} from "../../helpers/layout";
 import GameSummary from '../game/GameSummary';
 
 
@@ -56,7 +56,7 @@ class GameArchive extends React.Component {
     async componentDidMount() {
         try {
             // request setup
-            const config = { headers: User.getUserAuthentication() };
+            const config = {headers: User.getUserAuthentication()};
 
             const url = `/archive`;
             const gameResponse = await api.get(url, config);
@@ -78,7 +78,6 @@ class GameArchive extends React.Component {
             }
 
 
-
         } catch (error) {
             alert(`Something went wrong while fetching game info: \n${handleError(error)}`);
         }
@@ -87,7 +86,7 @@ class GameArchive extends React.Component {
     async getGame(value) {
         try {
             // request setup
-            const config = { headers: User.getUserAuthentication() };
+            const config = {headers: User.getUserAuthentication()};
             const url = `/archive/games/${value}`;
             const gameResponse = await api.get(url, config);
             console.log(gameResponse);
@@ -96,75 +95,51 @@ class GameArchive extends React.Component {
             var buffer = this.state.pastGames;
             buffer.push(buffer1)
 
-            this.setState({ pastGames: buffer })
+            this.setState({pastGames: buffer})
         } catch (error) {
             alert(`Something went wrong while fetching a certain game info: \n${handleError(error)}`);
         }
     }
 
     render() {
-        if (this.state.pastGames) {
-            return <BackgroundDiv>
-            <VerticalList
-                style={{}}>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', justifyContent: 'center', flexGrow: '1', }}><Title>GameArchive</Title></div>
-                </div>
-                <BackgroundDivLighter>
-                    <Button style={{
-                        flexGrow: '1',
-                        maxWidth: 'fit-content'
+        return <div style={{display: "flex", justifyContent: 'center'}}>
+            <BackgroundDiv>
+                <Title>GameArchive</Title>
+                <BackgroundDivLighter
+                    style={{width: '600px', display: 'flex', flexDirection: "row", paddingBottom: '30px'}}
+                >
+                    {
+                        (this.state.pastGames) ?
+                            <div>
+                                {this.state.pastGames.map(game => {
+                                    return <Button
+                                        onClick={() => {
+                                            this.props.history.push(`/game/${game.gameId}`)
+                                        }}
+                                    >
+                                        Go to Game
+                                    </Button>
+                                })}
+                            </div>
+                            :
+                            <div>
+                                <Label>
+                                    You haven't played any games yet.
+                                </Label>
+                            </div>
+                    }
+
+                    <Button onClick={() => {
+                        this.props.history.push('/')
                     }}
-                        onClick={() => {
-                            this.props.history.push('/')
-                        }}
                     >
                         Back to Lobby
-                </Button>
-                    {this.state.pastGames.map(game => {
-                        return <Button style={{
-                            flexGrow: '1',
-                            maxWidth: 'fit-content'
-                        }}
-                            onClick={() => {
-                                // return <GameSummary game={game} players={null} />;
-                                console.log(game)
-                                this.props.history.push(`/game/${game.gameId}`)
-
-                            }}
-                        >
-                            Go to Game
                     </Button>
-                    })}
-                </BackgroundDivLighter>
-            </VerticalList>
-            </BackgroundDiv>
-        } else {
-            return <BackgroundDiv>
-            <VerticalList
-                style={{}}>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', justifyContent: 'center', flexGrow: '1', }}><Title>GameArchive</Title></div>
-                </div>
-                <BackgroundDivLighter>
-                    You havent played any games yet.
-                    <Button style={{
-                        flexGrow: '1',
-                        maxWidth: 'fit-content'
-                    }}
-                        onClick={() => {
-                            this.props.history.push('/')
-                        }}
-                    >
-                        Back to Lobby
-                </Button>
-
 
                 </BackgroundDivLighter>
-            </VerticalList>
-            </BackgroundDiv>
 
-        }
+            </BackgroundDiv>
+        </div>
     }
 
 }
