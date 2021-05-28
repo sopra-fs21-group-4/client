@@ -49,7 +49,7 @@ class GameArchive extends React.Component {
         super(params);
         this.state = {
             user: null,
-            pastGames: []
+            pastGames: null,
         };
 
     }
@@ -61,104 +61,107 @@ class GameArchive extends React.Component {
 
             const url = `/archive`;
             const gameResponse = await api.get(url, config);
-            console.log(gameResponse);
+            // console.log(gameResponse);
             this.setState({
                 user: gameResponse.data,
             });
 
-            console.log(this.state.user);
+            // console.log(this.state.user);
         } catch (error) {
             alert(`Something went wrong while fetching game info: \n${handleError(error)}`);
         }
 
         try {
-            if (this.state.user.pastGames) {
-                this.state.user.pastGames.forEach(game => this.getGame(game));
-            } else {
-                this.state.pastGames = null;
+
+
+            let pastGames = await Data.getList(this.state.user.pastGames)
+            pastGames = pastGames.filter(game => game.gameState == "AFTERMATH" || game.gameState == "FINISHED")
+            if ((pastGames).length != 0) {
+                this.setState({
+                    pastGames: pastGames,
+                });
+                console.log(this.state.pastGames)
+
             }
 
-
         } catch (error) {
             alert(`Something went wrong while fetching game info: \n${handleError(error)}`);
         }
     }
 
-    async getGame(value) {
-        try {
-            // request setup
-            const config = {headers: User.getUserAuthentication()};
-            const url = `/archive/games/${value}`;
-            const gameResponse = await api.get(url, config);
-            console.log(gameResponse);
+// async getGame(value) {
+//     try {
+//         // request setup
+//         const config = {headers: User.getUserAuthentication()};
+//         const url = `/archive/games/${value}`;
+//         const gameResponse = await api.get(url, config);
+//         console.log(gameResponse);
+//
+//         var buffer1 = gameResponse.data;
+//         var buffer = this.state.pastGames;
+//         buffer.push(buffer1)
+//
+//         this.setState({pastGames: buffer})
+//     } catch (error) {
+//         alert(`Something went wrong while fetching a certain game info: \n${handleError(error)}`);
+//     }
+// }
 
-            var buffer1 = gameResponse.data;
-            var buffer = this.state.pastGames;
-            buffer.push(buffer1)
 
-            this.setState({pastGames: buffer})
-        } catch (error) {
-            alert(`Something went wrong while fetching a certain game info: \n${handleError(error)}`);
-        }
-    }
-
-
-
-    // componentDidMount() {
-    //     this.props.updateLoop.addClient(this);
-    // }
-    //
-    // componentWillUnmount() {
-    //     this.props.updateLoop.removeClient(this);
-    // }
-    //
-    // async update() {
-    //     this.setState({
-    //         pastgames: await Data.get(this.state.user.pastGames),
-    //     })
-    //
-    //     this.setState({
-    //         friends: await Data.get(this.state.me.friends),
-    //         incomingRequestsUsers: await Data.get(this.state.me.incomingRequestsUsers),
-    //         outgoingRequestsUsers: await Data.get(this.state.me.outgoingRequestsUsers),
-    //     })
-    //
-    //     let games = [];
-    //     this.state.friends.forEach(friend => games.push(friend.currentGameId))
-    //
-    //     let inLobbyGames = []
-    //     games.forEach(game => {if(game.gameState == "LOBBY"){inLobbyGames.push()}})
-    //     this.setState({
-    //         games: await Data.get(inLobbyGames)
-    //     })
-    // }
-
+// componentDidMount() {
+//     this.props.updateLoop.addClient(this);
+// }
+//
+// componentWillUnmount() {
+//     this.props.updateLoop.removeClient(this);
+// }
+//
+// async update() {
+//     this.setState({
+//         pastgames: await Data.get(this.state.user.pastGames),
+//     })
+//
+//     this.setState({
+//         friends: await Data.get(this.state.me.friends),
+//         incomingRequestsUsers: await Data.get(this.state.me.incomingRequestsUsers),
+//         outgoingRequestsUsers: await Data.get(this.state.me.outgoingRequestsUsers),
+//     })
+//
+//     let games = [];
+//     this.state.friends.forEach(friend => games.push(friend.currentGameId))
+//
+//     let inLobbyGames = []
+//     games.forEach(game => {if(game.gameState == "LOBBY"){inLobbyGames.push()}})
+//     this.setState({
+//         games: await Data.get(inLobbyGames)
+//     })
+// }
 
 
     render() {
         return <div style={{display: "flex", justifyContent: 'center'}}>
             <BackgroundDiv>
-                <Title>GameArchive</Title>
+                <Title>Game Archive</Title>
                 <BackgroundDivLighter
                     style={{width: '450px', display: 'flex', flexDirection: "column", paddingBottom: '30px'}}
                 >
                     {
                         (this.state.pastGames) ?
                             <div
-                                style={{display: "flex", justifyContent: 'center'}}
+                                style={{display: "flex", justifyContent: 'center', flexDirection: "column"}}
                             >
                                 {this.state.pastGames.map(game => {
                                     return <Button
                                         onClick={() => {
-                                            this.props.history.push(`/game/${game.gameId}`)
+                                            this.props.history.push(`/game/${game.id}`)
                                         }}
                                     >
-                                        Go to Game
+                                        {game.id}
                                     </Button>
                                 })}
                             </div>
                             :
-                            <div>
+                            <div style={{display: "flex", justifyContent: 'center'}}>
                                 <Label>
                                     You haven't played any games yet.
                                 </Label>

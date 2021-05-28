@@ -272,7 +272,7 @@ class FriendList extends React.Component {
                             <SmallRoundImageButton
                                 style={{backgroundColor: 'rgb(191,62,255)'}}
                                 onClick={() => {
-                                    window.location.reload(false);;
+                                    window.location.reload(false)
                                 }}
                                 image={`url(${refresh_icon})`}
 

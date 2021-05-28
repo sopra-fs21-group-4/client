@@ -11,7 +11,6 @@ import {Route, withRouter} from "react-router-dom";
 import HoverableBox from "../../views/design/HoverableBox";
 import User from "../shared/models/User";
 import chatAddIcon from "../../image/icons/chat-add.png"
-import friendsIcon from "../../image/icons/friends.png"
 import chatIcon from "../../image/icons/chat.png"
 import gameIcon from "../../image/icons/game.png"
 import gameSearchIcon from "../../image/icons/game-search.png"
@@ -25,7 +24,9 @@ import userLoginIcon from "../../image/icons/user-login.png"
 import userLogoutIcon from "../../image/icons/user-logout.png"
 import userAddIcon from "../../image/icons/user-add.png"
 import userEditIcon from "../../image/icons/user-edit.png"
+import homeIcon from "../../image/icons/home.png"
 import userSearchIcon from "../../image/icons/user-search.png"
+import friendsIcon from "../../image/icons/friends.png"
 import avatar0 from "../../image/avatars/avatar0.png"
 import avatar1 from "../../image/avatars/avatar1.png"
 import avatar2 from "../../image/avatars/avatar2.png"
@@ -97,7 +98,7 @@ class NavigationBar extends React.Component {
         try {
 
             // request setup
-            const url = `/games/${User.getAttribute("currentGameId")}/leave`;
+            const url = `/games/${this.state.GameId}/leave`;
             const requestBody = "";
             const config = {headers: User.getUserAuthentication()};
 
@@ -149,13 +150,15 @@ class NavigationBar extends React.Component {
                     width: '100%',
                     transition: 'all 0.3s ease',
                 }}>
+                    <HoverableBox style={{background: '#9969c4',borderRadius: '99999px',}}>
                     <RoundImageButton
-                        // image={`url(${image})`} TODO enter home picture
+                        image={`url(${homeIcon})`}
                         onClick={() => {
                             this.props.history.push('/');
                         }}
-                    >home
+                    >
                     </RoundImageButton>
+                    </HoverableBox>
                     {this.getNavigationBarContent()}
                 </div>
 
@@ -194,8 +197,7 @@ class NavigationBar extends React.Component {
     }
 
     async update() {
-
-
+        if (!User.isPresentInSessionStorage()) return
         let me = await Data.get(User.getAttribute("userId"))
 
         this.setState({
@@ -206,21 +208,6 @@ class NavigationBar extends React.Component {
 
 
     getNavigationBarContent() {
-        // TODO user should be fetched from sessionStorage
-        // let myUser = {
-        //     id: sessionStorage.getItem('userId'),
-        //     username: sessionStorage.getItem('username'),
-        //     avatar: avatar0,
-        //     currentGameId: 2,
-        //     friends: [3,4,5,6,7],
-        //     chats: [8,9]
-        //
-        //
-        // }
-
-
-        //this.setState({GameId: response.data.currentGameId});
-        //this.setState({username: response.data.username});
 
 
         if (!User.isPresentInSessionStorage()) return [
@@ -232,9 +219,9 @@ class NavigationBar extends React.Component {
         else return [
             this.menu("login", avatar0, [
                 {image: userLogoutIcon, onClick: () => this.props.history.push('/logout')},
-                {image: userEditIcon, onClick: () => this.props.history.push("/users/" + this.state.username)},
-                {image: userSearchIcon, onClick: () => this.props.history.push('/friends')},
-                {image: avatar0, onClick: () => this.props.history.push('/users/' + this.state.username)},
+                {image: userEditIcon, onClick: () => this.props.history.push("/user/" + User.getAttribute('userId'))},
+                {image: friendsIcon, onClick: () => this.props.history.push('/friends')},
+                {image: avatar0, onClick: () => this.props.history.push("/user/" + User.getAttribute('userId'))},
             ]),
 
 

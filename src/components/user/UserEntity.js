@@ -80,7 +80,7 @@ class UserEntity extends React.Component {
         }
 
         this.hideModal();
-        this.setState({user: await User.fetchSingle('username', this.props.match.params.username)});
+        window.location.reload(false)
     }
 
     render() {
