@@ -35,8 +35,10 @@ class UserEntity extends React.Component {
         this.props.updateLoop.removeClient(this);
     }
 
-    update() {
-        console.log('test3')
+    async update() {
+        this.setState({
+            user: await Data.get(this.props.userId),
+        })
     }
 
     showModal = () => {
@@ -83,15 +85,14 @@ class UserEntity extends React.Component {
 
     render() {
         if (!this.props.userId) return <div><Error>no data!</Error></div>
-        let user = Data.get(this.props.userId)
-
+        if (!this.state.user) return <Spinner/>
         return (
             <BaseContainer>
                 <div style={{display: "flex", justifyContent: 'center'}}>
                     <BackgroundDiv>
                         <div>
 
-                            <Title>{user.username}'s profile</Title>
+                            <Title>{this.state.user.username}'s profile</Title>
 
                             <div>
                                 <BackgroundDivLighter>
@@ -99,29 +100,29 @@ class UserEntity extends React.Component {
                                         <Table width="100%">
                                             <tr>
                                                 <th><Label>Id: </Label></th>
-                                                <td><Info>{user.userId}</Info></td>
+                                                <td><Info>{this.state.user.userId}</Info></td>
                                             </tr>
                                             <tr>
                                                 <th><Label>Name: </Label></th>
-                                                <td><Info>{user.username}</Info></td>
+                                                <td><Info>{this.state.user.username}</Info></td>
                                             </tr>
                                             <tr>
                                                 <th><Label>Email: </Label></th>
-                                                <td><Info>{user.email}</Info></td>
+                                                <td><Info>{this.state.user.email}</Info></td>
                                             </tr>
                                             <tr>
                                                 <th><Label>Status: </Label></th>
-                                                <td><Info>{user.status}</Info></td>
+                                                <td><Info>{this.state.user.status}</Info></td>
                                             </tr>
                                             <tr>
                                                 <th><Label>Current Lobby: </Label></th>
-                                                <td><Info>{user.currentGameId}</Info></td>
+                                                <td><Info>{this.state.user.currentGameId}</Info></td>
                                             </tr>
                                         </Table>
                                     }
                                     <div style={{display: 'flex'}}
                                     >{
-                                        (User.getAttribute("userId") == user.userId) ? (
+                                        (User.getAttribute("userId") == this.state.user.id) ? (
 
                                             <Button
                                                 margin="auto"
