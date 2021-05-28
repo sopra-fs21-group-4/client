@@ -33,7 +33,7 @@ class Join extends React.Component {
       };
       await api.put(url, "", config);
 
-      this.props.history.push('/game');
+      this.props.history.push(`/game/${this.props.gameId}`);
     } catch (error) {
       // the component will react accordingly when we update the status
       // this.setState({status: error.response.status});
