@@ -7,7 +7,7 @@ import {
     RoundImageButton,
     SmallRoundImageButton
 } from "../../views/design/Interaction";
-import {withRouter} from "react-router-dom";
+import {Route, withRouter} from "react-router-dom";
 import HoverableBox from "../../views/design/HoverableBox";
 import User from "../shared/models/User";
 import chatAddIcon from "../../image/icons/chat-add.png"
@@ -95,16 +95,9 @@ class NavigationBar extends React.Component {
 
     async leave() {
         try {
+
             // request setup
-
-            var username = sessionStorage.getItem('username')
-
-            this.setState({user: await User.fetchSingle('username', username)});
-
-            console.log(this.state.user)
-            console.log(this.state.user.currentGameId)
-
-            const url = `/games/${this.state.user.currentGameId}/leave`;
+            const url = `/games/${User.getAttribute("currentGameId")}/leave`;
             const requestBody = "";
             const config = {headers: User.getUserAuthentication()};
 
@@ -114,6 +107,7 @@ class NavigationBar extends React.Component {
 
             this.props.history.push('/')
 
+
         } catch (error) {
             this.showModal();
             //alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
@@ -121,26 +115,28 @@ class NavigationBar extends React.Component {
     }
 
     render() {
-          // if (!this.state.username)
-          //    return <Spinner/>
+        // if (!this.state.username)
+        //    return <Spinner/>
 
         return (
             <Container
-                style={{zIndex:'100'}}
+                style={{zIndex: '100'}}
             >
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'left',
-                    height:'100%',
-                    width:'70vh',
+                    height: '100%',
+                    width: '70vh',
 
                 }}>
                     <ImageButton
 
-                        onClick={() => {this.props.history.push('/');}}
+                        onClick={() => {
+                            this.props.history.push('/');
+                        }}
                         image={`url(${logo})`}
-                        style={{marginLeft: "30px",width: '100%', height: '100%'}}
+                        style={{marginLeft: "30px", width: '100%', height: '100%'}}
                     >
                         {/*<Title> Do you even meme? </Title>*/}
                     </ImageButton>
@@ -153,6 +149,13 @@ class NavigationBar extends React.Component {
                     width: '100%',
                     transition: 'all 0.3s ease',
                 }}>
+                    <RoundImageButton
+                        // image={`url(${image})`} TODO enter home picture
+                        onClick={() => {
+                            this.props.history.push('/');
+                        }}
+                    >home
+                    </RoundImageButton>
                     {this.getNavigationBarContent()}
                 </div>
 
@@ -160,7 +163,7 @@ class NavigationBar extends React.Component {
 
 
                     <div style={{display: this.state.showImage ? "block" : "none"}}>
-                        <img className={title.bestmemes} src={bruh} />
+                        <img className={title.bestmemes} src={bruh}/>
                         <Button
                             style={{
                                 marginTop: "15px",
@@ -181,21 +184,28 @@ class NavigationBar extends React.Component {
         );
     }
 
-    async componentDidMount() {
 
-        var username = sessionStorage.getItem('username');
-        const response = await api.get(`/user`, { headers:{ ['username']: username } });
-        console.log(response);
-
-        this.setState({GameId: response.data.currentGameId});
-        console.log(this.state.GameId);
-        this.setState({username: response.data.username});
-        console.log(this.state.username);
-
-
+    componentDidMount() {
+        this.props.updateLoop.addClient(this);
     }
 
-     getNavigationBarContent() {
+    componentWillUnmount() {
+        this.props.updateLoop.removeClient(this);
+    }
+
+    async update() {
+
+
+        let me = await Data.get(User.getAttribute("userId"))
+
+        this.setState({
+            GameId: me.currentGameId,
+            username: User.getAttribute("username"),
+        })
+    }
+
+
+    getNavigationBarContent() {
         // TODO user should be fetched from sessionStorage
         // let myUser = {
         //     id: sessionStorage.getItem('userId'),
@@ -209,7 +219,6 @@ class NavigationBar extends React.Component {
         // }
 
 
-
         //this.setState({GameId: response.data.currentGameId});
         //this.setState({username: response.data.username});
 
@@ -218,38 +227,42 @@ class NavigationBar extends React.Component {
             this.menu("login", userIcon, [
                 {image: userLoginIcon, onClick: () => () => this.props.history.push('/login')},
                 {image: userAddIcon, onClick: () => () => this.props.history.push('/register')},
-                ])
+            ])
         ];
         else return [
-            this.menu("myUser", avatar0, [
+            this.menu("login", avatar0, [
                 {image: userLogoutIcon, onClick: () => this.props.history.push('/logout')},
-                {image: userEditIcon, onClick: () => this.props.history.push("/users/"+this.state.username)},
+                {image: userEditIcon, onClick: () => this.props.history.push("/users/" + this.state.username)},
                 {image: userSearchIcon, onClick: () => this.props.history.push('/friends')},
-                {image: avatar0, onClick: () => this.props.history.push('/users/'+this.state.username)},
+                {image: avatar0, onClick: () => this.props.history.push('/users/' + this.state.username)},
             ]),
 
+
             this.menu("myGame", gameIcon, [
+
                 {image: gameAddIcon, onClick: () => this.props.history.push('/game-create')},
-                {image: gamePlayIcon, onClick: () => this.props.history.push('/game')},
+                {image: gamePlayIcon, onClick: () => this.props.history.push('/game/' + this.state.GameId)},
                 {image: gameLeaveIcon, onClick: () => this.leave()},
-                {image: gameArchiveIcon, onClick: () => this.props.history.push('/game-archive')},
+                {image: gameArchiveIcon, onClick: () => this.props.history.push('/archive')},
+
             ]),
+
         ];
     }
 
     menu(id, image, options) {
         return <HoverableBox
-            id = {id}
-            listener = {this}
+            id={id}
+            listener={this}
             style={{
                 marginRight: '15px',
                 alignItems: 'center',
                 background: '#9969c4',
                 borderRadius: '99999px',
-                width: this.state[`${id}Hovered`]? (options.length *6) +'vh' : '6vh',
+                width: this.state[`${id}Hovered`] ? (options.length * 6) + 'vh' : '6vh',
             }}
         >
-            {this.state[`${id}Hovered`]?
+            {this.state[`${id}Hovered`] ?
                 options.map(option => <SmallRoundImageButton
                     image={`url(${option.image})`}
                     onClick={option.onClick}

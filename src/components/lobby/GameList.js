@@ -88,7 +88,7 @@ class GameList extends React.Component {
                         </VerticalBox>
                     </BackgroundDivLighter>
 
-                    <BackgroundDivLighter style={{width: '600px'}}>
+                    <BackgroundDivLighter style={{width: '600px', paddingBottom:'30px'}}>
                         <Button
                             width="100%"
                             onClick={() => {

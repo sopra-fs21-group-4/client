@@ -12,6 +12,7 @@ import {
 } from "../../views/design/Containers";
 import refresh_icon from "../../image/icons/refresh_arrow.png"
 import logo from "../../image/logo/doyouevenmeme.png";
+import Data from "../shared/models/Data";
 
 const Cell = styled.div`
     padding: 0.5rem;
@@ -32,6 +33,40 @@ class FriendList extends React.Component {
     }
 
 
+
+
+    componentDidMount() {
+        this.props.updateLoop.addClient(this);
+    }
+
+    componentWillUnmount() {
+        this.props.updateLoop.removeClient(this);
+    }
+
+    async update() {
+        this.setState({
+            me: await Data.get(User.getAttribute('userId')),
+        })
+
+        // console.log(this.state.me)
+        this.setState({
+            friends: await Data.getList(this.state.me.friends),
+            incomingRequestsUsers: await Data.getList(this.state.me.incomingFriendRequests),
+            outgoingRequestsUsers: await Data.getList(this.state.me.outgoingFriendRequests),
+        })
+
+        let games = [];
+        this.state.friends.forEach(friend => {if(friend.currentGameId){games.push(friend.currentGameId)}})
+
+        games = await Data.getList(games)
+        let inLobbyGames = []
+        games.forEach(game => {if(game.gameState == "LOBBY"){inLobbyGames.push(game.id)}})
+        this.setState({
+            games: inLobbyGames,
+        })
+    }
+
+
     async sendFriendRequest(friendId) {
         try {
             const url = `/friends/sendRequest`;
@@ -40,7 +75,7 @@ class FriendList extends React.Component {
             }
             const response = await api.put(url, friendId, config);
             // console.log(response);
-            this.updateFriends()
+            // this.updateFriends()
 
         } catch (error) {
             if (error.response && error.response.data.message == 'invalid userId') {
@@ -58,7 +93,7 @@ class FriendList extends React.Component {
             }
             const response = await api.put(url, friendId, config);
             // console.log(response);
-            this.updateFriends()
+            // this.updateFriends()
 
         } catch (error) {
             if (error.response && error.response.data.message == 'invalid userId') {
@@ -76,7 +111,7 @@ class FriendList extends React.Component {
             }
             const response = await api.put(url, friendId, config);
             // console.log(response);
-            this.updateFriends()
+            // this.updateFriends()
 
         } catch (error) {
             if (error.response && error.response.data.message == 'invalid userId') {
@@ -94,7 +129,7 @@ class FriendList extends React.Component {
             }
             const response = await api.put(url, friendId, config);
             // console.log(response);
-            this.updateFriends()
+            // this.updateFriends()
 
         } catch (error) {
             if (error.response && error.response.data.message == 'invalid userId') {
@@ -112,7 +147,7 @@ class FriendList extends React.Component {
             }
             const response = await api.put(url, friendId, config);
             // console.log(response);
-            this.updateFriends()
+            // this.updateFriends()
 
         } catch (error) {
             if (error.response && error.response.data.message == 'invalid userId') {
@@ -122,94 +157,108 @@ class FriendList extends React.Component {
         }
     }
 
-    async componentDidMount() {
-        this.updateFriends()
-    }
-
-    async updateFriends() {
-
-        try {
-            this.setState({friends: null})
-            this.setState({incomingRequestsUsers: null})
-            this.setState({outgoingRequestsUsers: null})
-
-            // request setup
-            const url = `/user`;
-            const config = {headers: User.getUserAuthentication()};
-            // send request
-            const response = await api.get(url, config);
-            console.log(response);
-            this.setState({me: response.data});
-
-
-            const url2 = `/users`;
-
-
-            if (response.data.friends.length != 0) {
-                // request setup
-                const friendsIds = response.data.friends
-                const config2 = {headers: {userIds: friendsIds}};
-                // send request
-                const response2 = await api.get(url2, config2);
-                console.log(response2);
-                this.setState({friends: response2.data});
-
-                // getting games
-                const config = {headers: User.getUserAuthentication()};
-                const gameresponse = await api.get('/games', config);
-                console.log(gameresponse);
-
-                let games = new Array();
-                for(let i=0, iLen=Object.keys(gameresponse.data).length; i<iLen; i++){
-                    let obj = gameresponse.data[i]
-                    if (obj.gameState == "LOBBY"){
-                        games.push((obj.gameId))
-                    }
-                }
-
-
-                this.setState({games: games});
-                console.log(this.state.games);
-            }
-
-            if (response.data.incomingFriendRequests.length != 0) {
-                // request setup
-                const incomingIds = response.data.incomingFriendRequests
-                const config3 = {headers: {userIds: incomingIds}};
-                // send request
-                const response3 = await api.get(url2, config3);
-                console.log(response3);
-                this.setState({incomingRequestsUsers: response3.data});
-            }
-            if (response.data.outgoingFriendRequests.length != 0) {
-                // request setup
-                const outoingIds = response.data.outgoingFriendRequests
-                const config4 = {headers: {userIds: outoingIds}};
-                // send request
-                const response4 = await api.get(url2, config4);
-                console.log(response);
-                this.setState({outgoingRequestsUsers: response4.data});
-            }
-
-
-        } catch (error) {
-            if (error.response && error.response.data.message == 'invalid userId') {
-                User.removeFromSessionStorage();
-                this.props.history.push('/');
-            } else alert(`Something went wrong while updating the users: \n${handleError(error)}`);
-        }
-    }
+    //
+    // async componentDidMount() {
+    //     this.updateFriends()
+    // }
+    //
+    // async updateFriends() {
+    //
+    //     try {
+    //         this.setState({friends: null})
+    //         this.setState({incomingRequestsUsers: null})
+    //         this.setState({outgoingRequestsUsers: null})
+    //
+    //         // request setup
+    //         const url = `/user`;
+    //         const config = {headers: User.getUserAuthentication()};
+    //         // send request
+    //         const response = await api.get(url, config);
+    //         console.log(response);
+    //         this.setState({me: response.data});
+    //
+    //
+    //         const url2 = `/users`;
+    //
+    //
+    //         if (response.data.friends.length != 0) {
+    //             // request setup
+    //             const friendsIds = response.data.friends
+    //             const config2 = {headers: {userIds: friendsIds}};
+    //             // send request
+    //             const response2 = await api.get(url2, config2);
+    //             console.log(response2);
+    //             this.setState({friends: response2.data});
+    //
+    //             // getting games
+    //             const config = {headers: User.getUserAuthentication()};
+    //             const gameresponse = await api.get('/games', config);
+    //             console.log(gameresponse);
+    //
+    //             let games = new Array();
+    //             for(let i=0, iLen=Object.keys(gameresponse.data).length; i<iLen; i++){
+    //                 let obj = gameresponse.data[i]
+    //                 if (obj.gameState == "LOBBY"){
+    //                     games.push((obj.gameId))
+    //                 }
+    //             }
+    //
+    //
+    //             this.setState({games: games});
+    //             console.log(this.state.games);
+    //         }
+    //
+    //         if (response.data.incomingFriendRequests.length != 0) {
+    //             // request setup
+    //             const incomingIds = response.data.incomingFriendRequests
+    //             const config3 = {headers: {userIds: incomingIds}};
+    //             // send request
+    //             const response3 = await api.get(url2, config3);
+    //             console.log(response3);
+    //             this.setState({incomingRequestsUsers: response3.data});
+    //         }
+    //         if (response.data.outgoingFriendRequests.length != 0) {
+    //             // request setup
+    //             const outoingIds = response.data.outgoingFriendRequests
+    //             const config4 = {headers: {userIds: outoingIds}};
+    //             // send request
+    //             const response4 = await api.get(url2, config4);
+    //             console.log(response);
+    //             this.setState({outgoingRequestsUsers: response4.data});
+    //         }
+    //
+    //
+    //     } catch (error) {
+    //         if (error.response && error.response.data.message == 'invalid userId') {
+    //             User.removeFromSessionStorage();
+    //             this.props.history.push('/');
+    //         } else alert(`Something went wrong while updating the users: \n${handleError(error)}`);
+    //     }
+    // }
 
     // async componentWillUnmount() {
     //     this.props.updateLoop.removeClient(this);
     // }
 
+
+
+
     handleInputChange(key, value) {
         this.setState({[key]: value});
     }
     goBack() {
+
+        // console.log(this.state.me)
+        // console.log(this.state.friends)
+        // console.log(this.state.outgoingRequestsUsers)
+        // console.log(this.state.incomingRequestsUsers)
+        // console.log(this.state.games)
+
         this.props.history.push('/');
     }
+
+
+
 
     render() {
 
@@ -259,7 +308,7 @@ class FriendList extends React.Component {
                                             justifyContent: "flex-end"
                                         }}>{friend["currentGameId"] && this.state.games && this.state.games.includes(friend["currentGameId"])?
                                             <Button onClick={() => {
-                                                console.log(friend)
+                                                // console.log(friend)
 
                                                 this.props.history.push(`/game/${friend["currentGameId"]}`);
                                             }}
@@ -271,7 +320,7 @@ class FriendList extends React.Component {
                                             justifyContent: "flex-end"
                                         }}>
                                             <Button onClick={() => {
-                                                this.removeFriend(friend["userId"]);
+                                                this.removeFriend(friend["id"]);
                                             }}
                                             >Remove</Button>
                                         </Cell>
@@ -302,14 +351,14 @@ class FriendList extends React.Component {
                                                 justifyContent: "flex-end"
                                             }}>
                                                 <Button onClick={() => {
-                                                    this.acceptFriendRequest(friend["userId"]);
+                                                    this.acceptFriendRequest(friend["id"]);
                                                 }}
                                                         style={{marginRight: "0.5rem"}}
                                                 >
                                                     Accept
                                                 </Button>
                                                 <Button onClick={() => {
-                                                    this.rejectFriendRequest(friend["userId"]);
+                                                    this.rejectFriendRequest(friend["id"]);
                                                 }}>
                                                     Reject
                                                 </Button>
@@ -336,7 +385,7 @@ class FriendList extends React.Component {
                                                 display: 'flex',
                                                 justifyContent: "flex-end"
                                             }}><Button onClick={() => {
-                                                this.removeFriendRequest(friend["userId"]);
+                                                this.removeFriendRequest(friend["id"]);
                                             }}>remove</Button>
                                             </Cell>
                                         </div>;

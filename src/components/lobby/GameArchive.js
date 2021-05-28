@@ -16,6 +16,7 @@ import styled from "styled-components";
 import {Button} from "../../views/design/Interaction";
 import {BaseContainer} from "../../helpers/layout";
 import GameSummary from '../game/GameSummary';
+import Data from "../shared/models/Data";
 
 
 const ButtonLogin = styled.button`
@@ -100,6 +101,39 @@ class GameArchive extends React.Component {
             alert(`Something went wrong while fetching a certain game info: \n${handleError(error)}`);
         }
     }
+
+
+
+    // componentDidMount() {
+    //     this.props.updateLoop.addClient(this);
+    // }
+    //
+    // componentWillUnmount() {
+    //     this.props.updateLoop.removeClient(this);
+    // }
+    //
+    // async update() {
+    //     this.setState({
+    //         pastgames: await Data.get(this.state.user.pastGames),
+    //     })
+    //
+    //     this.setState({
+    //         friends: await Data.get(this.state.me.friends),
+    //         incomingRequestsUsers: await Data.get(this.state.me.incomingRequestsUsers),
+    //         outgoingRequestsUsers: await Data.get(this.state.me.outgoingRequestsUsers),
+    //     })
+    //
+    //     let games = [];
+    //     this.state.friends.forEach(friend => games.push(friend.currentGameId))
+    //
+    //     let inLobbyGames = []
+    //     games.forEach(game => {if(game.gameState == "LOBBY"){inLobbyGames.push()}})
+    //     this.setState({
+    //         games: await Data.get(inLobbyGames)
+    //     })
+    // }
+
+
 
     render() {
         return <div style={{display: "flex", justifyContent: 'center'}}>
