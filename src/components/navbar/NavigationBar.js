@@ -183,14 +183,13 @@ class NavigationBar extends React.Component {
 
     async componentDidMount() {
 
-
         var username = sessionStorage.getItem('username');
         const response = await api.get(`/user`, { headers:{ ['username']: username } });
         console.log(response);
 
         this.setState({GameId: response.data.currentGameId});
         console.log(this.state.GameId);
-       this.setState({username: response.data.username});
+        this.setState({username: response.data.username});
         console.log(this.state.username);
 
 
@@ -227,20 +226,14 @@ class NavigationBar extends React.Component {
                 {image: userEditIcon, onClick: () => this.props.history.push("/users/"+this.state.username)},
                 {image: userSearchIcon, onClick: () => this.props.history.push('/friends')},
                 {image: avatar0, onClick: () => this.props.history.push('/users/'+this.state.username)},
-
             ]),
 
-
-                this.menu("myGame", gameIcon, [
-
-                    {image: gameAddIcon, onClick: () => this.props.history.push('/game-create')},
-                    {image: gamePlayIcon, onClick: () => this.props.history.push('/game')},
-                    {image: gameLeaveIcon, onClick: () => this.leave()},
-                    {image: gameArchiveIcon, onClick: () => this.props.history.push('/game-archive')},
-
-                ]),
-
-
+            this.menu("myGame", gameIcon, [
+                {image: gameAddIcon, onClick: () => this.props.history.push('/game-create')},
+                {image: gamePlayIcon, onClick: () => this.props.history.push('/game')},
+                {image: gameLeaveIcon, onClick: () => this.leave()},
+                {image: gameArchiveIcon, onClick: () => this.props.history.push('/game-archive')},
+            ]),
         ];
     }
 

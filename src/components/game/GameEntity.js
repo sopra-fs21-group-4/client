@@ -34,7 +34,6 @@ class GameEntity extends React.Component {
         })
     }
 
-
     render() {
         if (!this.state.game) return <Spinner/>
         if (!this.state.game.gameChatId) return <Join gameId={this.props.gameId}/>

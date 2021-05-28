@@ -34,6 +34,7 @@ class GameLobby extends React.Component {
             maxVoteSeconds: null,
             maxAftermathSeconds: null,
             settingsUpdated: false,
+            edit: false,
         };
     }
 
@@ -51,13 +52,16 @@ class GameLobby extends React.Component {
         this.setState({
             game: game,
             settings: settings,
-            subreddit: settings['subreddit'],
-            memeType: settings['memeType'],
-            totalRounds: settings['totalRounds'],
-            maxSuggestSeconds: settings['maxSuggestSeconds'],
-            maxVoteSeconds: settings['maxVoteSeconds'],
-            maxAftermathSeconds: settings['maxAftermathSeconds'],
         })
+        if (!this.state.edit) {
+            this.setState({
+                subreddit: settings['subreddit'],
+                memeType: settings['memeType'],
+                totalRounds: settings['totalRounds'],
+                maxSuggestSeconds: settings['maxSuggestSeconds'],
+                maxVoteSeconds: settings['maxVoteSeconds'],
+                maxAftermathSeconds: settings['maxAftermathSeconds'],})
+        }
     }
 
     async sendReady() {
@@ -128,17 +132,12 @@ class GameLobby extends React.Component {
     }
 
     render() {
-        // TODO game settings: update visuals (and states?) in the frontend
-        // TODO better proportions for UserList (maybe also absolute position?)
         if (!this.state.settings) return <Spinner/>
         return (
             <div>
                 <Title> {this.state.settings.name} </Title>
-
                 {this.state.edit ? this.gameSettingsForm() : this.gameSettingsTable()}
-
             </div>
-
         );
     }
 
