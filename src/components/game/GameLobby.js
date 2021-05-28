@@ -93,6 +93,30 @@ class GameLobby extends React.Component {
             alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
         }
     }
+    async updateSettings() {
+        try {
+            // request setup
+            const url = `/games/${this.props.gameId}/update`;
+            const requestBody = JSON.stringify({
+                subreddit: this.state.subreddit,
+                memeType: this.state.memeType,
+                totalRounds: this.state.totalRounds,
+                maxSuggestSeconds: this.state.maxSuggestSeconds,
+                maxVoteSeconds: this.state.maxVoteSeconds,
+                maxAftermathSeconds: this.state.maxAftermathSeconds,
+            });
+            const config = {headers: User.getUserAuthentication()};
+
+            // send request
+            const response = await api.put(url, requestBody, config);
+            console.log(response);
+
+            this.setState({["settingsUpdated"]: true});
+
+        } catch (error) {
+            alert(`Something went wrong on updating the game settings: \n${handleError(error)}`);
+        }
+    }
 
     isGameMaster() {
         return User.getAttribute('userId') == this.state.game['gameMaster'];

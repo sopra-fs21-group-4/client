@@ -21,15 +21,14 @@ class Join extends React.Component {
   }
 
   async tryJoin() {
-    let inputField = document.getElementById(`gamePasswordInput`);
     try {
 
       // request setup
-      const url = `/games/${this.props.match.params.gameId}/join`;
+      const url = `/games/${this.props.gameId}/join`;
       const config = {
         headers: {
           ...User.getUserAuthentication(),
-          password: inputField.value,
+          password: this.extractInput(),
         }
       };
       await api.put(url, "", config);
@@ -37,9 +36,17 @@ class Join extends React.Component {
       this.props.history.push('/game');
     } catch (error) {
       // the component will react accordingly when we update the status
-      this.setState({status: error.response.status});
+      // this.setState({status: error.response.status});
+      console.log(error.response)
     }
+  }
+
+  extractInput() {
+    let inputField = document.getElementById(`gamePasswordInput`);
+    if (!inputField) return "";
+    let input = inputField.value;
     inputField.value = "";
+    return input;
   }
 
 

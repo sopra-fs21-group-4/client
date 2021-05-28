@@ -53,9 +53,10 @@ class PlayerList extends React.Component {
 
     async update() {
         let game = await Data.get(this.props.gameId);
-        game.players.forEach((id) => {Data.get(id).then((user) => {this.state.players[game.players.indexOf(id)] = user})})
+        // game.players.forEach((id) => {Data.get(id).then((user) => {this.state.players[game.players.indexOf(id)] = user})})
         this.setState({
             game: game,
+            players: await Data.getList(game.players)
         })
     }
 

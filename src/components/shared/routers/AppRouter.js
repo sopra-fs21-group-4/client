@@ -17,6 +17,7 @@ import User from "../models/User";
 import UserProfile2 from "../../user/UserEntity";
 import Entity from "../../general/Entity";
 import GameArchive from "../../lobby/GameArchive";
+import UserEntity from "../../user/UserEntity";
 
 
 /**
@@ -84,10 +85,10 @@ class AppRouter extends React.Component {
                         />
                         <Route
                             exact
-                            path={"/game/:gameId"}
+                            path={"/game/:entityId"}
                             render={() =>
                                 <UserGuard>
-                                    <Game updateLoop={this.props.updateLoop}/>
+                                    <Entity updateLoop={this.props.updateLoop}/>
                                 </UserGuard>
                             }
                         />
@@ -122,10 +123,10 @@ class AppRouter extends React.Component {
                         />
                         <Route
                             exact
-                            path={"/user/:userId"}
+                            path={"/user/:entityId"}
                             render={() => (
                                 <UserGuard>
-                                    <UserProfile2 updateLoop={this.props.updateLoop}/>
+                                    <Entity updateLoop={this.props.updateLoop}/>
                                 </UserGuard>
                             )}
                         />

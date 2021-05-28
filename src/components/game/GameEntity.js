@@ -10,6 +10,7 @@ import ChatEntity from "../chat/ChatEntity";
 import LobbyState from "./GameLobby";
 import Data from "../shared/models/Data";
 import GameRunning from "./GameRunning";
+import Join from "./Join";
 
 class GameEntity extends React.Component {
     constructor(props) {
@@ -36,6 +37,7 @@ class GameEntity extends React.Component {
 
     render() {
         if (!this.state.game) return <Spinner/>
+        if (!this.state.game.gameChatId) return <Join gameId={this.props.gameId}/>
         return (
             <div style={{width:'calc(100% - 170px)', display: "flex", justifyContent: 'center'}}>
                 <BackgroundDiv

@@ -13,11 +13,23 @@ class Data {
       const url = `/entity/${entityId}`;
       const config = {headers: User.getUserAuthentication()};
       const response = await api.get(url, config);
+      this.put(entityId, response.data)
       return response.data
     } catch (error) {
       alert(`Something went wrong trying to fetch entity #${entityId}: \n${handleError(error)}`);
     }
+  }
 
+  static async getList(ids) {
+    let list = [];
+    for (let id of ids) {
+      list.push(await(this.get(id)))
+    }
+    return list;
+  }
+
+  static put(key, data) {
+    sessionStorage.setItem(key, JSON.stringify(data))
   }
 
   /**

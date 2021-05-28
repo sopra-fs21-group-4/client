@@ -4,6 +4,7 @@ import UpdateLoop from "./components/shared/UpdateLoop";
 import wallpaper from "./image/wallpaper/meme-collage-colorful.jpg"
 import User from "./components/shared/models/User";
 import {api, handleError} from "./helpers/api";
+import Data from "./components/shared/models/Data";
 
 /**
  * Happy coding!
@@ -82,7 +83,7 @@ class App extends Component {
 
         eventSource.addEventListener("Update", (event) => {
             const data = JSON.parse(event.data);
-            for (let key in data['observedEntities']) sessionStorage.setItem(key, JSON.stringify(data['observedEntities'][key]))
+            for (let key in data['observedEntities']) Data.put(key, (data['observedEntities'][key]))
             if (data['lobbies']) sessionStorage.setItem('lobbies', JSON.stringify(data['lobbies']));
             console.log(event);
         })
