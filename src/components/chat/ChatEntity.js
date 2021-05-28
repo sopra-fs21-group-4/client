@@ -7,12 +7,14 @@ import parseEmoji from "../../helpers/Emoji";
 import {VerticalBox, VerticalScroller} from "../../views/design/Containers";
 import User from "../shared/models/User";
 import InputField from "../general/InputField";
+import Data from "../shared/models/Data";
 
 
-class Chat extends React.Component {
+class ChatEntity extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            chat: null,
             messages: null,
             collapsed: false,
         };
@@ -41,21 +43,7 @@ class Chat extends React.Component {
             inputField.value = "";    // reset input field
 
         } catch (error) {
-            alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
-        }
-    }
-
-    async update() {
-        if (!this.props.chatId) return;
-        try {
-            // request setup
-            const url = `/chat/${this.props.chatId}`;
-            const config = {headers: User.getUserAuthentication()};
-            const response = await api.get(url, config);
-            // console.log(response);
-            this.setState({messages: response.data});
-        } catch (error) {
-            alert(`Something went wrong while fetching the messages: \n${handleError(error)}`);
+            alert(`Something went wrong while sending the message: \n${handleError(error)}`);
         }
     }
 
@@ -67,9 +55,16 @@ class Chat extends React.Component {
         this.props.updateLoop.removeClient(this);
     }
 
-    render() {
-        return (
+    async update() {
+        this.setState({
+            chat: await Data.get(this.props.chatId),
+        })
+    }
 
+    render() {
+        if (!this.state.chat) return <Spinner/>
+
+        return (
             <VerticalBox
                 style={{
                     // position: 'relative',
@@ -96,7 +91,7 @@ class Chat extends React.Component {
                         flexGrow:'1',
                     }}
                 >
-                    {this.state.messages ? this.messageList() : <Spinner/>}
+                    {this.state.chat ? this.messageList() : <Spinner/>}
                 </div>
                 <div style={{
                     // alignSelf:'flex-end',
@@ -129,13 +124,11 @@ class Chat extends React.Component {
             flexDirection: 'column-reverse',
         }}>
             {/* double reverse the message list to stay scrolled on the bottom */}
-            {this.state.messages.slice().reverse().map(message => {
-                return (
-                    <Message message={message}/>
-                );
+            {this.state.chat.messages.slice().reverse().map(messageId => {
+                return <Message messageId={messageId} updateLoop={this.props.updateLoop}/>;
             })}
         </VerticalScroller>);
     }
 }
 
-export default withRouter(Chat);
+export default withRouter(ChatEntity);

@@ -34,7 +34,7 @@ class InputField extends React.Component {
                   id={this.props.id}
                   type="text"
                   autoComplete="off"
-                  placeholder=" ... "
+                  placeholder={this.props.placeholder? this.props.placeholder : " ... "}
                   maxLength="255"     // max length for default database String (+ 1 for EOS \0)
                   onChange={e => {
                       for (let filter of this.props.textFilters)

@@ -14,7 +14,8 @@ import GameSetup from "../../lobby/GameSetup";
 import GameList from "../../lobby/GameList";
 import FriendList from "../../friends/FriendList";
 import User from "../models/User";
-import UserProfile2 from "../../user/UserProfile2";
+import UserProfile2 from "../../user/UserEntity";
+import Entity from "../../general/Entity";
 import GameArchive from "../../lobby/GameArchive";
 
 
@@ -124,7 +125,16 @@ class AppRouter extends React.Component {
                             path={"/user/:userId"}
                             render={() => (
                                 <UserGuard>
-                                    <UserProfile2 />
+                                    <UserProfile2 updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            )}
+                        />
+                        <Route
+                            exact
+                            path={"/e/:entityId"}
+                            render={() => (
+                                <UserGuard>
+                                    <Entity updateLoop={this.props.updateLoop}/>
                                 </UserGuard>
                             )}
                         />
@@ -160,8 +170,8 @@ class AppRouter extends React.Component {
                         />
 
                         <Route path="/logout" exact render={() => {
-                            User.removeFromSessionStorage();
-                            return <Redirect to={"/dashboard"}/>
+                            sessionStorage.clear();
+                            return <Redirect to={"/"}/>
                         }}/>
 
                         <Route path="/user-edit" exact render={() => {

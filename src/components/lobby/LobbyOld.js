@@ -170,7 +170,7 @@ class Lobby extends React.Component {
             props:{ min:3, max:30, disabled: !this.isGameMaster() } };
 
         return <Form
-            title='Game Settings'
+            title='Entity Settings'
             attributes={[subreddit, memeType, totalRounds, timers, namingTime, votingTime, resultsTime]}
             listener={this}
             initialState={{

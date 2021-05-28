@@ -7,6 +7,8 @@ import Form from "../general/Form";
 import {Info, Label, Title} from "../../views/design/Text";
 import styled from "styled-components";
 import {Button} from "../../views/design/Interaction";
+import Data from "../shared/models/Data";
+import {Spinner} from "../../views/design/Spinner";
 
 
 export const Cell = styled.div`
@@ -17,62 +19,52 @@ export const Cell = styled.div`
     vertical-align: middle;
 `;
 
-class Lobby extends React.Component {
-    constructor(props) {
-        super(props);
+class GameLobby extends React.Component {
+    constructor(params) {
+        super(params);
         this.state = {
+            game: null,
+            settings: null,
             generalCollapsed: true,
             timersCollapsed: true,
-            subreddit: this.props.game.gameSettings['subreddit'],
-            memeType: this.props.game.gameSettings['memeType'],
-            totalRounds: this.props.game.gameSettings['totalRounds'],
-            maxSuggestSeconds: this.props.game.gameSettings['maxSuggestSeconds'],
-            maxVoteSeconds: this.props.game.gameSettings['maxVoteSeconds'],
-            maxAftermathSeconds: this.props.game.gameSettings['maxAftermathSeconds'],
+            subreddit: null,
+            memeType: null,
+            totalRounds: null,
+            maxSuggestSeconds: null,
+            maxVoteSeconds: null,
+            maxAftermathSeconds: null,
             settingsUpdated: false,
         };
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.props.updateLoop.addClient(this);
     }
 
-    async componentWillUnmount() {
+    componentWillUnmount() {
         this.props.updateLoop.removeClient(this);
     }
 
-    async updateSettings() {
-        try {
-
-
-            // request setup
-            const url = `/games/${this.props.match.params['gameId']}/update`;
-            const requestBody = JSON.stringify({
-                subreddit: this.state.subreddit,
-                memeType: this.state.memeType,
-                totalRounds: this.state.totalRounds,
-                maxSuggestSeconds: this.state.maxSuggestSeconds,
-                maxVoteSeconds: this.state.maxVoteSeconds,
-                maxAftermathSeconds: this.state.maxAftermathSeconds,
-            });
-            const config = {headers: User.getUserAuthentication()};
-
-            // send request
-            const response = await api.put(url, requestBody, config);
-            console.log(response);
-
-            this.setState({["settingsUpdated"]: true});
-
-        } catch (error) {
-            alert(`Something went wrong on updating the game settings: \n${handleError(error)}`);
-        }
+    async update() {
+        let game = await Data.get(this.props.gameId);
+        let settings = await Data.get(game.gameSettingsId);
+        this.setState({
+            game: game,
+            settings: settings,
+            subreddit: settings['subreddit'],
+            memeType: settings['memeType'],
+            totalRounds: settings['totalRounds'],
+            maxSuggestSeconds: settings['maxSuggestSeconds'],
+            maxVoteSeconds: settings['maxVoteSeconds'],
+            maxAftermathSeconds: settings['maxAftermathSeconds'],
+        })
     }
 
     async sendReady() {
         try {
 
             // request setup
-            const url = `/games/${this.props.match.params['gameId']}/ready`;
+            const url = `/games/${this.props.gameId}/ready`;
             const requestBody = this.isReady() ? 'false' : 'true';
             const config = {headers: User.getUserAuthentication()};
 
@@ -88,7 +80,7 @@ class Lobby extends React.Component {
     async leave() {
         try {
             // request setup
-            const url = `/games/${this.props.match.params['gameId']}/leave`;
+            const url = `/games/${this.props.gameId}/leave`;
             const requestBody = "";
             const config = {headers: User.getUserAuthentication()};
 
@@ -97,42 +89,27 @@ class Lobby extends React.Component {
             console.log(response);
             this.props.history.push('/')
 
-
         } catch (error) {
             alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
         }
     }
 
     isGameMaster() {
-        return User.getAttribute('userId') == this.props.game['gameMaster'];
+        return User.getAttribute('userId') == this.state.game['gameMaster'];
     }
 
     isReady() {
-        let playerState = this.props.game.playerStates[User.getAttribute('userId')];
+        let playerState = this.state.game.playerStates[User.getAttribute('userId')];
         return playerState == 'READY' || playerState == 'GM_READY';
-    }
-
-    async update() {
-        if (!this.isGameMaster()) {
-            // TODO update slider position for all users
-            this.setState({
-                subreddit: this.props.game.gameSettings['subreddit'],
-                memeType: this.props.game.gameSettings['memeType'],
-                totalRounds: this.props.game.gameSettings['totalRounds'],
-                maxSuggestSeconds: this.props.game.gameSettings['maxSuggestSeconds'],
-                maxVoteSeconds: this.props.game.gameSettings['maxVoteSeconds'],
-                maxAftermathSeconds: this.props.game.gameSettings['maxAftermathSeconds'],
-            });
-        }
     }
 
     render() {
         // TODO game settings: update visuals (and states?) in the frontend
         // TODO better proportions for UserList (maybe also absolute position?)
-//        window.location.reload();
+        if (!this.state.settings) return <Spinner/>
         return (
             <div>
-                <Title> {this.props.game.gameSettings.name} </Title>
+                <Title> {this.state.settings.name} </Title>
 
                 {this.state.edit ? this.gameSettingsForm() : this.gameSettingsTable()}
 
@@ -154,35 +131,35 @@ class Lobby extends React.Component {
                 }}>
                     <tr>
                         <Cell><Label>Subreddit:</Label></Cell>
-                        <Cell><Info>{this.props.game.gameSettings.subreddit}</Info></Cell>
+                        <Cell><Info>{this.state.settings.subreddit}</Info></Cell>
                     </tr>
                     <tr>
                         <Cell><Label>Meme Type:</Label></Cell>
-                        <Cell><Info>{this.props.game.gameSettings.memeType}</Info></Cell>
+                        <Cell><Info>{this.state.settings.memeType}</Info></Cell>
                     </tr>
                     <tr>
                         <Cell><Label>Memes found:</Label></Cell>
-                        <Cell><Info>{this.props.game.gameSettings.memesFound}</Info></Cell>
+                        <Cell><Info>{this.state.settings.memesFound}</Info></Cell>
                     </tr>
                     <tr>
                         <Cell><Label>No. Rounds:</Label></Cell>
-                        <Cell><Info>{this.props.game.gameSettings.totalRounds}</Info></Cell>
+                        <Cell><Info>{this.state.settings.totalRounds}</Info></Cell>
                     </tr>
                     <tr>
                         <Cell><Label>Player Limit:</Label></Cell>
-                        <Cell><Info>{this.props.game.gameSettings.maxPlayers}</Info></Cell>
+                        <Cell><Info>{this.state.settings.maxPlayers}</Info></Cell>
                     </tr>
                     <tr>
                         <Cell><Label>Naming Time:</Label></Cell>
-                        <Cell><Info>{this.props.game.gameSettings.maxSuggestSeconds}</Info></Cell>
+                        <Cell><Info>{this.state.settings.maxSuggestSeconds}</Info></Cell>
                     </tr>
                     <tr>
                         <Cell><Label>Voting Time:</Label></Cell>
-                        <Cell><Info>{this.props.game.gameSettings.maxVoteSeconds}</Info></Cell>
+                        <Cell><Info>{this.state.settings.maxVoteSeconds}</Info></Cell>
                     </tr>
                     <tr>
                         <Cell><Label>Results Time:</Label></Cell>
-                        <Cell><Info>{this.props.game.gameSettings.maxAftermathSeconds}</Info></Cell>
+                        <Cell><Info>{this.state.settings.maxAftermathSeconds}</Info></Cell>
                     </tr>
                     <tr>
                         <Cell><Label>Waiting until:</Label></Cell>
@@ -227,19 +204,17 @@ class Lobby extends React.Component {
     }
 
     getWaitingIssue() {
-        let game = this.props.game;
-        if (game.players.length < 3) return `more players join`;
-        if (game.memesFound < game.gameSettings.totalRounds) return `r/${game.gameSettings.subreddit} gets richer`;
+        if (this.state.game.players.length < 3) return `more players join`;
+        if (this.state.game.memesFound < this.state.settings.totalRounds) return `r/${this.state.settings.subreddit} gets richer`;
         else return 'all players are ready';
     }
 
     gameSettingsForm() {
-
         // const general = { label: 'General', key: 'general', type: 'Group' };
 
         const subreddit = {
             label: 'Subreddit', key: 'subreddit', type: 'Input',
-            props: {defaultValue: this.props.game.gameSettings['subreddit'], disabled: !this.isGameMaster()}
+            props: {defaultValue: this.state.settings['subreddit'], disabled: !this.isGameMaster()}
         };
 
         const memeType = {
@@ -249,7 +224,7 @@ class Lobby extends React.Component {
                 {name: 'New', value: 'NEW'},
                 {name: 'Rising', value: 'RISING'},
                 {name: 'Top', value: 'TOP'}],
-            props: {defaultValue: this.props.game.gameSettings['memeType'], disabled: !this.isGameMaster()}
+            props: {defaultValue: this.state.settings['memeType'], disabled: !this.isGameMaster()}
         };
 
         const totalRounds = {
@@ -294,4 +269,4 @@ class Lobby extends React.Component {
 
 }
 
-export default withRouter(Lobby);
+export default withRouter(GameLobby);

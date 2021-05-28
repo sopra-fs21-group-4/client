@@ -1,6 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
-import {api, handleError} from '../../helpers/api';
 import {Spinner} from '../../views/design/Spinner';
 import {Button, SmallRoundImageButton} from '../../views/design/Interaction';
 import {withRouter} from 'react-router-dom';
@@ -11,36 +9,29 @@ import {
     BackgroundDivLighter,
     VerticalBox
 } from "../../views/design/Containers";
-import User from "../shared/models/User";
 import createGameIcon from "../../image/icons/game-add.png";
 
 
 class GameList extends React.Component {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.state = {
-            games: null,
+            lobbies: null,
         };
     }
 
+    componentDidMount() {
+        this.props.updateLoop.addClient(this);
+    }
+
+    componentWillUnmount() {
+        this.props.updateLoop.removeClient(this);
+    }
+
     async update() {
-        try {
-
-            // request setup
-            const url = `/games`;
-            const config = {headers: User.getUserAuthentication()};
-            // send request
-            const response = await api.get(url, config);
-            // console.log(response);
-            this.setState({games: response.data});
-
-        } catch (error) {
-            // TODO memes?
-            if (error.response && error.response.data.message == 'invalid userId') {
-                User.removeFromSessionStorage();
-                this.props.history.push('/');
-            } else alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
-        }
+        this.setState({
+            lobbies: JSON.parse(sessionStorage.getItem('lobbies'))
+        })
     }
 
     async enterGame(game) {
@@ -83,15 +74,15 @@ class GameList extends React.Component {
 
                     <BackgroundDivLighter style={{width: '600px'}}>
                         <Label>
-                            {this.state.games ? (this.state.games.length ? 'Join a Game:' : 'No open games 😥') : ('loading..')}
+                            {this.state.lobbies ? (this.state.lobbies.length ? 'Join a Game:' : 'No open games 😥') : ('loading..')}
                         </Label>
 
                         <VerticalBox>
-                            {!this.state.games ? (
+                            {!this.state.lobbies ? (
                                 <Spinner/>
                             ) : (
-                                this.state.games.map(game => {
-                                    return <GameInfoItem game={game}/>;
+                                this.state.lobbies.map(gameId => {
+                                    return <GameInfoItem gameId={gameId} updateLoop={this.props.updateLoop}/>;
                                 })
                             )}
                         </VerticalBox>

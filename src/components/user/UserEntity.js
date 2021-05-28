@@ -8,7 +8,7 @@ import styled from "styled-components";
 import Modal from "../login/Modal";
 import User from "../shared/models/User";
 import {BackgroundDiv, BackgroundDivLighter} from "../../views/design/Containers";
-import {Info, Label, Title} from "../../views/design/Text";
+import {Error, Info, Label, Title} from "../../views/design/Text";
 import Data from "../shared/models/Data";
 
 const Table = styled.table`
@@ -16,17 +16,27 @@ const Table = styled.table`
     border-right: 30px;
 `;
 
-class UserProfile extends React.Component {
-    constructor() {
-        super();
+class UserEntity extends React.Component {
+    constructor(params) {
+        super(params);
         this.state = {
             user: null,
             newPassword: null,
             newUsername: null,
             newEmail: null,
-            userId: null
-
         };
+    }
+
+    componentDidMount() {
+        this.props.updateLoop.addClient(this);
+    }
+
+    componentWillUnmount() {
+        this.props.updateLoop.removeClient(this);
+    }
+
+    update() {
+        console.log('test3')
     }
 
     showModal = () => {
@@ -61,26 +71,19 @@ class UserProfile extends React.Component {
             const response = await api.put(url, requestBody, config);
             console.log(response);
             new User(response.data).putToSessionStorage();
-            this.props.history.push(`/users/${User.getAttribute('username')}`);
+            this.props.history.push(`/e/${User.getAttribute('userId')}`);
         } catch (error) {
             alert(`Something went wrong: \n${handleError(error)}`);
-            this.props.history.push(`/users/${User.getAttribute('username')}`);
+            this.props.history.push(`/e/${User.getAttribute('userId')}`);
         }
 
         this.hideModal();
         this.setState({user: await User.fetchSingle('username', this.props.match.params.username)});
     }
 
-    async componentDidMount() {
-        while (!this.state.user) {
-            await Data.observeEntity('USER', this.props.match.params.userId)
-            await new Promise(resolve => setTimeout(resolve, 500));
-            this.setState({user: Data.get(this.props.match.params.userId)});
-        }
-    }
-
     render() {
-        if (!this.state.user) return <Spinner/>
+        if (!this.props.userId) return <div><Error>no data!</Error></div>
+        let user = Data.get(this.props.userId)
 
         return (
             <BaseContainer>
@@ -88,7 +91,7 @@ class UserProfile extends React.Component {
                     <BackgroundDiv>
                         <div>
 
-                            <Title>{this.state.user.username}'s profile</Title>
+                            <Title>{user.username}'s profile</Title>
 
                             <div>
                                 <BackgroundDivLighter>
@@ -96,29 +99,29 @@ class UserProfile extends React.Component {
                                         <Table width="100%">
                                             <tr>
                                                 <th><Label>Id: </Label></th>
-                                                <td><Info>{this.state.user.userId}</Info></td>
+                                                <td><Info>{user.userId}</Info></td>
                                             </tr>
                                             <tr>
                                                 <th><Label>Name: </Label></th>
-                                                <td><Info>{this.state.user.username}</Info></td>
+                                                <td><Info>{user.username}</Info></td>
                                             </tr>
                                             <tr>
                                                 <th><Label>Email: </Label></th>
-                                                <td><Info>{this.state.user.email}</Info></td>
+                                                <td><Info>{user.email}</Info></td>
                                             </tr>
                                             <tr>
                                                 <th><Label>Status: </Label></th>
-                                                <td><Info>{this.state.user.status}</Info></td>
+                                                <td><Info>{user.status}</Info></td>
                                             </tr>
                                             <tr>
                                                 <th><Label>Current Lobby: </Label></th>
-                                                <td><Info>{this.state.user.currentGameId}</Info></td>
+                                                <td><Info>{user.currentGameId}</Info></td>
                                             </tr>
                                         </Table>
                                     }
                                     <div style={{display: 'flex'}}
                                     >{
-                                        (User.getAttribute("userId") == this.state.user.userId) ? (
+                                        (User.getAttribute("userId") == user.userId) ? (
 
                                             <Button
                                                 margin="auto"
@@ -217,4 +220,4 @@ class UserProfile extends React.Component {
     }
 }
 
-export default withRouter(UserProfile);
+export default withRouter(UserEntity);

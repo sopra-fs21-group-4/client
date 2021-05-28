@@ -3,17 +3,38 @@ import { HorizontalBox, VerticalBox } from "../../views/design/Containers";
 import { Info } from "../../views/design/Text";
 import { LinkButton } from "../../views/design/Interaction";
 import { withRouter } from "react-router-dom";
+import Data from "../shared/models/Data";
+import {Spinner} from "../../views/design/Spinner";
 
 class GameInfoItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             collapsed: true,
+            game: null,
+            settings: null,
         };
     }
 
+    componentDidMount() {
+        this.props.updateLoop.addClient(this);
+    }
+
+    componentWillUnmount() {
+        this.props.updateLoop.removeClient(this);
+    }
+
+    async update() {
+        let game = await Data.get(this.props.gameId);
+        let settings = await Data.get(game.gameSettingsId)
+        this.setState({
+            game: game,
+            settings: settings,
+        })
+    }
+
     render () {
-        let game = this.props.game;
+        if (!this.state.game || !this.state.settings) return <Spinner/>
         return (
             <VerticalBox>
                 <HorizontalBox style={{
@@ -21,17 +42,17 @@ class GameInfoItem extends React.Component {
                     alignItems: 'center',
                     minWidth: '400px',
                 }}>
-                    <div style={{width:'30%'}}><LinkButton onClick={() => this.props.history.push(`/game/${game.gameId}`)}>
-                        {`${game['name']} :`}
+                    <div style={{width:'30%'}}><LinkButton onClick={() => this.props.history.push(`/game/${this.props.gameId}`)}>
+                        {`${this.state.settings['name']} :`}
                     </LinkButton></div>
                     <div style={{width:'20%'}}><Info>
-                        {`${game['gameState']}`}
+                        {`${this.state.game['gameState']}`}
                     </Info></div>
                     <div style={{width:'25%'}}><Info>
-                        {`r/${game['subreddit']}`}
+                        {`r/${this.state.settings['subreddit']}`}
                     </Info></div>
                     <div style={{width:'10%'}}><Info>
-                        {`${game['playerCount']}/${game['maxPlayers']}`}
+                        {`${this.state.game['players'].length}/${this.state.settings['maxPlayers']}`}
                     </Info></div>
                     <div style={{width:'15%'}}>
                         <LinkButton onClick={() => this.setState({collapsed: !this.state.collapsed})}>
@@ -49,13 +70,13 @@ class GameInfoItem extends React.Component {
                         {/*    {`host: ${game['gameMaster']}`}*/}
                         {/*</Info></div>*/}
                         <div style={{width:'33%'}}><Info>
-                            {`rounds: ${game['totalRounds']}`}
+                            {`rounds: ${this.state.settings['totalRounds']}`}
                         </Info></div>
                         <div style={{width:'33%'}}><Info>
-                            {`type: ${game['memeType']}`}
+                            {`type: ${this.state.settings['memeType']}`}
                         </Info></div>
                         <div style={{width:'33%'}}><Info>
-                            {`timers: ${game['maxSuggestSeconds']} / ${game['maxVoteSeconds']} / ${game['maxAftermathSeconds']}`}
+                            {`timers: ${this.state.settings['maxSuggestSeconds']} / ${this.state.settings['maxVoteSeconds']} / ${this.state.settings['maxAftermathSeconds']}`}
                         </Info></div>
                     </HorizontalBox>
                 }

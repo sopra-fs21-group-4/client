@@ -13,49 +13,53 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            updateLoop: new UpdateLoop(1000),
+            appUpdater: new UpdateLoop(this, 100),
             eventSource: null,
+            initializingSse: false,
+            lastConnectionTest: 0
         };
     }
 
     componentDidMount() {
-        // this.subscribeSSE();
+        this.state.appUpdater.addClient(this);
+        this.state.appUpdater.start();
+    }
 
-        // TODO delete later
-        this.state.updateLoop.addClient(this);
-        this.state.updateLoop.start();
+    componentWillUnmount() {
+        this.state.appUpdater.removeClient(this);
     }
 
     update() {
-        this.subscribeSSE();
+        this.refreshSSE();
     }
 
-     subscribeSSE() {
-
+    refreshSSE() {
         if (!User.isPresentInSessionStorage()) return;
-        if (this.state.eventSource) return;
+        if (this.state.eventSource) {
+            if (this.state.eventSource.readyState < 2) return;
+            if (Date.now() - this.state.lastConnectionTest < 4000) return;
+        }
+        if (this.state.initializingSse) return;
+        this.setState({
+            initializingSse: true,
+        })
+        if (this.state.eventSource) this.state.eventSource.close();
 
-         // let eventSource = response.data;
-         let eventSource = new EventSource(`http://localhost:8080/createEmitter/${User.getAttribute('userId')}`);
-
-         this.setState({
+        // let eventSource = response.data;
+        let eventSource = new EventSource(`http://localhost:8080/createEmitter/${User.getAttribute('userId')}`);
+        this.setState({
             eventSource: eventSource,
-         })
+            initializingSse: false,
+        })
 
         eventSource.onopen = (event) => {
-            console.log("sse connection opened")
+            // console.log("sse connection opened")
         }
 
-        // eventSource.onmessage = (event) => {
-        //     console.log(event);
-        //
-        //     if (event.data.activationToken) console.log("test");
-        //
-        //
-        //     const data = JSON.parse(localStorage.getItem('data'));
-        //     let updated = {...data, ...event.data}
-        //     localStorage.setItem('data', JSON.stringify(updated));
-        // }
+        eventSource.onerror = (event) => {
+            // console.log("sse connection closed")
+            this.setState({eventSource: null});
+        }
 
         eventSource.addEventListener("ActivationRequest", (event) => {
             const emitterToken = event.data;
@@ -70,20 +74,18 @@ class App extends Component {
             }
         });
 
-         eventSource.addEventListener("Update", (event) => {
-             const updates = JSON.parse(event.data);
-             const data = JSON.parse(localStorage.getItem('data'));
-             localStorage.setItem('data', JSON.stringify({...data, ...updates}));
-         })
+        eventSource.addEventListener("ConnectionTest", (event) => {
+            this.setState({
+                lastConnectionTest: Date.now()
+            })
+        })
 
-        eventSource.onerror = (event) => {
-            eventSource.close();
-            console.log("sse connection closed")
-            this.setState({eventSource: null});
-            this.subscribeSSE();
-        }
-
-        // console.log(eventSource);
+        eventSource.addEventListener("Update", (event) => {
+            const data = JSON.parse(event.data);
+            for (let key in data['observedEntities']) sessionStorage.setItem(key, JSON.stringify(data['observedEntities'][key]))
+            if (data['lobbies']) sessionStorage.setItem('lobbies', JSON.stringify(data['lobbies']));
+            console.log(event);
+        })
 
     }
 
@@ -100,7 +102,7 @@ class App extends Component {
                     // width: '100vw',
 
                 }}>
-                <AppRouter updateLoop={this.state.updateLoop}/>
+                <AppRouter updateLoop={this.state.appUpdater}/>
             </div>
         );
     }

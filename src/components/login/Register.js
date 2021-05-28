@@ -4,7 +4,6 @@ import User from '../shared/models/User';
 import {withRouter} from 'react-router-dom';
 import title from '../../views/design/title.module.css'
 import fuu from '../../image/memes/fuu.jpg'
-import doge from "../../image/memes/doge.jpg";
 import Modal from "./Modal";
 
 // Styling Imports:

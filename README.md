@@ -59,19 +59,19 @@ After the login the user is prompted with the dashboard. Where the user sees the
 ![login](https://marock.li/cloud-storage/dashboard.png)
 
 ## Lobby
-When in game and waiting for players the Game master sees the below screen. Here he can edit the settings, chat with the other players, set their own status to ready or not ready and ban Players that he doesnt want in his game. 
+When in game and waiting for players the Entity master sees the below screen. Here he can edit the settings, chat with the other players, set their own status to ready or not ready and ban Players that he doesnt want in his game. 
 
 The game then can only start, when at least 3 Players and at most the maximum amount of Players are in the Lobby. If this condidition is met every player needs to be ready then the game will automatically start. 
 ![login](https://marock.li/cloud-storage/lobby.png)
 
-## In Game
+## In Entity
 During the game there are three different phases to the game.
 1. The suggestion phase where every Players is prompted with the same meme. They then have a certain amount of time to think of a title and enter/submit it. If a player does not submit a title they will get points deducted for not entering a title.
 ![login](https://marock.li/cloud-storage/submitting.png)
 2. After the time has run out all players can then vote for the titles that were submited. A player can never vote for their own title. If a player does not vote or can not vote for a other title the player will also get point deducted.
 ![login](https://marock.li/cloud-storage/voting.png)
 3. When the time has run out the points given will be calculated and displayed. 
-After the time has run out the next round will start or if the last round just happened the Game Summurary will be displayed. 
+After the time has run out the next round will start or if the last round just happened the Entity Summurary will be displayed. 
 ![login](https://marock.li/cloud-storage/results.png)
 
 

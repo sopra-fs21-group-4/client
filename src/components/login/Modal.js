@@ -1,8 +1,6 @@
 import '../../../src/views/design/Modal.css';
 import React from "react";
 import {withRouter} from "react-router-dom";
-import styled from "styled-components";
-import {Button} from "../../views/design/Interaction";
 
 
 

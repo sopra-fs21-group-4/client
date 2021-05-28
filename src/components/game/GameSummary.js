@@ -8,7 +8,6 @@ import User from "../shared/models/User";
 import GameRoundSummary from "../game/GameRoundSummary";
 import styled from "styled-components";
 import {Button} from "../../views/design/Interaction";
-import {BaseContainer} from "../../helpers/layout";
 
 
 const ButtonLogin = styled.button`
@@ -46,18 +45,20 @@ class GameSummary extends React.Component {
     }
 
     async componentDidMount() {
-        try {
-            // request setup
-            const config = {headers: User.getUserAuthentication()};
+        while(!this.state.game) {
+            try {
+                // request setup
+                const config = {headers: User.getUserAuthentication()};
 
-            const url = `/archive/games/${this.props.match.params.gameId}`;
-            const gameResponse = await api.get(url, config);
-            console.log(gameResponse);
-            this.setState({
-                game: gameResponse.data,
-            });
-        } catch (error) {
-            alert(`Something went wrong while fetching games info: \n${handleError(error)}`);
+                const url = `/archive/games/${this.props.match.params.gameId}`;
+                const gameResponse = await api.get(url, config);
+                console.log(gameResponse);
+                this.setState({
+                    game: gameResponse.data,
+                });
+            } catch (error) {
+                alert(`Something went wrong while fetching game info: \n${handleError(error)}`);
+            }
         }
     }
 

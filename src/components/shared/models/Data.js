@@ -6,32 +6,38 @@ import User from "./User";
  */
 class Data {
 
-  static get(entityId) {
-    return JSON.parse(localStorage.getItem('data'))['observedEntities'][entityId];
+  static async get(entityId) {
+    let entity = JSON.parse(sessionStorage.getItem(entityId));
+    if (entity) return entity;
+    try {
+      const url = `/entity/${entityId}`;
+      const config = {headers: User.getUserAuthentication()};
+      const response = await api.get(url, config);
+      return response.data
+    } catch (error) {
+      alert(`Something went wrong trying to fetch entity #${entityId}: \n${handleError(error)}`);
+    }
+
   }
 
   /**
    * sends a subscribe request to the backend
-   * @param resourceId id of the resource to subscribe
+   * @param entityId id of the resource to subscribe
    */
-  static async observeEntity(entityType, entityId) {
+  static async observeEntity(entityId) {
     try {
       const url = '/observeEntity';
-      const config = {headers: {
-          entityId: entityId,
-          entityType: entityType,
-          ...User.getUserAuthentication()
-        }};
-      await api.put(url, "", config);
-      console.log(`observing ${entityType}#${entityId}`);
+      const config = {headers: User.getUserAuthentication()};
+      await api.put(url, entityId, config);
+      console.log(`observing entity #${entityId}`);
     } catch (error) {
-      alert(`Something went wrong trying to observe ${entityType}#${entityId}: \n${handleError(error)}`);
+      alert(`Something went wrong trying to observe entity #${entityId}: \n${handleError(error)}`);
     }
   }
 
   /**
    * sends an unsubscribe request to the backend
-   * @param resourceId id of the resource to subscribe
+   * @param entityId id of the resource to subscribe
    */
   static async disregardEntity(entityId) {
     try {
@@ -41,9 +47,9 @@ class Data {
           ...User.getUserAuthentication()
         }};
       await api.put(url, "", config);
-      console.log(`no longer observing entity#${entityId}`);
+      console.log(`no longer observing entity #${entityId}`);
     } catch (error) {
-      alert(`Something went wrong trying to disregard entity#${entityId}: \n${handleError(error)}`);
+      alert(`Something went wrong trying to disregard entity #${entityId}: \n${handleError(error)}`);
     }
   }
 

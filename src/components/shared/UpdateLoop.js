@@ -14,7 +14,7 @@ class UpdateLoop {
     async start() {
         if (this.state.running) return;
         this.state.running = true;
-        while (this.state.running) {  // TODO do we need to tell the compiler that running is volatile?
+        while (this.state.running) {
             this.runUpdate();
             await new Promise(resolve => setTimeout(resolve, this.state.interval));
         }
@@ -31,7 +31,7 @@ class UpdateLoop {
      * runs update() on all the clients
      */
     runUpdate() {
-        this.state.clients.forEach((c) => {c.update()})
+        this.state.clients.forEach((c) => {if (c.update) c.update()})
     }
 
     /**

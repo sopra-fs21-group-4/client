@@ -1,6 +1,5 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
-import { redditApi, handleRedditError } from '../../helpers/redditApi';
 import { withRouter } from 'react-router-dom';
 import User from "../shared/models/User";
 import Form from "../general/Form";
@@ -49,7 +48,7 @@ class Lobby extends React.Component {
             const response = await api.post(url, requestBody, config);
             console.log(response);
             
-            this.props.history.push(`/game/${response.data.gameId}`);
+            this.props.history.push(`/e/${response.data.id}`);
         } catch (error) {
             alert(`Something went wrong creating the game: \n${handleError(error)}`);
         }
