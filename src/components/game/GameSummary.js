@@ -1,5 +1,4 @@
 import React from 'react';
-import {api, handleError} from '../../helpers/api';
 import {Spinner} from '../../views/design/Spinner';
 import {withRouter} from 'react-router-dom';
 import {
@@ -10,9 +9,7 @@ import {
     VerticalScroller
 } from "../../views/design/Containers";
 import {Info, Label, Title} from "../../views/design/Text";
-import User from "../shared/data/User";
 import GameRoundSummary from "../game/GameRoundSummary";
-import styled from "styled-components";
 import {Button} from "../../views/design/Interaction";
 import Data from "../shared/data/Data";
 
