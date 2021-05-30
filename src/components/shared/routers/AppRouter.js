@@ -4,7 +4,6 @@ import {UserGuard} from "../routeProtectors/UserGuard";
 import {GuestGuard} from "../routeProtectors/GuestGuard";
 import Login from "../../login/Login";
 import Register from "../../login/Register";
-import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
 import PageBar from "../../navbar/NavigationBar";
 import UserProfile from "../../user/UserProfile";
@@ -110,10 +109,10 @@ class AppRouter extends React.Component {
                         />
                         <Route
                             exact
-                            path={"/chat/:chatId"}
+                            path={"/chat/:entityId"}
                             render={() => (
                                 <UserGuard>
-                                    <Chat updateLoop={this.props.updateLoop}/>
+                                    <Entity updateLoop={this.props.updateLoop}/>
                                 </UserGuard>
                             )}
                         />
