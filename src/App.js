@@ -5,6 +5,7 @@ import wallpaper from "./image/wallpaper/meme-collage-colorful.jpg"
 import User from "./components/shared/data/User";
 import {api, handleError} from "./helpers/api";
 import Data from "./components/shared/data/Data";
+import {getDomain} from "./helpers/getDomain";
 
 /**
  * Happy coding!
@@ -44,7 +45,7 @@ class App extends Component {
     initSSE() {
         if (!User.isPresentInSessionStorage() || this.state.eventSource) return;
 
-        let eventSource = new EventSource(`http://localhost:8080/createEmitter/${User.getAttribute('userId')}`);
+        let eventSource = new EventSource(`${getDomain()}/createEmitter/${User.getAttribute('userId')}`);
         this.setState({
             eventSource: eventSource,
         })
