@@ -94,7 +94,7 @@ class GameJoin extends React.Component {
       case 410: return 'This game is already running.'
       case 422: return 'This lobby is full.'
       case 423: return 'You have been banned from this lobby.'
-      default:  return 'You have been banned from this lobby.'
+      default:  return 'You are not able to join the game or have been banned.'
     }
   }
 

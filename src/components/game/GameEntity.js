@@ -30,6 +30,7 @@ class GameEntity extends React.Component {
     }
 
     async update() {
+        // console.log("test")
         let game = await Data.get(this.props.gameId)
         let refresh = (this.state.lastRefresh + 3000 < Date.now())
         if (refresh) Data.remove(this.props.gameId)
@@ -37,7 +38,6 @@ class GameEntity extends React.Component {
             game: game,
             lastRefresh: refresh? Date.now() : this.state.lastRefresh,
         })
-
     }
 
     render() {

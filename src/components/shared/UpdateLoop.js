@@ -1,7 +1,7 @@
 class UpdateLoop {
     constructor(interval) {
         this.state = {
-            interval: (interval? interval : 100),
+            interval: 100, // (interval? interval : 100),
             clients: [],
             running: false,
         }
