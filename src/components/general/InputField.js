@@ -23,6 +23,7 @@ class InputField extends React.Component {
         this.state = {
             submitAction: this.props.submitAction? this.props.submitAction : () => {},
             textFilters: this.props.textFilters? this.props.textFilters : [],
+            input: null,
         };
     }
 
@@ -40,15 +41,21 @@ class InputField extends React.Component {
                   onChange={e => {
                       for (let filter of this.state.textFilters)
                       e.target.value = filter(e.target.value);
+                      this.setState({input: e.target.value})
                   }}
                   onKeyPress={e => {
-                      if (e.key == 'Enter') this.state.submitAction();
+                      if (e.key == 'Enter') {
+                          this.state.submitAction()
+                          this.setState({input: null})
+                      }
                   }}
               />
               <Button
+                  disabled={!this.state.input}
                   width="80px"
                   onClick={() => {
                       this.state.submitAction();
+                      this.setState({input: null})
                   }}
               >
                   {this.props.submitButtonText? this.props.submitButtonText : 'OK'}

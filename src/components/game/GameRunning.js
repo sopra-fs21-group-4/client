@@ -160,7 +160,9 @@ class GameRunning extends React.Component {
             <Label>{currentSuggestion? "Suggestion: " + currentSuggestion : 'What title would you suggest?'}</Label>
             <div>
                 <InputField
+
                     id={`suggestionInput`}
+                    disabled={!'suggestionInput'}
                     submitAction={() => this.suggest()}
                     // submitButtonText='Suggest' // too long
                     textFilters={[parseEmoji]}
