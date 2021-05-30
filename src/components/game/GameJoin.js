@@ -3,10 +3,11 @@ import { api, handleError } from '../../helpers/api';
 import {Redirect, withRouter} from 'react-router-dom';
 import {BackgroundDiv, BackgroundDivLighter, HorizontalBox, VerticalBox} from "../../views/design/Containers";
 import { Label, Title } from "../../views/design/Text";
-import {Button, InputField} from "../../views/design/Interaction";
+import {Button} from "../../views/design/Interaction";
 import User from "../shared/data/User";
 import {Spinner} from "../../views/design/Spinner";
 import Data from "../shared/data/Data";
+import InputField from "../general/InputField";
 
 class GameJoin extends React.Component {
   constructor() {

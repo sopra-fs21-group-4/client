@@ -20,9 +20,10 @@ const Input = styled.input`
 class InputField extends React.Component {
     constructor(props) {
         super(props);
-        this.setState({
-            onSubmit: props.onSubmit
-        });
+        this.state = {
+            submitAction: this.props.submitAction? this.props.submitAction : () => {},
+            textFilters: this.props.textFilters? this.props.textFilters : [],
+        };
     }
 
   render() {
@@ -37,17 +38,17 @@ class InputField extends React.Component {
                   placeholder={this.props.placeholder? this.props.placeholder : " ... "}
                   maxLength="255"     // max length for default database String (+ 1 for EOS \0)
                   onChange={e => {
-                      for (let filter of this.props.textFilters)
+                      for (let filter of this.state.textFilters)
                       e.target.value = filter(e.target.value);
                   }}
                   onKeyPress={e => {
-                      if (e.key == 'Enter') this.props.submitAction();
+                      if (e.key == 'Enter') this.state.submitAction();
                   }}
               />
               <Button
                   width="80px"
                   onClick={() => {
-                      this.props.submitAction();
+                      this.state.submitAction();
                   }}
               >
                   {this.props.submitButtonText? this.props.submitButtonText : 'OK'}
