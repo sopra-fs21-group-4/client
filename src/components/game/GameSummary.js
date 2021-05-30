@@ -89,7 +89,7 @@ class GameSummary extends React.Component {
                                     <td >
                                         <Info> {index+1}.</Info> </td> <td>
                                     <Label>   {player.username}</Label></td>
-                                    <td><Info>{this.state.game.scores[player.userId]}</Info></td>
+                                    <td><Info>{this.state.game.scores[player.id]}</Info></td>
                                 </tr>
                             )})}
 

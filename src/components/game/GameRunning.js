@@ -194,12 +194,12 @@ class GameRunning extends React.Component {
         return <VerticalList>
             <Label>Scores:</Label>
             {players.map(player => {
-                let suggestion = this.state.round.suggestions[player.userId];
-                let score = this.state.round.scores[player.userId];
+                let suggestion = this.state.round.suggestions[player.id];
+                let score = this.state.round.scores[player.id];
                 return <div style={{
                     paddingBottom:'15px'
                 }}>
-                    <Label>{`${suggestion? suggestion : 'git gud'} (${player.username}): ${score? score : '0'}`}</Label>
+                    <Label>{`${suggestion? suggestion : 'no suggestion'} (${player.username}): ${score? score : '0'}`}</Label>
                 </div>
             })}
         </VerticalList>

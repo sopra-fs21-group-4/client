@@ -98,7 +98,7 @@ class NavigationBar extends React.Component {
         try {
 
             // request setup
-            const url = `/games/${this.state.GameId}/leave`;
+            const url = `/games/${this.state.gameId}/leave`;
             const requestBody = "";
             const config = {headers: User.getUserAuthentication()};
 
