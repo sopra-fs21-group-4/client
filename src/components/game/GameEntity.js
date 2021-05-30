@@ -2,15 +2,15 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import {BackgroundDiv} from "../../views/design/Containers";
 import {Spinner} from "../../views/design/Spinner";
-import GameRound from "./GameRound";
 import ExpandableVBox from "../../views/design/ExpandableVBox";
 import PlayerList from "./PlayerList";
 import GameSummary from "../game/GameSummary";
 import ChatEntity from "../chat/ChatEntity";
-import LobbyState from "./GameLobby";
-import Data from "../shared/models/Data";
+import GameLobby from "./GameLobby";
+import Data from "../shared/data/Data";
 import GameRunning from "./GameRunning";
-import Join from "./Join";
+import GameJoin from "./GameJoin";
+import User from "../shared/data/User";
 
 class GameEntity extends React.Component {
     constructor(props) {
@@ -36,7 +36,9 @@ class GameEntity extends React.Component {
 
     render() {
         if (!this.state.game) return <Spinner/>
-        if (!this.state.game.gameChatId) return <Join gameId={this.props.gameId}/>
+        if (!this.state.game.players.includes(Number(User.getAttribute('userId')))) {
+            return <GameJoin updateLoop={this.props.updateLoop} gameId={this.props.gameId}/>
+        }
         return (
             <div style={{width:'calc(100% - 170px)', display: "flex", justifyContent: 'center'}}>
                 <BackgroundDiv
@@ -88,12 +90,11 @@ class GameEntity extends React.Component {
 
     currentGameStateUI() {
         switch (this.state.game.gameState) {
-            case 'LOBBY':     return (<LobbyState updateLoop={this.props.updateLoop} gameId={this.props.gameId} />);
+            case 'LOBBY':     return (<GameLobby updateLoop={this.props.updateLoop} gameId={this.props.gameId} />);
             case 'STARTING':  return <div><Spinner/></div>;  // TODO loading screen
             case 'PAUSED':
             case 'RUNNING':   return <GameRunning updateLoop={this.props.updateLoop} gameId={this.props.gameId} />;
-            case 'AFTERMATH': return <GameSummary updateLoop={this.props.updateLoop} gameId={this.props.gameId} />;
-            default: throw "unknown game state!";
+            default: return <GameSummary updateLoop={this.props.updateLoop} gameSummaryId={Number(this.props.gameId) +1} />;
         }
     }
 

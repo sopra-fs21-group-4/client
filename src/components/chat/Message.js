@@ -1,7 +1,7 @@
 import React from 'react';
 import {Spinner} from '../../views/design/Spinner';
 import {withRouter} from 'react-router-dom';
-import Data from "../shared/models/Data";
+import Data from "../shared/data/Data";
 import styled from "styled-components";
 
 

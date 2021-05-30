@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import User from "../models/User";
+import User from "../data/User";
 
 /**
  * routeProtectors interfaces can tell the router whether or not it should allow navigation to a requested route.

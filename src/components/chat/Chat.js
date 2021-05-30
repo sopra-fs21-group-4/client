@@ -5,7 +5,7 @@ import {withRouter} from 'react-router-dom';
 import Message from "./Message";
 import parseEmoji from "../../helpers/Emoji";
 import {VerticalBox, VerticalScroller} from "../../views/design/Containers";
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 import InputField from "../general/InputField";
 
 

@@ -4,7 +4,7 @@ import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import { Button } from '../../views/design/Interaction';
 import { withRouter } from 'react-router-dom';
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 
 const Container = styled(BaseContainer)`
   color: white;

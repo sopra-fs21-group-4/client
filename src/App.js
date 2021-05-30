@@ -2,9 +2,9 @@ import React, {Component} from "react";
 import AppRouter from "./components/shared/routers/AppRouter";
 import UpdateLoop from "./components/shared/UpdateLoop";
 import wallpaper from "./image/wallpaper/meme-collage-colorful.jpg"
-import User from "./components/shared/models/User";
+import User from "./components/shared/data/User";
 import {api, handleError} from "./helpers/api";
-import Data from "./components/shared/models/Data";
+import Data from "./components/shared/data/Data";
 
 /**
  * Happy coding!

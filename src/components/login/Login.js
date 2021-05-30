@@ -1,6 +1,6 @@
 import React from 'react';
 import {api, handleError} from '../../helpers/api';
-import User from '../shared/models/User';
+import User from '../shared/data/User';
 import {withRouter} from 'react-router-dom';
 import title from '../../views/design/title.module.css'
 import doge from "../../image/memes/doge.jpg"

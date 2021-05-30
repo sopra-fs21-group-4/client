@@ -8,16 +8,14 @@ import Chat from "../../chat/Chat";
 import ChatCreator from "../../chat/ChatCreator";
 import PageBar from "../../navbar/NavigationBar";
 import UserProfile from "../../user/UserProfile";
-import Lobby from "../../lobby/LobbyOld";
-import Game from "../../game/Game";
-import GameSetup from "../../lobby/GameSetup";
-import GameList from "../../lobby/GameList";
+import GameSetup from "../../game/GameSetup";
+import GameList from "../../game/GameList";
 import FriendList from "../../friends/FriendList";
-import User from "../models/User";
-import UserProfile2 from "../../user/UserEntity";
 import Entity from "../../general/Entity";
-import GameArchive from "../../lobby/GameArchive";
+import GameArchive from "../../game/GameArchive";
+import GameJoin from "../../game/GameJoin";
 import UserEntity from "../../user/UserEntity";
+import GameSummary from "../../game/GameSummary";
 
 
 /**
@@ -52,7 +50,16 @@ class AppRouter extends React.Component {
                             path={"/archive"}
                             render={() =>
                                 <UserGuard>
-                                    <GameArchive />
+                                    <GameArchive updateLoop={this.props.updateLoop}/>
+                                </UserGuard>
+                            }
+                        />
+                        <Route
+                            exact
+                            path={"/archive/:gameSummaryId"}
+                            render={() =>
+                                <UserGuard>
+                                    <GameSummary updateLoop={this.props.updateLoop}/>
                                 </UserGuard>
                             }
                         />
@@ -76,10 +83,10 @@ class AppRouter extends React.Component {
                         />
                         <Route
                             exact
-                            path={"/lobby/:lobbyId"}
+                            path={"/game"}
                             render={() =>
                                 <UserGuard>
-                                    <Lobby updateLoop={this.props.updateLoop}/>
+                                    <GameJoin updateLoop={this.props.updateLoop}/>
                                 </UserGuard>
                             }
                         />
@@ -159,25 +166,13 @@ class AppRouter extends React.Component {
                             )}
                         />
 
-
-                        <Route
-                            exact
-                            path="/leave-game"
-                            render={() => (
-                                <GuestGuard>
-                                    <Register updateLoop={this.props.updateLoop}/>
-                                </GuestGuard>
-                            )}
-                        />
-
                         <Route path="/logout" exact render={() => {
                             sessionStorage.clear();
                             return <Redirect to={"/"}/>
                         }}/>
 
                         <Route path="/user-edit" exact render={() => {
-
-                            return <UserProfile/>
+                            return <UserEntity updateLoop={this.props.updateLoop}/>
                         }}/>
 
 

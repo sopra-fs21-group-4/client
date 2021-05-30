@@ -7,13 +7,37 @@ import {
     VerticalScroller
 } from "../../views/design/Containers";
 import {Label} from "../../views/design/Text";
+import Data from "../shared/data/Data";
 
 class GameRoundSummary extends React.Component {
+    constructor(params) {
+        super(params);
+        this.state = {
+            round: null,
+            players: null,
+        };
+    }
+
+    componentDidMount() {
+        this.props.updateLoop.addClient(this);
+    }
+
+    componentWillUnmount() {
+        this.props.updateLoop.removeClient(this);
+    }
+
+    async update() {
+        let round = await Data.get(this.props.gameRoundSummaryId);
+        this.setState({
+            round: round,
+            players: await Data.getList(Object.keys(round.scores)),
+        })
+
+    }
+
 
     render() {
-        if (!this.props.round) {
-            return <Spinner/>
-        }
+        if (!this.state.round) return <Spinner/>
         return <div
             style={{
                 display: "flex",
@@ -29,7 +53,7 @@ class GameRoundSummary extends React.Component {
                     textAlign: 'left',
                     width: '100px',
                 }}>
-                    {this.props.round.title}
+                    {this.state.round.title}
                 </Label>
             </div>
             <div style={{
@@ -42,7 +66,7 @@ class GameRoundSummary extends React.Component {
                 }}>
                     <img
                         height='300px'
-                        src={this.props.round.memeURL}/>
+                        src={this.state.round.memeURL}/>
                 </div>
                 <div style={{
                     flexGrow: '1', display: "flex",
@@ -57,15 +81,14 @@ class GameRoundSummary extends React.Component {
     }
 
     suggestionList() {
-        let round = this.props.round;
-        let players = Object.keys(round.suggestions).sort((a, b) => {
-            return round.scores[b] - round.scores[a]
-        });
         return <VerticalList>
             <Label>Scores:</Label>
-            {players.map(player => {
+            {this.state.players.map(player => {
+                let suggestion = this.state.round.suggestions[player.id];
+                let username = player.username
+                let score = this.state.round.scores[player.id]
                 return <div>
-                    <Label>{`${round.suggestions[player]} (${player}): ${round.scores[player]}`}</Label>
+                    <Label>{`${suggestion? suggestion : 'git gud'} (${username}): ${score}`}</Label>
                 </div>
             })}
         </VerticalList>

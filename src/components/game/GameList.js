@@ -38,14 +38,6 @@ class GameList extends React.Component {
         this.props.history.push(`game/${game.gameId}`);
     }
 
-    async componentDidMount() {
-        this.props.updateLoop.addClient(this);
-    }
-
-    async componentWillUnmount() {
-        this.props.updateLoop.removeClient(this);
-    }
-
     async gameArchive(){
         this.props.history.push(`archive`);
     }

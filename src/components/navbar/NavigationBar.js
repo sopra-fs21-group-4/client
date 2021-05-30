@@ -9,7 +9,7 @@ import {
 } from "../../views/design/Interaction";
 import {Route, withRouter} from "react-router-dom";
 import HoverableBox from "../../views/design/HoverableBox";
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 import chatAddIcon from "../../image/icons/chat-add.png"
 import chatIcon from "../../image/icons/chat.png"
 import gameIcon from "../../image/icons/game.png"
@@ -44,7 +44,7 @@ import title from "../../views/design/title.module.css";
 import bruh from "../../image/memes/bruh girl.jpg";
 import Modal from "../login/Modal";
 import {Spinner} from "../../views/design/Spinner";
-import Data from "../shared/models/Data";
+import Data from "../shared/data/Data";
 
 
 /**
@@ -76,7 +76,7 @@ class NavigationBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            GameId: null,
+            gameId: null,
             username: null,
             showImage: false,
             reset: false,
@@ -201,14 +201,13 @@ class NavigationBar extends React.Component {
         let me = await Data.get(User.getAttribute("userId"))
 
         this.setState({
-            GameId: me.currentGameId,
-            username: User.getAttribute("username"),
+            gameId: me.currentGameId,
+            username: me.username,
         })
     }
 
 
     getNavigationBarContent() {
-
 
         if (!User.isPresentInSessionStorage()) return [
             this.menu("login", userIcon, [
@@ -224,15 +223,20 @@ class NavigationBar extends React.Component {
                 {image: avatar0, onClick: () => this.props.history.push("/user/" + User.getAttribute('userId'))},
             ]),
 
+            (this.state.gameId?
+                    this.menu("myGame", gameIcon, [
+                        {image: gamePlayIcon, onClick: () => this.props.history.push('/game/' + this.state.GameId)},
+                        {image: gameLeaveIcon, onClick: () => this.leave()},
+                        {image: gameArchiveIcon, onClick: () => this.props.history.push('/archive')},
+                    ])
+                    :
+                    this.menu("myGame", gameIcon, [
+                        {image: gameAddIcon, onClick: () => this.props.history.push('/game-create')},
+                        {image: gameSearchIcon, onClick: () => this.props.history.push('/dashboard')},
+                        {image: gameArchiveIcon, onClick: () => this.props.history.push('/archive')},
+                    ])
+            ),
 
-            this.menu("myGame", gameIcon, [
-
-                {image: gameAddIcon, onClick: () => this.props.history.push('/game-create')},
-                {image: gamePlayIcon, onClick: () => this.props.history.push('/game/' + this.state.GameId)},
-                {image: gameLeaveIcon, onClick: () => this.leave()},
-                {image: gameArchiveIcon, onClick: () => this.props.history.push('/archive')},
-
-            ]),
 
         ];
     }

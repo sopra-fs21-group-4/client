@@ -5,14 +5,14 @@ import {Spinner} from '../../views/design/Spinner';
 import {Button, ImageButton, InputField, RoundImageButton, SmallRoundImageButton} from '../../views/design/Interaction';
 import {withRouter} from 'react-router-dom';
 import {Label, Title} from "../../views/design/Text";
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 import {
     BackgroundDiv,
     BackgroundDivLighterForFriends,
 } from "../../views/design/Containers";
 import refresh_icon from "../../image/icons/refresh_arrow.png"
 import logo from "../../image/logo/doyouevenmeme.png";
-import Data from "../shared/models/Data";
+import Data from "../shared/data/Data";
 
 const Cell = styled.div`
     padding: 0.5rem;

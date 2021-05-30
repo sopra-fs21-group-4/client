@@ -6,7 +6,7 @@ import {Button, InputField1} from '../../views/design/Interaction';
 import {withRouter} from 'react-router-dom';
 import styled from "styled-components";
 import Modal from "../login/Modal";
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 import {BackgroundDiv, BackgroundDivLighter} from "../../views/design/Containers";
 import {Info, Label, Title} from "../../views/design/Text";
 

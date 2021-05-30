@@ -6,10 +6,10 @@ import {Button, InputField1} from '../../views/design/Interaction';
 import {withRouter} from 'react-router-dom';
 import styled from "styled-components";
 import Modal from "../login/Modal";
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 import {BackgroundDiv, BackgroundDivLighter} from "../../views/design/Containers";
 import {Error, Info, Label, Title} from "../../views/design/Text";
-import Data from "../shared/models/Data";
+import Data from "../shared/data/Data";
 
 const Table = styled.table`
     text-align: left;
@@ -36,8 +36,9 @@ class UserEntity extends React.Component {
     }
 
     async update() {
+        let userId = this.props.userId? this.props.userId : User.getAttribute('userId');
         this.setState({
-            user: await Data.get(this.props.userId),
+            user: await Data.get(userId),
         })
     }
 
@@ -84,7 +85,6 @@ class UserEntity extends React.Component {
     }
 
     render() {
-        if (!this.props.userId) return <div><Error>no data!</Error></div>
         if (!this.state.user) return <Spinner/>
         return (
             <BaseContainer>
@@ -100,7 +100,7 @@ class UserEntity extends React.Component {
                                         <Table width="100%">
                                             <tr>
                                                 <th><Label>Id: </Label></th>
-                                                <td><Info>{this.state.user.userId}</Info></td>
+                                                <td><Info>{this.state.user.id}</Info></td>
                                             </tr>
                                             <tr>
                                                 <th><Label>Name: </Label></th>

@@ -1,28 +1,27 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
-import { withRouter } from 'react-router-dom';
+import {Redirect, withRouter} from 'react-router-dom';
 import {BackgroundDiv, BackgroundDivLighter, HorizontalBox, VerticalBox} from "../../views/design/Containers";
 import { Label, Title } from "../../views/design/Text";
 import {Button, InputField} from "../../views/design/Interaction";
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 import {Spinner} from "../../views/design/Spinner";
+import Data from "../shared/data/Data";
 
-class Join extends React.Component {
+class GameJoin extends React.Component {
   constructor() {
     super();
     this.state = {
       password: null,
-      status: null,
     };
   }
 
-  async componentDidMount() {
-    await this.tryJoin();
+  componentDidMount() {
+    if (this.props.gameId) this.tryJoin();
   }
 
   async tryJoin() {
     try {
-
       // request setup
       const url = `/games/${this.props.gameId}/join`;
       const config = {
@@ -32,12 +31,10 @@ class Join extends React.Component {
         }
       };
       await api.put(url, "", config);
-
-      this.props.history.push(`/game/${this.props.gameId}`);
     } catch (error) {
       // the component will react accordingly when we update the status
-      // this.setState({status: error.response.status});
-      console.log(error.response)
+      this.setState({status: error.response.status});
+
     }
   }
 
@@ -51,6 +48,12 @@ class Join extends React.Component {
 
 
   render() {
+    if (!this.props.gameId) {
+      let gameId = User.getAttribute('currentGameId');
+      if (gameId) return <Redirect to={`/game/${gameId}`}/>
+      return <Redirect to={`/`}/>
+    }
+
     if (!this.state.status) return <Spinner/>
 
     return <div
@@ -67,7 +70,7 @@ class Join extends React.Component {
             <InputField
                 id={`gamePasswordInput`}
                 submitAction={() => this.tryJoin()}
-                submitButtonText='Join'
+                submitButtonText='GameJoin'
                 placeholder='Enter password here..'
             />
           </BackgroundDivLighter>
@@ -89,4 +92,4 @@ class Join extends React.Component {
 
 }
 
-export default withRouter(Join);
+export default withRouter(GameJoin);

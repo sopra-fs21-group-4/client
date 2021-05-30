@@ -3,10 +3,10 @@ import styled from "styled-components";
 import {VerticalScroller} from "../../views/design/Containers";
 import {Spinner} from "../../views/design/Spinner";
 import {withRouter} from "react-router-dom";
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 import {Info, Label} from "../../views/design/Text";
 import {api, handleError} from "../../helpers/api";
-import Data from "../shared/models/Data";
+import Data from "../shared/data/Data";
 
 /**
  * TODO there's probably more to add here (friend requests maybe)
@@ -39,7 +39,7 @@ class PlayerList extends React.Component {
         super(params);
         this.state={
             game: null,
-            players: [],
+            players: null,
         };
     }
 
@@ -53,7 +53,6 @@ class PlayerList extends React.Component {
 
     async update() {
         let game = await Data.get(this.props.gameId);
-        // game.players.forEach((id) => {Data.get(id).then((user) => {this.state.players[game.players.indexOf(id)] = user})})
         this.setState({
             game: game,
             players: await Data.getList(game.players)
@@ -67,8 +66,8 @@ class PlayerList extends React.Component {
     async banPlayer(user){
         try {
             // request setup
-            const url = `/games/${this.params.gameId}/ban`;
-            const requestBody = user.userId;
+            const url = `/games/${this.props.gameId}/ban`;
+            const requestBody = user.id;
             const config = {headers: User.getUserAuthentication()};
 
             // send request
@@ -85,7 +84,7 @@ class PlayerList extends React.Component {
         }
         let game = this.state.game;
         let players = this.state.players.slice();
-        players.sort((a,b) => {return game.scores[b.userId] - game.scores[a.userId]});
+        players.sort((a,b) => {return game.scores[b.id] - game.scores[a.id]});
         return <div
             style={{
                 padding: '10px'
@@ -101,12 +100,12 @@ class PlayerList extends React.Component {
                             <tr>
                                 <td><Label>{user.username}</Label></td>
                                 {game.gameState == 'LOBBY'? (
-                                    <td><Info>{game.playerStates[user.userId]}</Info></td>
+                                    <td><Info>{game.playerStates[user.id]}</Info></td>
                                 ) : (
-                                    <td><Info>{game.scores[user.userId]}</Info></td>
+                                    <td><Info>{game.scores[user.id]}</Info></td>
                                 )}
                             <td>
-                                {this.isGameMaster() && (user.userId != User.getAttribute('userId'))?(
+                                {this.isGameMaster() && (user.id != User.getAttribute('userId'))?(
 
                                     <ButtonBan onClick={() => {
                                         this.banPlayer(user);

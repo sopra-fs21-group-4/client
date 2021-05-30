@@ -1,4 +1,5 @@
 import {api, handleError} from "../../../helpers/api";
+import Data from "./Data";
 
 /**
  * User model
@@ -44,6 +45,13 @@ class User {
 
   static getAttribute(attribute) {
     return sessionStorage.getItem(attribute);
+  }
+
+  static async getData(key) {
+    let directData = sessionStorage.getItem(key);
+    if (directData) return directData;
+    let user = await Data.get(sessionStorage.getItem('userId'));
+    return user[key];
   }
 
   /**

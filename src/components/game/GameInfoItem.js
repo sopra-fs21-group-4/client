@@ -3,7 +3,7 @@ import { HorizontalBox, VerticalBox } from "../../views/design/Containers";
 import { Info } from "../../views/design/Text";
 import { LinkButton } from "../../views/design/Interaction";
 import { withRouter } from "react-router-dom";
-import Data from "../shared/models/Data";
+import Data from "../shared/data/Data";
 import {Spinner} from "../../views/design/Spinner";
 
 class GameInfoItem extends React.Component {

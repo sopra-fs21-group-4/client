@@ -1,7 +1,7 @@
 import React from 'react';
 import { api, handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 import Form from "../general/Form";
 import {Spinner} from "../../views/design/Spinner";
 import {BackgroundDiv} from "../../views/design/Containers";

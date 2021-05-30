@@ -10,10 +10,10 @@ import {
     VerticalScroller
 } from "../../views/design/Containers";
 import {Info, Label, Title} from "../../views/design/Text";
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 import parseEmoji from "../../helpers/Emoji";
 import InputField from "../general/InputField";
-import Data from "../shared/models/Data";
+import Data from "../shared/data/Data";
 
 
 const colorSelected = '#b5007c';
@@ -44,7 +44,7 @@ class GameRunning extends React.Component {
         super(params);
         this.state={
             game: null,
-            players: [],
+            players: null,
             round: null,
             settings: null,
         };
@@ -60,13 +60,11 @@ class GameRunning extends React.Component {
 
     async update() {
         let game = await Data.get(this.props.gameId);
-        game.players.forEach((id) => {Data.get(id).then((user) => {this.state.players[game.players.indexOf(id)] = user})})
-        let round = await Data.get(game.currentRoundId);
-        let settings = await Data.get(game.gameSettingsId);
         this.setState({
             game: game,
-            round: round,
-            settings: settings,
+            players: await Data.getList(game.players),
+            round: await Data.get(game.currentRoundId),
+            settings: await Data.get(game.gameSettingsId),
         })
     }
 
@@ -77,7 +75,7 @@ class GameRunning extends React.Component {
             const config = {
                 headers: User.getUserAuthentication()
             }
-            const response = await api.put(url, recipient.userId, config);
+            const response = await api.put(url, recipient.id, config);
             console.log(response);
         } catch (error) {
             alert(`Something went wrong while voting: \n${handleError(error)}`);
@@ -125,7 +123,7 @@ class GameRunning extends React.Component {
                 <div >
                     <Label>{`${this.currentActivity()}`}</Label>
                     <br/>
-                    <Info>{`time remaining: ${Math.round(countdown / 1000)}`}</Info>
+                    <Info>{`time remaining: ${this.state.game.gameState == 'PAUSED'? '(paused)' : Math.round(countdown / 1000)}`}</Info>
                     <br/>
                     {this.currentRoundPhaseInteractive()}
                 </div>
@@ -175,12 +173,12 @@ class GameRunning extends React.Component {
     voteInteractive() {
         return <VerticalList>
             {(this.state.players.map(player => {
-                return (this.state.round.suggestions[player.userId]? <VoteButton
-                    disabled={player.userId == User.getAttribute('userId')}
-                    onClick={e => this.vote(player)}
-                    style={{background: (this.state.round.votes[User.getAttribute('userId')] == player.userId)? colorSelected : colorUnselected}}
+                return (this.state.round.suggestions[player.id]? <VoteButton
+                    disabled={player.id == User.getAttribute('userId')}
+                    onClick={() => this.vote(player)}
+                    style={{background: (this.state.round.votes[User.getAttribute('userId')] == player.id)? colorSelected : colorUnselected}}
                 >
-                    {`${this.state.round.suggestions[player.userId]}`}</VoteButton>
+                    {`${this.state.round.suggestions[player.id]}`}</VoteButton>
                 : null);
             })).sort(function(a,b){
                 if(!(a&&b)){return 1}

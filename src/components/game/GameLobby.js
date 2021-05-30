@@ -2,12 +2,12 @@ import React from 'react';
 import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
 import {BackgroundDivLighter} from "../../views/design/Containers";
-import User from "../shared/models/User";
+import User from "../shared/data/User";
 import Form from "../general/Form";
 import {Info, Label, Title} from "../../views/design/Text";
 import styled from "styled-components";
 import {Button} from "../../views/design/Interaction";
-import Data from "../shared/models/Data";
+import Data from "../shared/data/Data";
 import {Spinner} from "../../views/design/Spinner";
 
 
