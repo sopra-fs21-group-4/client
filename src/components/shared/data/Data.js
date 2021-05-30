@@ -7,6 +7,7 @@ import User from "./User";
 class Data {
 
   static async get(entityId) {
+    if (!entityId) return;
     let entity = JSON.parse(sessionStorage.getItem(entityId));
     if (entity) return entity;
     try {

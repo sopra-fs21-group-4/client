@@ -50,7 +50,6 @@ class App extends Component {
         let eventSource = new EventSource(`http://localhost:8080/createEmitter/${User.getAttribute('userId')}`);
         this.setState({
             eventSource: eventSource,
-            initializingSse: false,
         })
 
         eventSource.onopen = (event) => {
@@ -69,6 +68,7 @@ class App extends Component {
                 const config = { headers: User.getUserAuthentication() };
                 api.put(url, emitterToken, config);
                 console.log("sse activated");
+                this.setState({initializingSse: false})
             } catch (error) {
                 alert(`Something went wrong while setting up sse: \n${handleError(error)}`);
             }
