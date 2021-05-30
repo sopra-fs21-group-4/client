@@ -19,12 +19,7 @@ class Entity extends React.Component {
 
   async componentDidMount() {
     this.props.updateLoop.addClient(this);
-    this.setState({data: Data.get(this.state.id)});
-    while (!this.state.data) {
-      await Data.observeEntity(this.state.id)
-      await new Promise(resolve => setTimeout(resolve, 500));
-      this.setState({data: await Data.get(this.state.id)});
-    }
+    this.setState({data: await Data.get(this.state.id)});
   }
 
   componentWillUnmount() {
