@@ -1,7 +1,7 @@
 class UpdateLoop {
     constructor(interval) {
         this.state = {
-            interval: 100, // (interval? interval : 100),
+            interval: 300, // (interval? interval : 100),
             clients: [],
             running: false,
         }
@@ -17,6 +17,7 @@ class UpdateLoop {
         while (this.state.running) {
             this.runUpdate();
             await new Promise(resolve => setTimeout(resolve, this.state.interval));
+            // console.log(this.state.clients)
         }
     }
 

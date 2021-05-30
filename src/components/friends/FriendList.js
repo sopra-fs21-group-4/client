@@ -157,88 +157,7 @@ class FriendList extends React.Component {
         }
     }
 
-    //
-    // async componentDidMount() {
-    //     this.updateFriends()
-    // }
-    //
-    // async updateFriends() {
-    //
-    //     try {
-    //         this.setState({friends: null})
-    //         this.setState({incomingRequestsUsers: null})
-    //         this.setState({outgoingRequestsUsers: null})
-    //
-    //         // request setup
-    //         const url = `/user`;
-    //         const config = {headers: User.getUserAuthentication()};
-    //         // send request
-    //         const response = await api.get(url, config);
-    //         console.log(response);
-    //         this.setState({me: response.data});
-    //
-    //
-    //         const url2 = `/users`;
-    //
-    //
-    //         if (response.data.friends.length != 0) {
-    //             // request setup
-    //             const friendsIds = response.data.friends
-    //             const config2 = {headers: {userIds: friendsIds}};
-    //             // send request
-    //             const response2 = await api.get(url2, config2);
-    //             console.log(response2);
-    //             this.setState({friends: response2.data});
-    //
-    //             // getting games
-    //             const config = {headers: User.getUserAuthentication()};
-    //             const gameresponse = await api.get('/games', config);
-    //             console.log(gameresponse);
-    //
-    //             let games = new Array();
-    //             for(let i=0, iLen=Object.keys(gameresponse.data).length; i<iLen; i++){
-    //                 let obj = gameresponse.data[i]
-    //                 if (obj.gameState == "LOBBY"){
-    //                     games.push((obj.gameId))
-    //                 }
-    //             }
-    //
-    //
-    //             this.setState({games: games});
-    //             console.log(this.state.games);
-    //         }
-    //
-    //         if (response.data.incomingFriendRequests.length != 0) {
-    //             // request setup
-    //             const incomingIds = response.data.incomingFriendRequests
-    //             const config3 = {headers: {userIds: incomingIds}};
-    //             // send request
-    //             const response3 = await api.get(url2, config3);
-    //             console.log(response3);
-    //             this.setState({incomingRequestsUsers: response3.data});
-    //         }
-    //         if (response.data.outgoingFriendRequests.length != 0) {
-    //             // request setup
-    //             const outoingIds = response.data.outgoingFriendRequests
-    //             const config4 = {headers: {userIds: outoingIds}};
-    //             // send request
-    //             const response4 = await api.get(url2, config4);
-    //             console.log(response);
-    //             this.setState({outgoingRequestsUsers: response4.data});
-    //         }
-    //
-    //
-    //     } catch (error) {
-    //         if (error.response && error.response.data.message == 'invalid userId') {
-    //             User.removeFromSessionStorage();
-    //             this.props.history.push('/');
-    //         } else alert(`Something went wrong while updating the users: \n${handleError(error)}`);
-    //     }
-    // }
 
-    // async componentWillUnmount() {
-    //     this.props.updateLoop.removeClient(this);
-    // }
 
 
 
@@ -247,12 +166,6 @@ class FriendList extends React.Component {
         this.setState({[key]: value});
     }
     goBack() {
-
-        // console.log(this.state.me)
-        // console.log(this.state.friends)
-        // console.log(this.state.outgoingRequestsUsers)
-        // console.log(this.state.incomingRequestsUsers)
-        // console.log(this.state.games)
 
         this.props.history.push('/');
     }
@@ -265,20 +178,7 @@ class FriendList extends React.Component {
         return (
             <div style={{display: "flex", justifyContent: 'center'}}>
                 <BackgroundDiv style={{paddingBottom: '30px'}}>
-                    <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-                        <div style={{position: 'absolute', marginTop: '-25px', marginRight: '-55px'}}>
 
-
-                            <SmallRoundImageButton
-                                style={{backgroundColor: 'rgb(191,62,255)'}}
-                                onClick={() => {
-                                    window.location.reload(false)
-                                }}
-                                image={`url(${refresh_icon})`}
-
-                            ></SmallRoundImageButton>
-                        </div>
-                    </div>
 
                     <div style={{height: "700px", display: "flex", justifyContent: 'center'}}>
 
