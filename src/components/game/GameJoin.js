@@ -14,6 +14,7 @@ class GameJoin extends React.Component {
     super();
     this.state = {
       password: null,
+      status: null,
     };
   }
 
@@ -55,13 +56,13 @@ class GameJoin extends React.Component {
       return <Redirect to={`/`}/>
     }
 
-    if (!this.state.status) return <Spinner/>
+    // if (!this.state.status) return <Spinner/>
 
     return <div
         style={{display: "flex", justifyContent: 'center'}}
     ><BackgroundDiv>
       <Title> {this.message()} </Title>
-      {this.state.status == 401?
+      {this.state?.status == 401?
           <BackgroundDivLighter>
             <div style={{ margin: "10px",}}>
               <Label>
@@ -77,6 +78,12 @@ class GameJoin extends React.Component {
           </BackgroundDivLighter>
           : null
       }
+      <Button onClick={() => {
+        this.props.history.push('/')
+      }}
+      >
+        Go back
+      </Button>
     </BackgroundDiv></div>
   }
 
@@ -87,7 +94,7 @@ class GameJoin extends React.Component {
       case 410: return 'This game is already running.'
       case 422: return 'This lobby is full.'
       case 423: return 'You have been banned from this lobby.'
-      default:  return 'This message should never be seen. Prepare for self-destruction in 3, 2, 1...'
+      default:  return 'You have been banned from this lobby.'
     }
   }
 

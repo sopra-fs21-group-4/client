@@ -34,6 +34,10 @@ class Data {
     sessionStorage.setItem(key, JSON.stringify(data))
   }
 
+  static remove(key) {
+    sessionStorage.removeItem(key)
+  }
+
   /**
    * sends a subscribe request to the backend
    * @param entityId id of the resource to subscribe
