@@ -14,14 +14,16 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            updateLoop: new UpdateLoop(this, 100),
+            updateLoop: new UpdateLoop(this, 1000),
             eventSource: null,
             initializingSse: false,
-            lastConnectionTest: 0
+            lastConnectionTest: 0,
+            connectionTimeout: 0,
         };
     }
 
     componentDidMount() {
+        this.initSSE()
         this.state.updateLoop.addClient(this);
         this.state.updateLoop.start();
     }
@@ -31,22 +33,17 @@ class App extends Component {
     }
 
     update() {
-        this.refreshSSE(Math.random() < 0.001);
+        if (!this.state.eventSource) this.initSSE();
+        else if (this.state.eventSource.readyState == 2) {
+            console.log(this.state.eventSource);
+            this.state.eventSource.close();
+            this.setState({eventSource: null});
+        }
     }
 
-    refreshSSE() {
-        if (!User.isPresentInSessionStorage()) return;
-        if (this.state.eventSource) {
-            if (this.state.eventSource.readyState < 2) return;
-            if (Date.now() - this.state.lastConnectionTest < 4000) return;
-        }
-        if (this.state.initializingSse) return;
-        this.setState({
-            initializingSse: true,
-        })
-        if (this.state.eventSource) this.state.eventSource.close();
+    initSSE() {
+        if (!User.isPresentInSessionStorage() || this.state.eventSource) return;
 
-        // let eventSource = response.data;
         let eventSource = new EventSource(`http://localhost:8080/createEmitter/${User.getAttribute('userId')}`);
         this.setState({
             eventSource: eventSource,
@@ -86,7 +83,6 @@ class App extends Component {
             if (data['lobbies']) sessionStorage.setItem('lobbies', JSON.stringify(data['lobbies']));
             console.log(event);
         })
-
     }
 
     render() {
