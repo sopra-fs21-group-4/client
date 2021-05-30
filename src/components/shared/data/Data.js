@@ -17,7 +17,7 @@ class Data {
       this.put(entityId, response.data)
       return response.data
     } catch (error) {
-      alert(`Something went wrong trying to fetch entity #${entityId}: \n${handleError(error)}`);
+      //alert(`Something went wrong trying to fetch entity #${entityId}: \n${handleError(error)}`);
     }
   }
 

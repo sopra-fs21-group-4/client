@@ -36,7 +36,11 @@ class GameSummary extends React.Component {
     }
 
     async update() {
+
         let game = await Data.get(this.state.gameSummaryId);
+        console.log(game);
+
+
         if (!game) return;
         this.setState({
             game: game,
