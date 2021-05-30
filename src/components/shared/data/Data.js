@@ -22,6 +22,7 @@ class Data {
   }
 
   static async getList(ids) {
+    if (!ids || !ids.length) return [];
     let list = [];
     for (let id of ids) {
       list.push(await(this.get(id)))
@@ -38,6 +39,7 @@ class Data {
    * @param entityId id of the resource to subscribe
    */
   static async observeEntity(entityId) {
+    if (!entityId) return;
     try {
       const url = '/observeEntity';
       const config = {headers: User.getUserAuthentication()};
