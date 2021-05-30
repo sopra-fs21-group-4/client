@@ -14,7 +14,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            appUpdater: new UpdateLoop(this, 100),
+            updateLoop: new UpdateLoop(this, 100),
             eventSource: null,
             initializingSse: false,
             lastConnectionTest: 0
@@ -22,16 +22,16 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.state.appUpdater.addClient(this);
-        this.state.appUpdater.start();
+        this.state.updateLoop.addClient(this);
+        this.state.updateLoop.start();
     }
 
     componentWillUnmount() {
-        this.state.appUpdater.removeClient(this);
+        this.state.updateLoop.removeClient(this);
     }
 
     update() {
-        this.refreshSSE();
+        this.refreshSSE(Math.random() < 0.001);
     }
 
     refreshSSE() {
@@ -58,8 +58,7 @@ class App extends Component {
         }
 
         eventSource.onerror = (event) => {
-            // console.log("sse connection closed")
-            this.setState({eventSource: null});
+            // console.log("sse error")
         }
 
         eventSource.addEventListener("ActivationRequest", (event) => {
@@ -103,7 +102,7 @@ class App extends Component {
                     // width: '100vw',
 
                 }}>
-                <AppRouter updateLoop={this.state.appUpdater}/>
+                <AppRouter updateLoop={this.state.updateLoop}/>
             </div>
         );
     }

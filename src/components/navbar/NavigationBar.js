@@ -211,8 +211,8 @@ class NavigationBar extends React.Component {
 
         if (!User.isPresentInSessionStorage()) return [
             this.menu("login", userIcon, [
-                {image: userLoginIcon, onClick: () => () => this.props.history.push('/login')},
-                {image: userAddIcon, onClick: () => () => this.props.history.push('/register')},
+                {image: userLoginIcon, onClick: () => this.props.history.push('/login')},
+                {image: userAddIcon, onClick: () => this.props.history.push('/register')},
             ])
         ];
         else return [
