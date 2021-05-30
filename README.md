@@ -32,8 +32,6 @@ The [GameRunning](https://github.com/sopra-fs21-group-4/client/blob/master/src/c
 ## GameRoundSummary
 The [GameRoundSummary](https://github.com/sopra-fs21-group-4/client/blob/master/src/components/game/GameRoundSummary.js) is displayed when the game is over. It gets the data from the SSE-Emitter and then displays every round with the corresponding data.
 
-# TODO  2 more high level components
-
 
 # Launch and Development
 
