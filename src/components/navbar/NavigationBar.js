@@ -225,7 +225,7 @@ class NavigationBar extends React.Component {
 
             (this.state.gameId?
                     this.menu("myGame", gameIcon, [
-                        {image: gamePlayIcon, onClick: () => this.props.history.push('/game/' + this.state.GameId)},
+                        {image: gamePlayIcon, onClick: () => this.props.history.push('/game-create')},
                         {image: gameLeaveIcon, onClick: () => this.leave()},
                         {image: gameArchiveIcon, onClick: () => this.props.history.push('/archive')},
                     ])
