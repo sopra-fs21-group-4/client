@@ -3,13 +3,13 @@
 <div style="text-align:center"><img src="https://raw.githubusercontent.com/sopra-fs21-group-4/client/master/src/image/logo/doyouevenmeme.png"/></div>
 [toc]
 # Project-Description
-In this game players submit titles for images and gifs that are collected from a specified subreddit. A normal game flow looks something like this.
+In this game players submit titles for images and gifs that are collected from a specified Subreddit. A normal game flow looks something like this.
 
-1. A user creates a game and enters a subreddit.
+1. A user creates a game and enters a Subreddit.
 2. With the Reddit API the game master can define what type of memes are taken. For example these are the last 25 currently best posts of subreddit r/memes: https://www.reddit.com/r/memes/top.json
 3. Because Reddit gives the possibility to filter the posts for specific parameters like time or upvotes we can give the users the possibility to set those. (hot/rising/new/etc.)
 4. Other players join the game
-5. The game begins and a meme is shown to all users. Those users have to enter a title that they find funny and fitting
+5. The game begins, and a meme is shown to all users. Those users have to enter a title that they find funny and fitting
 6. As soon as the time is up all players vote on which is the best title for the meme. Then the players receive points according to the votes recieved. Steps 5 and 6 get repeated until the total number of rounds are played.
 
 # Technologies
@@ -17,8 +17,20 @@ The client is written in JavaScript using React.
 
 To establish a connection between the front- and backend REST is used. 
 # High-Level Components
+
+## GameList
 The [GameList](https://github.com/sopra-fs21-group-4/client/blob/master/src/components/lobby/GameList.js) and [GameInfoItem](https://github.com/sopra-fs21-group-4/client/blob/master/src/components/lobby/GameInfoItem.js) display all currently open lobbies. To implement this we used REST-Requests to update the list. 
 When a User clicks on a open lobby the user then gets forwarded to the game. Where they then either have to enter the lobby password or if no password was set they just enter the lobby.
+
+## GameRound 
+The [GameRunning](https://github.com/sopra-fs21-group-4/client/blob/master/src/components/game/GameRunnning.js) class implements what the user will see during the a round of the game. The class can advance between four states:
+* **STARTING**: in this state the players see the Meme but can't input anything yet.
+* **SUGGEST**: during this state every player can input their title
+* **VOTE**: while voting the players, can vote for a title (but not their own)
+* **AFTERMATH**: here the results will be displayed and the corresponding points are displayed.
+
+## GameRoundSummary
+The [GameRoundSummary](https://github.com/sopra-fs21-group-4/client/blob/master/src/components/game/GameRoundSummary.js) is displayed when the game is over. It gets the data from the SSE-Emitter and then displays every round with the corresponding data.
 
 # TODO  2 more high level components
 
@@ -38,14 +50,14 @@ When a User clicks on a open lobby the user then gets forwarded to the game. Whe
   Builds the app for production to the `build` folder.<br />
   It correctly bundles React in production mode and optimizes the build for the best performance.
 
-  The build is minified and the filenames include the hashes.<br />
+  The build is minified, and the filenames include the hashes.<br />
   Your app is ready to be deployed!
 
   See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 # Screenshots
 ## Lobby creation
-Below you can see how a lobby can be set up and then will displayed on the Dashboard.
+Below you can see how a lobby can be set up and then will be displayed on the Dashboard.
 <div><img src="https://marock.li/cloud-storage/sopra.gif" width="250" allign="center"/></div>
 
 ## Login
@@ -66,12 +78,12 @@ The game then can only start, when at least 3 Players and at most the maximum am
 
 ## In Entity
 During the game there are three different phases to the game.
-1. The suggestion phase where every Players is prompted with the same meme. They then have a certain amount of time to think of a title and enter/submit it. If a player does not submit a title they will get points deducted for not entering a title.
+1. The suggestion phase where every Player is prompted with the same meme. They then have a certain amount of time to think of a title and enter/submit it. If a player does not submit a title they will get points deducted for not entering a title.
 ![login](https://marock.li/cloud-storage/submitting.png)
-2. After the time has run out all players can then vote for the titles that were submited. A player can never vote for their own title. If a player does not vote or can not vote for a other title the player will also get point deducted.
+2. After the time has run out all players can then vote for the titles that were submitted. A player can never vote for their own title. If a player does not vote or can not vote for a other title the player will also get point deducted.
 ![login](https://marock.li/cloud-storage/voting.png)
 3. When the time has run out the points given will be calculated and displayed. 
-After the time has run out the next round will start or if the last round just happened the Entity Summurary will be displayed. 
+After the time has run out the next round will start or if the last round just happened the Entity Summary will be displayed. 
 ![login](https://marock.li/cloud-storage/results.png)
 
 
