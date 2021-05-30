@@ -52,7 +52,8 @@ class GameSummary extends React.Component {
 
     render() {
         if (!this.state.game) return <Spinner/>
-        return <BackgroundDiv>
+        return <div style={{display: "flex", justifyContent: 'center'}}>
+        <BackgroundDiv>
             <VerticalList
                 style={{}}>
 
@@ -107,6 +108,7 @@ class GameSummary extends React.Component {
                 </BackgroundDivLighter>
             </VerticalList>
         </BackgroundDiv>
+        </div>
     }
 
 }

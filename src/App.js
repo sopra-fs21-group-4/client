@@ -82,7 +82,6 @@ class App extends Component {
             const data = JSON.parse(event.data);
             for (let key in data['observedEntities']) Data.put(key, (data['observedEntities'][key]))
             if (data['lobbies']) sessionStorage.setItem('lobbies', JSON.stringify(data['lobbies']));
-            console.log(event);
         })
     }
 
