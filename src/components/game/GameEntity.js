@@ -33,10 +33,7 @@ class GameEntity extends React.Component {
         // console.log("test")
         let game = await Data.get(this.props.gameId)
         let refresh = (this.state.lastRefresh + 1000 < Date.now())
-        if (refresh) {
-            Data.remove(this.props.gameId)
-            if (game.currentRoundId) Data.remove(game.currentRoundId)
-        }
+        if (refresh) Data.remove(this.props.gameId)
         this.setState({
             game: game,
             lastRefresh: refresh? Date.now() : this.state.lastRefresh,
